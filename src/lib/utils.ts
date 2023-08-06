@@ -1,6 +1,6 @@
+import { Transaction } from "@/app/types/global";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Transaction } from "@/app/components/transactions";
 import { SpecialCategories } from "./categories";
 
 const DELIMITER = ";";
