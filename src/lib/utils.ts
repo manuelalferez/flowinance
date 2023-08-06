@@ -4,6 +4,9 @@ import { Transaction } from "@/app/components/transactions";
 import { SpecialCategories } from "./categories";
 
 const DELIMITER = ";";
+export interface TransactionsMatrix {
+  transactions: string[][];
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,16 +26,27 @@ function createTransaction(
   };
 }
 
-export function extractFields(lines: string[]) {
-  let transactions: Transaction[] = [];
-  for (let i = 1; i < lines.length; i++) {
-    const [, , date, concept, , amount] = lines[i].split(DELIMITER);
-    if (date && concept && amount) {
-      const newTransaction = createTransaction(date, concept, amount);
-      transactions.push(newTransaction);
-    }
+export function getNumColumns(matrix: TransactionsMatrix) {
+  if (matrix.transactions.length === 0) {
+    return 0;
   }
-  transactions.forEach((element) => {
-    console.log(element);
+
+  return matrix.transactions[0].length;
+}
+
+function hasEmptyStringExceptFirst(arr: string[]): boolean {
+  return arr.slice(1).some((item) => item === "");
+}
+
+export function extractFields(lines: string[]): TransactionsMatrix {
+  let fields: TransactionsMatrix = {
+    transactions: [],
+  };
+  lines.forEach((line) => {
+    const splittedLine = line.split(DELIMITER);
+    if (!hasEmptyStringExceptFirst(splittedLine)) {
+      fields.transactions.push(splittedLine);
+    }
   });
+  return fields;
 }

@@ -1,10 +1,14 @@
 "use client";
 
-import { extractFields } from "@/lib/utils";
+import { extractFields, TransactionsMatrix } from "@/lib/utils";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-export function DragAndDrop() {
+interface DragAndDropProps {
+  handleTransactions: (transactions: TransactionsMatrix) => void;
+}
+
+export function DragAndDrop({ handleTransactions }: DragAndDropProps) {
   const onDrop = useCallback((acceptedFiles: any[]) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
@@ -17,7 +21,8 @@ export function DragAndDrop() {
         if (result) {
           const binaryStr = new TextDecoder().decode(result as ArrayBuffer);
           const lines = binaryStr.split("\n");
-          extractFields(lines);
+          const transactions = extractFields(lines);
+          handleTransactions(transactions);
         }
       };
       reader.readAsArrayBuffer(file);
