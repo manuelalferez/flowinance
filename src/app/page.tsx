@@ -1,10 +1,10 @@
 "use client";
 
-import { TransactionsMatrix } from "@/lib/utils";
 import { useState } from "react";
 import { DragAndDrop } from "./components/drag-and-drop";
 import { Transactions } from "./components/transactions";
 import { Toaster } from "./components/ui/toaster";
+import { TransactionsMatrix } from "./types/global";
 
 export default function Home() {
   const [matrix, setMatrix] = useState<TransactionsMatrix>({

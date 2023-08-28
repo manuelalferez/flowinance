@@ -1,8 +1,9 @@
 "use client";
 
-import { extractFields, TransactionsMatrix } from "@/lib/utils";
+import { extractFields } from "@/lib/utils";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import { TransactionsMatrix } from "../types/global";
 
 interface DragAndDropProps {
   handleTransactions: (transactions: TransactionsMatrix) => void;

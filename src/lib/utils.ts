@@ -1,12 +1,9 @@
-import { Transaction } from "@/app/types/global";
+import { Transaction, TransactionsMatrix } from "@/app/types/global";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { SpecialCategories } from "./categories";
 
 const DELIMITER = ";";
-export interface TransactionsMatrix {
-  transactions: string[][];
-}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

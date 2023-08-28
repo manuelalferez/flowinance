@@ -1,5 +1,4 @@
-import { TransactionsMatrix } from "@/lib/utils";
-import { SelectedCol } from "./types";
+import { SelectedCol, TransactionsMatrix } from "@/app/types/global";
 
 export function removeUnselectedColumns(
   selectedCols: SelectedCol[],

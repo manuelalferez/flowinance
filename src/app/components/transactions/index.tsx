@@ -7,13 +7,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
-import { getNumColumns, TransactionsMatrix } from "@/lib/utils";
+import { getNumColumns } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { SelectedCol } from "./types";
 import { removeUnselectedColumns } from "./operators";
 import { TransactionsTable } from "./transactions-table";
 import { useToast } from "../ui/use-toast";
+import { SelectedCol, TransactionsMatrix } from "@/app/types/global";
 
 const headerOptions = ["date", "concept", "amount"];
 
