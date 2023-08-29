@@ -6,10 +6,10 @@ import { useDropzone } from "react-dropzone";
 import { TransactionsMatrix } from "../../types/global";
 
 interface DragAndDropProps {
-  handleTransactions: (transactions: TransactionsMatrix) => void;
+  uploadTransactions: (transactions: TransactionsMatrix) => void;
 }
 
-export function DragAndDrop({ handleTransactions }: DragAndDropProps) {
+export function DragAndDrop({ uploadTransactions }: DragAndDropProps) {
   const onDrop = useCallback((acceptedFiles: any[]) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
@@ -23,7 +23,7 @@ export function DragAndDrop({ handleTransactions }: DragAndDropProps) {
           const binaryStr = new TextDecoder().decode(result as ArrayBuffer);
           const lines = binaryStr.split("\n");
           const transactions = extractFields(lines);
-          handleTransactions(transactions);
+          uploadTransactions(transactions);
         }
       };
       reader.readAsArrayBuffer(file);
