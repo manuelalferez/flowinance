@@ -9,19 +9,19 @@ import {
 } from "@/app/components/ui/select";
 import { getNumColumns } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "../../components/ui/button";
 import { removeUnselectedColumns } from "./operators";
 import { TransactionsTable } from "./transactions-table";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../components/ui/use-toast";
 import { SelectedCol, TransactionsMatrix } from "@/app/types/global";
 
 const headerOptions = ["date", "concept", "amount"];
 
 interface TransactionsProps {
-  matrix: TransactionsMatrix;
+  transactions: TransactionsMatrix;
 }
 
-export function Transactions({ matrix }: TransactionsProps) {
+export function TransactionsViewer({ transactions }: TransactionsProps) {
   const [transactionsMatrix, setTransactionsMatrix] =
     useState<TransactionsMatrix>({ transactions: [] });
   const [selectedCols, setSelectedCols] = useState<SelectedCol[]>([]);
@@ -29,8 +29,8 @@ export function Transactions({ matrix }: TransactionsProps) {
   const { toast } = useToast();
 
   useEffect(() => {
-    setTransactionsMatrix(matrix);
-  }, [matrix]);
+    setTransactionsMatrix(transactions);
+  }, [transactions]);
 
   function handleSelectChange(content: string, column: number) {
     const columnIndex = selectedCols.findIndex((col) => col.col === column);
