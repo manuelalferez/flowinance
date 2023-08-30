@@ -104,6 +104,13 @@ export function CategorizeColumns({
 
   return (
     <>
+      <div>
+        <h1 className="text-xl pb-2">Step 3: Classify columns</h1>
+        <p className="pb-10">
+          Classify every column according to its respective category: date,
+          concept, or amount.
+        </p>
+      </div>
       <Button
         variant="outline"
         onClick={handleNext}

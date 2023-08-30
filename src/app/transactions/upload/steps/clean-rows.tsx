@@ -87,6 +87,10 @@ export function CleanRows({
 
   return (
     <>
+      <div>
+        <h1 className="text-xl pb-2">Step 4: Cleaning rows</h1>
+        <p className="pb-10">Exclude any unwanted rows</p>
+      </div>
       <div className="flex gap-2">
         <Button
           variant="outline"

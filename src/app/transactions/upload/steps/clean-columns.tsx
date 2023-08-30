@@ -87,6 +87,13 @@ export function CleanColumns({
 
   return (
     <>
+      <div>
+        <h1 className="text-xl pb-2">Step 2: Cleaning columns</h1>
+        <p className="pb-10">
+          Exclude any unwanted columns. Ensure three columns remain: one for
+          date, another for concept, and one for amount.
+        </p>
+      </div>
       <div className="flex gap-2">
         <Button
           variant="outline"

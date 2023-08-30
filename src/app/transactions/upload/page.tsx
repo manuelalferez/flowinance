@@ -26,85 +26,46 @@ export default function Page() {
     <>
       <Narbar />
       <main className="flex min-h-screen flex-col items-center p-24">
-        {renderDescription(step)}
-        {renderStep(
-          step,
-          uploadTransactions,
-          transactions,
-          setTransactions,
-          nextStep
+        {isFirstStep(step) && (
+          <DragAndDrop uploadTransactions={uploadTransactions} />
         )}
+        {isSecondStep(step) && (
+          <CleanColumns
+            transactions={transactions}
+            updateTransactions={setTransactions}
+            nextStep={nextStep}
+          />
+        )}
+        {isThirdStep(step) && (
+          <CategorizeColumns
+            transactions={transactions}
+            updateTransactions={setTransactions}
+            nextStep={nextStep}
+          />
+        )}
+        {isFourthStep(step) && (
+          <CleanRows
+            transactions={transactions}
+            updateTransactions={setTransactions}
+            nextStep={nextStep}
+          />
+        )}
+
         <Toaster />
       </main>
     </>
   );
 }
 
-function renderDescription(step: number): JSX.Element | null {
-  const stepDescriptions = [
-    {
-      title: "Step 1: Upload your transactions",
-      content: "Just drag and drop your transaction file right here 👇",
-    },
-    {
-      title: "Step 2: Cleaning columns",
-      content:
-        "Exclude any unwanted columns. Ensure three columns remain: one for date, another for concept, and one for amount.",
-    },
-    {
-      title: "Step 3: Cleaning rows",
-      content: "Remove those rows you don't want.",
-    },
-  ];
-
-  const description = stepDescriptions[step];
-
-  if (description) {
-    return (
-      <div>
-        <h1 className="text-xl pt-10 pb-2">{description.title}</h1>
-        <p className="pb-10">{description.content}</p>
-      </div>
-    );
-  }
-
-  return null;
+function isFirstStep(step: number) {
+  return step === 0;
 }
-
-function renderStep(
-  step: number,
-  uploadTransactions: (transactions: string[][]) => void,
-  transactions: string[][],
-  setTransactions: (transactions: string[][]) => void,
-  nextStep: () => void
-): JSX.Element {
-  if (step === 1) {
-    return (
-      <CleanColumns
-        transactions={transactions}
-        updateTransactions={setTransactions}
-        nextStep={nextStep}
-      />
-    );
-  }
-  if (step === 2) {
-    return (
-      <CategorizeColumns
-        transactions={transactions}
-        updateTransactions={setTransactions}
-        nextStep={nextStep}
-      />
-    );
-  }
-  if (step === 3) {
-    return (
-      <CleanRows
-        transactions={transactions}
-        updateTransactions={setTransactions}
-        nextStep={nextStep}
-      />
-    );
-  }
-
-  return <DragAndDrop uploadTransactions={uploadTransactions} />;
+function isSecondStep(step: number) {
+  return step === 1;
+}
+function isThirdStep(step: number) {
+  return step === 2;
+}
+function isFourthStep(step: number) {
+  return step === 3;
 }

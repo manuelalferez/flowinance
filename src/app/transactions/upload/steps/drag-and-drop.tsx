@@ -36,14 +36,22 @@ export function DragAndDrop({ uploadTransactions }: DragAndDropProps) {
   });
 
   return (
-    <div
-      {...getRootProps()}
-      className="border-black border-2 border-dashed rounded-sm py-10 px-4 hover:cursor-pointer"
-    >
-      <input {...getInputProps()} />
-      <p>
-        Drag and drop your <b>csv</b> file here
-      </p>
-    </div>
+    <>
+      <div>
+        <h1 className="text-xl pb-2">Step 1: Upload your transactions</h1>
+        <p className="pb-10">
+          Just drag and drop your transaction file right here 👇
+        </p>
+      </div>
+      <div
+        {...getRootProps()}
+        className="border-black border-2 border-dashed rounded-sm py-10 px-4 hover:cursor-pointer"
+      >
+        <input {...getInputProps()} />
+        <p>
+          Drag and drop your <b>csv</b> file here
+        </p>
+      </div>
+    </>
   );
 }
