@@ -5,6 +5,11 @@ export function removeColumn(matrix: string[][], colIndex: number): string[][] {
   return filteredMatrix;
 }
 
+export function removeRow(matrix: string[][], rowIndex: number): string[][] {
+  const filteredMatrix = matrix.filter((_, index) => index !== rowIndex);
+  return filteredMatrix;
+}
+
 export function addRowToMatrix(
   matrix: string[][],
   newRow: string[]

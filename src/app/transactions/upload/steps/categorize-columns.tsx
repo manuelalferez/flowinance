@@ -92,10 +92,9 @@ export function CategorizeColumns({
 
   function handleNext() {
     const sortedCols = colHeaders.sort((a, b) => a.col - b.col);
-    setColHeaders(sortedCols);
-    const headers = colHeaders.map((col) => col.name);
-    setTransactionsCopy(addRowToMatrix(transactionsCopy, headers));
-    updateTransactions(transactionsCopy);
+    const headers = sortedCols.map((col) => col.name);
+    const matrixWithCategories = addRowToMatrix(transactionsCopy, headers);
+    updateTransactions(matrixWithCategories);
     nextStep();
   }
 

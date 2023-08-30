@@ -2,7 +2,7 @@
 import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
 import { useEffect, useState } from "react";
 import { useToast } from "@/app/components/ui/use-toast";
-import { removeColumn } from "../../components/operators";
+import { removeColumn, removeRow } from "../../components/operators";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
 
@@ -29,52 +29,51 @@ export function CleanRows({
     setTransactionsCopy(transactions);
   }
 
-  function deleteColumn(col: number) {
-    if (hasDeletedMaxColumns()) {
-      toast({
-        description: "⛔️ You cannot delete more than 3 columns",
-      });
-      return;
-    }
-    const filteredColumn = removeColumn(transactionsCopy, col);
-    setTransactionsCopy(filteredColumn);
-  }
-
-  function hasDeletedMaxColumns() {
-    if (transactionsCopy.length === 0) return false;
-    const MAX_COLUMNS = 3;
-    return transactionsCopy[0].length <= MAX_COLUMNS;
-  }
-
-  function createTableHeader(colIndex: number): JSX.Element {
-    return (
-      <TableHead key={colIndex}>
-        <Button onClick={() => deleteColumn(colIndex)}>Delete</Button>
-      </TableHead>
-    );
-  }
-
   function getTableHeaders(): any {
     if (transactionsCopy.length === 0) return [];
     const firstRow = 0;
     return (
-      <TableRow key={firstRow}>
+      <>
+        <TableHead key="extra-header"></TableHead>
         {transactionsCopy[firstRow].map((col, colIndex) => (
           <TableHead key={colIndex}>{col}</TableHead>
         ))}
-      </TableRow>
+      </>
     );
+  }
+
+  function hasDeletedMaxRows() {
+    if (transactionsCopy.length === 0) return false;
+    const MAX_ROWS = 1;
+    return transactionsCopy.length <= MAX_ROWS;
+  }
+
+  function deleteRow(rowIndex: number) {
+    const LAST_ROW = 2;
+    if (transactionsCopy.length === LAST_ROW) {
+      toast({
+        description:
+          "ℹ️ All rows have been deleted. You can either restore the rows or navigate back.",
+      });
+    }
+    const matrixWithoutRow = removeRow(transactionsCopy, rowIndex);
+    setTransactionsCopy(matrixWithoutRow);
   }
 
   function getTableContents() {
     if (transactionsCopy.length === 0) return [];
-    return transactionsCopy.map((row, rowIndex) => (
-      <TableRow key={rowIndex}>
-        {row.map((col, colIndex) => (
-          <TableCell key={colIndex}>{col}</TableCell>
-        ))}
-      </TableRow>
-    ));
+    return transactionsCopy
+      .map((row, rowIndex) => (
+        <TableRow key={rowIndex}>
+          <TableCell key={rowIndex}>
+            <Button onClick={() => deleteRow(rowIndex)}>Delete</Button>
+          </TableCell>
+          {row.map((col, colIndex) => (
+            <TableCell key={colIndex}>{col}</TableCell>
+          ))}
+        </TableRow>
+      ))
+      .slice(1);
   }
 
   function handleNextStep() {
@@ -98,13 +97,13 @@ export function CleanRows({
           className="mb-5 bg-emerald-200"
           disabled={transactionsCopy === transactions}
         >
-          Restore columns
+          Restore rows
         </Button>
         <Button
           variant="outline"
           onClick={handleNextStep}
           className="mb-5 bg-emerald-200"
-          disabled={!hasDeletedMaxColumns()}
+          disabled={hasDeletedMaxRows()}
         >
           Next step
         </Button>
