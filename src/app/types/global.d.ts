@@ -6,11 +6,7 @@ export interface Transaction {
   category: string;
 }
 
-export interface TransactionsMatrix {
-  transactions: string[][];
-}
-
-export interface SelectedCol {
-  content: string;
+export interface ColHeader {
+  name: string;
   col: number;
 }

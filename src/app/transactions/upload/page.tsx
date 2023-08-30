@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { DragAndDrop } from "../components/drag-and-drop";
+import { DragAndDrop } from "./steps/drag-and-drop";
 import { Toaster } from "../../components/ui/toaster";
-import { TransactionsMatrix } from "../../types/global";
-import { TransactionsViewer } from "../components";
 import { Narbar } from "@/app/components/navbar";
+import { CleanColumns } from "./steps/clean-columns";
+import { CleanRows } from "./steps/clean-rows";
+import { CategorizeColumns } from "./steps/categorize-columns";
 
 export default function Page() {
-  const [transactions, setTransactions] = useState<TransactionsMatrix>({
-    transactions: [],
-  });
+  const [transactions, setTransactions] = useState<string[][]>([]);
   const [step, setStep] = useState(0);
 
   function nextStep() {
@@ -19,7 +18,7 @@ export default function Page() {
   function prevStep() {
     setStep(step - 1);
   }
-  function uploadTransactions(matrix: TransactionsMatrix) {
+  function uploadTransactions(matrix: string[][]) {
     setTransactions(matrix);
     nextStep();
   }
@@ -28,8 +27,13 @@ export default function Page() {
       <Narbar />
       <main className="flex min-h-screen flex-col items-center p-24">
         {renderDescription(step)}
-        {step == 0 && <DragAndDrop uploadTransactions={uploadTransactions} />}
-        {step != 0 && <TransactionsViewer transactions={transactions} />}
+        {renderStep(
+          step,
+          uploadTransactions,
+          transactions,
+          setTransactions,
+          nextStep
+        )}
         <Toaster />
       </main>
     </>
@@ -44,7 +48,8 @@ function renderDescription(step: number): JSX.Element | null {
     },
     {
       title: "Step 2: Cleaning columns",
-      content: "Remove those columns you don't want.",
+      content:
+        "Exclude any unwanted columns. Ensure three columns remain: one for date, another for concept, and one for amount.",
     },
     {
       title: "Step 3: Cleaning rows",
@@ -64,4 +69,42 @@ function renderDescription(step: number): JSX.Element | null {
   }
 
   return null;
+}
+
+function renderStep(
+  step: number,
+  uploadTransactions: (transactions: string[][]) => void,
+  transactions: string[][],
+  setTransactions: (transactions: string[][]) => void,
+  nextStep: () => void
+): JSX.Element {
+  if (step === 1) {
+    return (
+      <CleanColumns
+        transactions={transactions}
+        updateTransactions={setTransactions}
+        nextStep={nextStep}
+      />
+    );
+  }
+  if (step === 2) {
+    return (
+      <CategorizeColumns
+        transactions={transactions}
+        updateTransactions={setTransactions}
+        nextStep={nextStep}
+      />
+    );
+  }
+  if (step === 3) {
+    return (
+      <CleanRows
+        transactions={transactions}
+        updateTransactions={setTransactions}
+        nextStep={nextStep}
+      />
+    );
+  }
+
+  return <DragAndDrop uploadTransactions={uploadTransactions} />;
 }

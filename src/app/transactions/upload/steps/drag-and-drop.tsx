@@ -3,10 +3,9 @@
 import { extractFields } from "@/lib/utils";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { TransactionsMatrix } from "../../types/global";
 
 interface DragAndDropProps {
-  uploadTransactions: (transactions: TransactionsMatrix) => void;
+  uploadTransactions: (transactions: string[][]) => void;
 }
 
 export function DragAndDrop({ uploadTransactions }: DragAndDropProps) {

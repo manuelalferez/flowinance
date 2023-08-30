@@ -1,0 +1,117 @@
+"use client";
+import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/components/ui/select";
+import { getNumColumns } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { ColHeader } from "@/app/types/global";
+import { useToast } from "@/app/components/ui/use-toast";
+import { addRowToMatrix, removeColumn } from "../../components/operators";
+import { Button } from "@/app/components/ui/button";
+import { TransactionsTable } from "../../components/transactions-table";
+
+const headerOptions = ["date", "concept", "amount"];
+
+interface TransactionsProps {
+  transactions: string[][];
+  updateTransactions: (transactions: string[][]) => void;
+  nextStep: () => void;
+}
+
+export function CategorizeColumns({
+  transactions,
+  updateTransactions,
+  nextStep,
+}: TransactionsProps) {
+  const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
+  const [colHeaders, setColHeaders] = useState<ColHeader[]>([]);
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    setTransactionsCopy(transactions);
+  }, [transactions]);
+
+  function handleSelectChange(headerName: string, column: number) {
+    const columnIndex = colHeaders.findIndex((col) => col.col === column);
+
+    if (columnIndex === -1) {
+      setColHeaders([...colHeaders, { name: headerName, col: column }]);
+    } else {
+      setColHeaders(colHeaders.filter((col) => col.col !== column));
+    }
+  }
+
+  function createTableHeader(columnIndex: number): JSX.Element {
+    return (
+      <TableHead key={columnIndex}>
+        <Select
+          onValueChange={(content) => handleSelectChange(content, columnIndex)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select column" />
+          </SelectTrigger>
+          <SelectContent>
+            {headerOptions.map((item, index) => (
+              <SelectItem value={item} key={index}>
+                {item}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </TableHead>
+    );
+  }
+
+  function getTableHeadersWithDropDown(): JSX.Element[] {
+    const numCols = getNumColumns(transactionsCopy);
+    const tableHeaders = [];
+
+    for (let i = 0; i < numCols; i++) {
+      const tableHeader = createTableHeader(i);
+      tableHeaders.push(tableHeader);
+    }
+
+    return tableHeaders;
+  }
+
+  function getTableContents() {
+    return transactionsCopy.map((row, rowIndex) => (
+      <TableRow key={rowIndex}>
+        {row.map((col, colIndex) => (
+          <TableCell key={colIndex}>{col}</TableCell>
+        ))}
+      </TableRow>
+    ));
+  }
+
+  function handleNext() {
+    const sortedCols = colHeaders.sort((a, b) => a.col - b.col);
+    setColHeaders(sortedCols);
+    const headers = colHeaders.map((col) => col.name);
+    setTransactionsCopy(addRowToMatrix(transactionsCopy, headers));
+    updateTransactions(transactionsCopy);
+    nextStep();
+  }
+
+  const contents = getTableContents();
+  const headers = getTableHeadersWithDropDown();
+
+  return (
+    <>
+      <Button
+        variant="outline"
+        onClick={handleNext}
+        className="mb-5 bg-emerald-200"
+      >
+        Next step
+      </Button>
+      <TransactionsTable headers={headers} contents={contents} />
+    </>
+  );
+}
