@@ -1,4 +1,4 @@
-import { Transaction, TransactionsMatrix } from "@/app/types/global";
+import { Transaction } from "@/app/types/global";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { SpecialCategories } from "./categories";
@@ -23,26 +23,25 @@ function createTransaction(
   };
 }
 
-export function getNumColumns(matrix: TransactionsMatrix) {
-  if (matrix.transactions.length === 0) {
+export function getNumColumns(matrix: string[][]) {
+  if (matrix.length === 0) {
     return 0;
   }
 
-  return matrix.transactions[0].length;
+  return matrix[0].length;
 }
 
 function hasEmptyStringExceptFirst(arr: string[]): boolean {
   return arr.slice(1).some((item) => item === "");
 }
 
-export function extractFields(lines: string[]): TransactionsMatrix {
-  let fields: TransactionsMatrix = {
-    transactions: [],
-  };
+export function extractFields(lines: string[]): string[][] {
+  let fields: string[][] = [];
+
   lines.forEach((line) => {
     const splittedLine = line.split(DELIMITER);
     if (!hasEmptyStringExceptFirst(splittedLine)) {
-      fields.transactions.push(splittedLine);
+      fields.push(splittedLine);
     }
   });
   return fields;

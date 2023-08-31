@@ -1,4 +1,9 @@
-import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableRow,
+} from "@/app/components/ui/table";
 
 interface TransactionTableProps {
   headers: JSX.Element[];

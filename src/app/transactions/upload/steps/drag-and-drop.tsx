@@ -3,13 +3,12 @@
 import { extractFields } from "@/lib/utils";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { TransactionsMatrix } from "../types/global";
 
 interface DragAndDropProps {
-  handleTransactions: (transactions: TransactionsMatrix) => void;
+  uploadTransactions: (transactions: string[][]) => void;
 }
 
-export function DragAndDrop({ handleTransactions }: DragAndDropProps) {
+export function DragAndDrop({ uploadTransactions }: DragAndDropProps) {
   const onDrop = useCallback((acceptedFiles: any[]) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
@@ -23,7 +22,7 @@ export function DragAndDrop({ handleTransactions }: DragAndDropProps) {
           const binaryStr = new TextDecoder().decode(result as ArrayBuffer);
           const lines = binaryStr.split("\n");
           const transactions = extractFields(lines);
-          handleTransactions(transactions);
+          uploadTransactions(transactions);
         }
       };
       reader.readAsArrayBuffer(file);
@@ -37,14 +36,22 @@ export function DragAndDrop({ handleTransactions }: DragAndDropProps) {
   });
 
   return (
-    <div
-      {...getRootProps()}
-      className="border-black border-2 border-dashed rounded-sm py-10 px-4 hover:cursor-pointer"
-    >
-      <input {...getInputProps()} />
-      <p>
-        Drag and drop your <b>csv</b> file here
-      </p>
-    </div>
+    <>
+      <div>
+        <h1 className="text-xl pb-2">Step 1: Upload your transactions</h1>
+        <p className="pb-10">
+          Just drag and drop your transaction file right here 👇
+        </p>
+      </div>
+      <div
+        {...getRootProps()}
+        className="border-black border-2 border-dashed rounded-sm py-10 px-4 hover:cursor-pointer"
+      >
+        <input {...getInputProps()} />
+        <p>
+          Drag and drop your <b>csv</b> file here
+        </p>
+      </div>
+    </>
   );
 }
