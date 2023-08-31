@@ -18,11 +18,10 @@ import { UploadTransactionsContext } from "../page";
 
 const headerOptions = ["date", "concept", "amount"];
 
-export function CategorizeColumns() {
+export function CategorizeTransactions() {
   const { transactions, setTransactions, nextStep } = useContext(
     UploadTransactionsContext
   );
-
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
   const [colHeaders, setColHeaders] = useState<ColHeader[]>([]);
 

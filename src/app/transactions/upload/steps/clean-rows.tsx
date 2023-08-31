@@ -1,22 +1,16 @@
 "use client";
 import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useToast } from "@/app/components/ui/use-toast";
-import { removeColumn, removeRow } from "../../components/operators";
+import { removeRow } from "../../components/operators";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
+import { UploadTransactionsContext } from "../page";
 
-interface TransactionsProps {
-  transactions: string[][];
-  updateTransactions: (transactions: string[][]) => void;
-  nextStep: () => void;
-}
-
-export function CleanRows({
-  transactions,
-  updateTransactions,
-  nextStep,
-}: TransactionsProps) {
+export function CleanRows() {
+  const { transactions, setTransactions, nextStep } = useContext(
+    UploadTransactionsContext
+  );
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
 
   const { toast } = useToast();
@@ -77,7 +71,7 @@ export function CleanRows({
   }
 
   function handleNextStep() {
-    updateTransactions(transactionsCopy);
+    setTransactions(transactionsCopy);
     nextStep();
   }
 

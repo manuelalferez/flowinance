@@ -1,25 +1,19 @@
 "use client";
 import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
 import { getNumColumns } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useToast } from "@/app/components/ui/use-toast";
 import { removeColumn } from "../../components/operators";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
+import { UploadTransactionsContext } from "../page";
 
-interface TransactionsProps {
-  transactions: string[][];
-  updateTransactions: (transactions: string[][]) => void;
-  nextStep: () => void;
-}
+export function CleanColumns() {
+  const { transactions, setTransactions, nextStep } = useContext(
+    UploadTransactionsContext
+  );
 
-export function CleanColumns({
-  transactions,
-  updateTransactions,
-  nextStep,
-}: TransactionsProps) {
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
-
   const { toast } = useToast();
 
   useEffect(() => {
@@ -78,7 +72,7 @@ export function CleanColumns({
   }
 
   function handleNextStep() {
-    updateTransactions(transactionsCopy);
+    setTransactions(transactionsCopy);
     nextStep();
   }
 
