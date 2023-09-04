@@ -24,7 +24,7 @@ export function CategorizeColumns() {
   );
 
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
-  const [colHeaders, setColHeaders] = useState<ColHeader[]>([]);
+  const [colTitles, setColTitles] = useState<ColHeader[]>([]);
 
   const { toast } = useToast();
 
@@ -32,33 +32,54 @@ export function CategorizeColumns() {
     setTransactionsCopy(transactions);
   }, [transactions]);
 
-  function handleSelectChange(headerName: string, column: number) {
-    const columnIndex = colHeaders.findIndex((col) => col.col === column);
-
-    if (columnIndex === -1) {
-      setColHeaders([...colHeaders, { name: headerName, col: column }]);
-    } else {
-      setColHeaders(colHeaders.filter((col) => col.col !== column));
-    }
+  function isHeaderChosen(headerName: string) {
+    return colTitles.some((col) => col.name === headerName);
   }
 
-  function createTableHeader(columnIndex: number): JSX.Element {
+  function handleSelectChange(headerName: string, column: number) {
+    console.log("Selected header: ", headerName, column);
+    console.log("Col titles: ", colTitles);
+    if (isHeaderChosen(headerName)) {
+      toast({
+        description: `⛔️ You have already assigned that '${headerName}' to another column.`,
+      });
+      return;
+    }
+    const columnIndex = colTitles.findIndex((col) => col.col === column);
+
+    const updatedHeaders = [...colTitles];
+
+    if (columnIndex === -1) {
+      updatedHeaders.push({ name: headerName, col: column });
+    } else {
+      updatedHeaders[columnIndex] = { name: headerName, col: column };
+    }
+    console.log(
+      "🚀 ~ file: categorize-columns.tsx:57 ~ handleSelectChange ~ updatedHeaders:",
+      updatedHeaders
+    );
+
+    setColTitles(updatedHeaders);
+  }
+
+  function createTableHeader(colIndex: number): JSX.Element {
+    const value = colTitles.find((col) => col.col === colIndex)?.name || "";
     return (
-      <TableHead key={columnIndex}>
-        <Select
-          onValueChange={(content) => handleSelectChange(content, columnIndex)}
+      <TableHead key={colIndex}>
+        <select
+          onChange={(e) => handleSelectChange(e.target.value, colIndex)}
+          value={value}
+          className="w-[180px] p-2 border rounded"
         >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select column" />
-          </SelectTrigger>
-          <SelectContent>
-            {headerOptions.map((item, index) => (
-              <SelectItem value={item} key={index}>
-                {item}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <option value="" disabled selected>
+            Select column
+          </option>
+          {headerOptions.map((item, index) => (
+            <option value={item} key={index}>
+              {item}
+            </option>
+          ))}
+        </select>
       </TableHead>
     );
   }
@@ -86,11 +107,18 @@ export function CategorizeColumns() {
   }
 
   function handleNext() {
-    const sortedCols = colHeaders.sort((a, b) => a.col - b.col);
+    const sortedCols = colTitles.sort((a, b) => a.col - b.col);
     const headers = sortedCols.map((col) => col.name);
     const matrixWithCategories = addRowToMatrix(transactionsCopy, headers);
     setTransactions(matrixWithCategories);
     nextStep();
+  }
+
+  function restoreCategories() {
+    toast({
+      description: "🎉 Default categories restored",
+    });
+    setColTitles([]);
   }
 
   const contents = getTableContents();
@@ -105,6 +133,14 @@ export function CategorizeColumns() {
           concept, or amount.
         </p>
       </div>
+      <Button
+        variant="outline"
+        onClick={restoreCategories}
+        className="mb-5 bg-white-200"
+        disabled={colTitles.length === 0}
+      >
+        Restore categories
+      </Button>
       <Button
         variant="outline"
         onClick={handleNext}
