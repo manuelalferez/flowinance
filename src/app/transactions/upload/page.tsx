@@ -9,6 +9,7 @@ import { CleanRows } from "./steps/clean-rows";
 import { CategorizeColumns } from "./steps/categorize-columns";
 import { CategorizeTransactions } from "./steps/categorize-transactions";
 import { UploadTransactionsContext } from "@/lib/context";
+import { FinalStep } from "./steps/final-step";
 
 export default function Page() {
   const [transactions, setTransactions] = useState<string[][]>([]);
@@ -35,7 +36,7 @@ export default function Page() {
         {isThirdStep(step) && <CategorizeColumns />}
         {isFourthStep(step) && <CleanRows />}
         {isFifthStep(step) && <CategorizeTransactions />}
-
+        {isFinalStep(step) && <FinalStep />}
         <Toaster />
       </main>
     </UploadTransactionsContext.Provider>
@@ -56,4 +57,7 @@ function isFourthStep(step: number) {
 }
 function isFifthStep(step: number) {
   return step === 4;
+}
+function isFinalStep(step: number) {
+  return step === 5;
 }
