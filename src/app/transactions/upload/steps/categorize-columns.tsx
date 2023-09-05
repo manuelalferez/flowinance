@@ -37,8 +37,6 @@ export function CategorizeColumns() {
   }
 
   function handleSelectChange(headerName: string, column: number) {
-    console.log("Selected header: ", headerName, column);
-    console.log("Col titles: ", colTitles);
     if (isHeaderChosen(headerName)) {
       toast({
         description: `⛔️ You have already assigned that '${headerName}' to another column.`,
@@ -54,10 +52,6 @@ export function CategorizeColumns() {
     } else {
       updatedHeaders[columnIndex] = { name: headerName, col: column };
     }
-    console.log(
-      "🚀 ~ file: categorize-columns.tsx:57 ~ handleSelectChange ~ updatedHeaders:",
-      updatedHeaders
-    );
 
     setColTitles(updatedHeaders);
   }
