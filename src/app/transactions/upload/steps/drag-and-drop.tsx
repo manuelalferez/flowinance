@@ -1,14 +1,12 @@
 "use client";
 
 import { extractFields } from "@/lib/utils";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { useDropzone } from "react-dropzone";
+import { UploadTransactionsContext } from "../page";
 
-interface DragAndDropProps {
-  uploadTransactions: (transactions: string[][]) => void;
-}
-
-export function DragAndDrop({ uploadTransactions }: DragAndDropProps) {
+export function DragAndDrop() {
+  const { uploadTransactions } = useContext(UploadTransactionsContext);
   const onDrop = useCallback((acceptedFiles: any[]) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();

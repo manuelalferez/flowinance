@@ -13,12 +13,14 @@ interface TransactionsContext {
   transactions: string[][];
   setTransactions: (transactions: string[][]) => void;
   nextStep: () => void;
+  uploadTransactions: (matrix: string[][]) => void;
 }
 
 const defaultContext: TransactionsContext = {
   transactions: [],
   setTransactions: () => {},
   nextStep: () => {},
+  uploadTransactions: () => {},
 };
 
 export const UploadTransactionsContext =
@@ -40,13 +42,11 @@ export default function Page() {
   }
   return (
     <UploadTransactionsContext.Provider
-      value={{ transactions, setTransactions, nextStep }}
+      value={{ transactions, setTransactions, nextStep, uploadTransactions }}
     >
       <Narbar />
       <main className="flex min-h-screen flex-col items-center p-24">
-        {isFirstStep(step) && (
-          <DragAndDrop uploadTransactions={uploadTransactions} />
-        )}
+        {isFirstStep(step) && <DragAndDrop />}
         {isSecondStep(step) && <CleanColumns />}
         {isThirdStep(step) && <CategorizeColumns />}
         {isFourthStep(step) && <CleanRows />}
