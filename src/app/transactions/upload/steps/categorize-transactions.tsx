@@ -2,25 +2,33 @@
 import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
 import { useContext, useEffect, useState } from "react";
 import { useToast } from "@/app/components/ui/use-toast";
-import { removeRow } from "../../components/operators";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
+import { ALL_CATEGORIES } from "@/lib/categories";
+import { getNumRows } from "@/lib/utils";
+import { addColumnToMatrix } from "../../components/operators";
 import { UploadTransactionsContext } from "@/lib/context";
 
-export function CleanRows() {
+export function CategorizeTransactions() {
   const { transactions, setTransactions, nextStep } = useContext(
     UploadTransactionsContext
   );
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
-
+  const [categoriesSelected, setCategoriesSelected] = useState<string[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
     setTransactionsCopy(transactions);
+    const numRows = getNumRows(transactions) - 1;
+    setCategoriesSelected(new Array(numRows).fill(""));
   }, [transactions]);
 
-  function restoreTransactionsMatrix() {
-    setTransactionsCopy(transactions);
+  function cleanCategories() {
+    toast({
+      description: "🎉 All categories cleaned",
+    });
+    const numRows = getNumRows(transactionsCopy) - 1;
+    setCategoriesSelected(new Array(numRows).fill(""));
   }
 
   function getTableHeaders(): any {
@@ -36,22 +44,10 @@ export function CleanRows() {
     );
   }
 
-  function hasDeletedMaxRows() {
-    if (transactionsCopy.length === 0) return false;
-    const MAX_ROWS = 1;
-    return transactionsCopy.length <= MAX_ROWS;
-  }
-
-  function deleteRow(rowIndex: number) {
-    const LAST_ROW = 2;
-    if (transactionsCopy.length === LAST_ROW) {
-      toast({
-        description:
-          "ℹ️ All rows have been deleted. You can either restore the rows or navigate back.",
-      });
-    }
-    const matrixWithoutRow = removeRow(transactionsCopy, rowIndex);
-    setTransactionsCopy(matrixWithoutRow);
+  function handleSelectChange(value: string, colIndex: number) {
+    const updatedCategories = [...categoriesSelected];
+    updatedCategories[colIndex] = value;
+    setCategoriesSelected(updatedCategories);
   }
 
   function getTableContents() {
@@ -60,7 +56,20 @@ export function CleanRows() {
       .map((row, rowIndex) => (
         <TableRow key={rowIndex}>
           <TableCell key={rowIndex}>
-            <Button onClick={() => deleteRow(rowIndex)}>Delete</Button>
+            <select
+              onChange={(e) => handleSelectChange(e.target.value, rowIndex - 1)}
+              value={categoriesSelected[rowIndex - 1]}
+              className="w-[180px] p-2 border rounded"
+            >
+              <option value="" disabled selected>
+                Select category
+              </option>
+              {ALL_CATEGORIES.map((item, index) => (
+                <option value={item} key={index}>
+                  {item}
+                </option>
+              ))}
+            </select>
           </TableCell>
           {row.map((col, colIndex) => (
             <TableCell key={colIndex}>{col}</TableCell>
@@ -71,7 +80,12 @@ export function CleanRows() {
   }
 
   function handleNextStep() {
-    setTransactions(transactionsCopy);
+    const colWithCategories = ["category", ...categoriesSelected];
+    const transactionsCategorized = addColumnToMatrix(
+      transactionsCopy,
+      colWithCategories
+    );
+    setTransactions(transactionsCategorized);
     nextStep();
   }
 
@@ -81,23 +95,26 @@ export function CleanRows() {
   return (
     <>
       <div>
-        <h1 className="text-xl pb-2">Step 4: Cleaning rows</h1>
-        <p className="pb-10">Exclude any unwanted rows</p>
+        <h1 className="text-xl pb-2">Step 5: Categorizing transactions</h1>
+        <p className="pb-10">
+          Classify each transaction according to the category you consider most
+          appropriate. It is completely personal.
+        </p>
       </div>
       <div className="flex gap-2">
         <Button
           variant="outline"
-          onClick={restoreTransactionsMatrix}
+          onClick={cleanCategories}
           className="mb-5 bg-emerald-200"
-          disabled={transactionsCopy === transactions}
+          disabled={!categoriesSelected.some((item) => item !== "")}
         >
-          Restore rows
+          Clean categories
         </Button>
         <Button
           variant="outline"
           onClick={handleNextStep}
           className="mb-5 bg-emerald-200"
-          disabled={hasDeletedMaxRows()}
+          disabled={categoriesSelected.includes("")}
         >
           Next step
         </Button>

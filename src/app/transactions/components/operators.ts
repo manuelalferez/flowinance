@@ -20,3 +20,11 @@ export function addRowToMatrix(
 
   return [newRow, ...matrix];
 }
+
+export function addColumnToMatrix(matrix: string[][], newCol: string[]) {
+  if (matrix.length === 0 || newCol.length !== matrix.length) {
+    throw new Error("Invalid matrix dimensions");
+  }
+
+  return matrix.map((row, index) => [...row, newCol[index]]);
+}

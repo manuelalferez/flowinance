@@ -7,6 +7,8 @@ import { Narbar } from "@/app/components/navbar";
 import { CleanColumns } from "./steps/clean-columns";
 import { CleanRows } from "./steps/clean-rows";
 import { CategorizeColumns } from "./steps/categorize-columns";
+import { CategorizeTransactions } from "./steps/categorize-transactions";
+import { UploadTransactionsContext } from "@/lib/context";
 
 export default function Page() {
   const [transactions, setTransactions] = useState<string[][]>([]);
@@ -23,37 +25,20 @@ export default function Page() {
     nextStep();
   }
   return (
-    <>
+    <UploadTransactionsContext.Provider
+      value={{ transactions, setTransactions, nextStep, uploadTransactions }}
+    >
       <Narbar />
       <main className="flex min-h-screen flex-col items-center p-24">
-        {isFirstStep(step) && (
-          <DragAndDrop uploadTransactions={uploadTransactions} />
-        )}
-        {isSecondStep(step) && (
-          <CleanColumns
-            transactions={transactions}
-            updateTransactions={setTransactions}
-            nextStep={nextStep}
-          />
-        )}
-        {isThirdStep(step) && (
-          <CategorizeColumns
-            transactions={transactions}
-            updateTransactions={setTransactions}
-            nextStep={nextStep}
-          />
-        )}
-        {isFourthStep(step) && (
-          <CleanRows
-            transactions={transactions}
-            updateTransactions={setTransactions}
-            nextStep={nextStep}
-          />
-        )}
+        {isFirstStep(step) && <DragAndDrop />}
+        {isSecondStep(step) && <CleanColumns />}
+        {isThirdStep(step) && <CategorizeColumns />}
+        {isFourthStep(step) && <CleanRows />}
+        {isFifthStep(step) && <CategorizeTransactions />}
 
         <Toaster />
       </main>
-    </>
+    </UploadTransactionsContext.Provider>
   );
 }
 
@@ -68,4 +53,7 @@ function isThirdStep(step: number) {
 }
 function isFourthStep(step: number) {
   return step === 3;
+}
+function isFifthStep(step: number) {
+  return step === 4;
 }
