@@ -4,10 +4,10 @@ import { useContext, useEffect, useState } from "react";
 import { useToast } from "@/app/components/ui/use-toast";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
-import { UploadTransactionsContext } from "../page";
 import { ALL_CATEGORIES } from "@/lib/categories";
 import { getNumRows } from "@/lib/utils";
 import { addColumnToMatrix } from "../../components/operators";
+import { UploadTransactionsContext } from "@/lib/context";
 
 export function CategorizeTransactions() {
   const { transactions, setTransactions, nextStep } = useContext(

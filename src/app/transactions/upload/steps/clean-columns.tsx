@@ -6,7 +6,7 @@ import { useToast } from "@/app/components/ui/use-toast";
 import { removeColumn } from "../../components/operators";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
-import { UploadTransactionsContext } from "../page";
+import { UploadTransactionsContext } from "@/lib/context";
 
 export function CleanColumns() {
   const { transactions, setTransactions, nextStep } = useContext(

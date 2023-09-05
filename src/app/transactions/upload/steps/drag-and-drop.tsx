@@ -1,9 +1,9 @@
 "use client";
 
+import { UploadTransactionsContext } from "@/lib/context";
 import { extractFields } from "@/lib/utils";
 import React, { useCallback, useContext } from "react";
 import { useDropzone } from "react-dropzone";
-import { UploadTransactionsContext } from "../page";
 
 export function DragAndDrop() {
   const { uploadTransactions } = useContext(UploadTransactionsContext);

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { useState } from "react";
 import { DragAndDrop } from "./steps/drag-and-drop";
 import { Toaster } from "../../components/ui/toaster";
 import { Narbar } from "@/app/components/navbar";
@@ -8,23 +8,7 @@ import { CleanColumns } from "./steps/clean-columns";
 import { CleanRows } from "./steps/clean-rows";
 import { CategorizeColumns } from "./steps/categorize-columns";
 import { CategorizeTransactions } from "./steps/categorize-transactions";
-
-interface TransactionsContext {
-  transactions: string[][];
-  setTransactions: (transactions: string[][]) => void;
-  nextStep: () => void;
-  uploadTransactions: (matrix: string[][]) => void;
-}
-
-const defaultContext: TransactionsContext = {
-  transactions: [],
-  setTransactions: () => {},
-  nextStep: () => {},
-  uploadTransactions: () => {},
-};
-
-export const UploadTransactionsContext =
-  createContext<TransactionsContext>(defaultContext);
+import { UploadTransactionsContext } from "@/lib/context";
 
 export default function Page() {
   const [transactions, setTransactions] = useState<string[][]>([]);
