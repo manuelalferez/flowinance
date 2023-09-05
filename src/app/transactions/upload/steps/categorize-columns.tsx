@@ -1,12 +1,5 @@
 "use client";
 import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/components/ui/select";
 import { getNumColumns } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { ColHeader } from "@/app/types/global";

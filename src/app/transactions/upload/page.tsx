@@ -7,6 +7,7 @@ import { Narbar } from "@/app/components/navbar";
 import { CleanColumns } from "./steps/clean-columns";
 import { CleanRows } from "./steps/clean-rows";
 import { CategorizeColumns } from "./steps/categorize-columns";
+import { CategorizeTransactions } from "./steps/categorize-transactions";
 
 interface TransactionsContext {
   transactions: string[][];
@@ -49,6 +50,7 @@ export default function Page() {
         {isSecondStep(step) && <CleanColumns />}
         {isThirdStep(step) && <CategorizeColumns />}
         {isFourthStep(step) && <CleanRows />}
+        {isFifthStep(step) && <CategorizeTransactions />}
 
         <Toaster />
       </main>
@@ -67,4 +69,7 @@ function isThirdStep(step: number) {
 }
 function isFourthStep(step: number) {
   return step === 3;
+}
+function isFifthStep(step: number) {
+  return step === 4;
 }

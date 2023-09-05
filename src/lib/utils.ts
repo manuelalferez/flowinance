@@ -31,6 +31,10 @@ export function getNumColumns(matrix: string[][]) {
   return matrix[0].length;
 }
 
+export function getNumRows(matrix: string[][]) {
+  return matrix.length;
+}
+
 function hasEmptyStringExceptFirst(arr: string[]): boolean {
   return arr.slice(1).some((item) => item === "");
 }
