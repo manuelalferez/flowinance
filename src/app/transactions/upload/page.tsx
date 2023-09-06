@@ -29,7 +29,6 @@ export default function Page() {
     <UploadTransactionsContext.Provider
       value={{ transactions, setTransactions, nextStep, uploadTransactions }}
     >
-      <Narbar />
       <main className="flex min-h-screen flex-col items-center p-24">
         {isFirstStep(step) && <DragAndDrop />}
         {isSecondStep(step) && <CleanColumns />}
@@ -37,7 +36,6 @@ export default function Page() {
         {isFourthStep(step) && <CleanRows />}
         {isFifthStep(step) && <CategorizeTransactions />}
         {isFinalStep(step) && <FinalStep />}
-        <Toaster />
       </main>
     </UploadTransactionsContext.Provider>
   );

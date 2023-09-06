@@ -76,3 +76,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+.supabase-auth-ui_ui-button {
+  background: "#66F0A4FF" !important;
+  border: none !important;
+  color: black !important;
+}
+.supabase-auth-ui_ui-button:hover {
+  background: #c7f9deff !important;
+}
