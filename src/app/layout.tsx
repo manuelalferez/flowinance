@@ -7,6 +7,7 @@ import { getSession } from "./supabase-server";
 import { Toaster } from "./components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Finance graph",
