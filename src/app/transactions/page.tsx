@@ -1,8 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Narbar } from "../components/navbar";
 import { Button } from "../components/ui/button";
 import { getSession } from "../supabase-server";
 

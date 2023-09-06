@@ -9,7 +9,7 @@ export default async function SignIn() {
 
   if (session) {
     if (session.user.email) {
-      redirect("/");
+      redirect("/transactions/upload");
     }
   }
   return (

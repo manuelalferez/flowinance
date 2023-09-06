@@ -1,16 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Narbar } from "./components/navbar";
 import { getSession } from "./supabase-server";
 
 export default async function Home() {
   const session = await getSession();
 
-  if (session) {
-    if (session.user.email) {
-      redirect("/");
-    }
-  }
   return (
     <div>
       <main className="flex min-h-screen flex-col items-center p-24">
