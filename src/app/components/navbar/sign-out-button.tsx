@@ -1,15 +1,26 @@
-import Link from "next/link";
-import {
-  NavigationMenuLink,
-  navigationMenuTriggerStyle,
-} from "../ui/navigation-menu";
+import { useSupabase } from "@/app/supabase-provider";
+import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
+import { useToast } from "../ui/use-toast";
 
-export function SignOutButton() {
+export default function SignOutButton() {
+  const { supabase } = useSupabase();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    toast({ description: "✅ You have successfully signed out." });
+    try {
+      await supabase.auth.signOut();
+      window.location.href = "/signin";
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
-    <Link href="/signout" passHref>
-      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+    <div>
+      <button className={navigationMenuTriggerStyle()} onClick={handleSignOut}>
         Sign out
-      </NavigationMenuLink>
-    </Link>
+      </button>
+    </div>
   );
 }

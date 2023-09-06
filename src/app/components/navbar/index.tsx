@@ -8,9 +8,9 @@ import {
   navigationMenuTriggerStyle,
 } from "../ui/navigation-menu";
 import { SignInButton } from "./sign-in-button";
-import { SignOutButton } from "./sign-out-button";
+import SignOutButton from "./sign-out-button";
 
-export function Narbar(session: any) {
+export function Narbar({ session }: any) {
   return (
     <NavigationMenu className="p-4">
       <NavigationMenuList className="flex justify-around w-screen">

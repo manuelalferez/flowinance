@@ -1,10 +1,6 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { getSession } from "./supabase-server";
 
 export default async function Home() {
-  const session = await getSession();
-
   return (
     <div>
       <main className="flex min-h-screen flex-col items-center p-24">

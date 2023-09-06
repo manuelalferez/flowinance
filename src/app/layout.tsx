@@ -1,9 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import SupabaseProvider, { useSupabase } from "./supabase-provider";
+import SupabaseProvider from "./supabase-provider";
 import { Narbar } from "./components/navbar";
 import { getSession } from "./supabase-server";
+import { Toaster } from "./components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +24,10 @@ export default async function RootLayout({
       <SupabaseProvider>
         <body className={`h-full ${inter.className}`}>
           <div className="">
-            <Narbar session={session}/>
+            <Narbar session={session} />
             <div>{children}</div>
           </div>
+          <Toaster />
         </body>
       </SupabaseProvider>
     </html>

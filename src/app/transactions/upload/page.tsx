@@ -36,7 +36,6 @@ export default function Page() {
         {isFourthStep(step) && <CleanRows />}
         {isFifthStep(step) && <CategorizeTransactions />}
         {isFinalStep(step) && <FinalStep />}
-        <Toaster />
       </main>
     </UploadTransactionsContext.Provider>
   );
