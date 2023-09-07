@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { DragAndDrop } from "./steps/drag-and-drop";
-import { Toaster } from "../../components/ui/toaster";
-import { Narbar } from "@/app/components/navbar";
 import { CleanColumns } from "./steps/clean-columns";
 import { CleanRows } from "./steps/clean-rows";
 import { CategorizeColumns } from "./steps/categorize-columns";

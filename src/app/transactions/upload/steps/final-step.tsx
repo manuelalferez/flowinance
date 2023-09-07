@@ -1,7 +1,10 @@
 import { Button } from "@/app/components/ui/button";
 import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
 import { useToast } from "@/app/components/ui/use-toast";
+import { useSupabase } from "@/app/supabase-provider";
+import { TransactionSupabase } from "@/app/types/global";
 import { UploadTransactionsContext } from "@/lib/context";
+import { getUserId } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { TransactionsTable } from "../../components/transactions-table";
 
@@ -9,6 +12,7 @@ export function FinalStep() {
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
   const { transactions } = useContext(UploadTransactionsContext);
   const { toast } = useToast();
+  const { supabase } = useSupabase();
 
   useEffect(() => {
     setTransactionsCopy(transactions);
@@ -37,9 +41,30 @@ export function FinalStep() {
       ))
       .slice(1);
   }
-  function uploadTransactions() {
+  async function uploadTransactions() {
+    const userId = await getUserId(supabase);
+    const transactionsToInsert: TransactionSupabase[] = [];
+
+    if (!userId) {
+      toast({
+        description: "Error uploading transactions, try again later",
+      });
+      return;
+    }
+
+    for (let i = 1; i < transactionsCopy.length; i++) {
+      const transaction = {
+        date: transactionsCopy[i][0],
+        concept: transactionsCopy[i][1],
+        amount: parseFloat(transactionsCopy[i][2]),
+        category: transactionsCopy[i][3],
+        user_id: userId,
+      };
+      transactionsToInsert.push(transaction);
+    }
+
     toast({
-      description: "🚀 Uploading transactions...",
+      description: "🎉 Transactions uploaded successfully",
     });
   }
 

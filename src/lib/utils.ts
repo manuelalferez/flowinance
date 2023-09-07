@@ -1,9 +1,11 @@
-import { Transaction } from "@/app/types/global";
+import { Transaction, TransactionSupabase } from "@/app/types/global";
+import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { SpecialCategories } from "./categories";
 
 const DELIMITER = ";";
+export const TRANSACTIONS_TABLE_NAME = "transactions";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -60,3 +62,34 @@ export const getURL = () => {
   url = url.charAt(url.length - 1) === "/" ? url : `${url}/`;
   return url;
 };
+
+export async function getUserId(supabase: SupabaseClient<any, "public", any>) {
+  const userId = await (await supabase.auth.getSession()).data.session?.user.id;
+  return userId;
+}
+
+export async function getTransactions(
+  supabase: SupabaseClient<any, "public", any>,
+  userId: string
+) {
+  const { data, error } = await supabase
+    .from(TRANSACTIONS_TABLE_NAME)
+    .select()
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error getting transactions for the user ${userId}: `, error);
+  }
+  return data;
+}
+
+export async function uploadTransactionsToSupabase(
+  supabase: SupabaseClient<any, "public", any>,
+  transactions: TransactionSupabase[]
+) {
+  const { error } = await supabase
+    .from(TRANSACTIONS_TABLE_NAME)
+    .insert(transactions);
+  if (error) {
+    console.log("Error uploading transactions: ", error);
+  }
+}
