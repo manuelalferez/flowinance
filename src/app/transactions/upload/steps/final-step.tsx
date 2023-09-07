@@ -4,7 +4,7 @@ import { useToast } from "@/app/components/ui/use-toast";
 import { useSupabase } from "@/app/supabase-provider";
 import { TransactionSupabase } from "@/app/types/global";
 import { UploadTransactionsContext } from "@/lib/context";
-import { getUserId } from "@/lib/utils";
+import { getUserId, uploadTransactionsToSupabase } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { TransactionsTable } from "../../components/transactions-table";
 
@@ -62,6 +62,8 @@ export function FinalStep() {
       };
       transactionsToInsert.push(transaction);
     }
+
+    uploadTransactionsToSupabase(supabase, transactionsToInsert);
 
     toast({
       description: "🎉 Transactions uploaded successfully",
