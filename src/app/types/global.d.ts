@@ -17,4 +17,6 @@ export interface TransactionSupabase {
   amount: number;
   category: string;
   user_id: string;
+  id?: string;
+  created_at?: string;
 }

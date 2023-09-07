@@ -1,3 +1,4 @@
+import { TransactionSupabase } from "@/app/types/global";
 import { createContext } from "react";
 
 interface TransactionsContext {
@@ -16,3 +17,15 @@ const defaultContext: TransactionsContext = {
 
 export const UploadTransactionsContext =
   createContext<TransactionsContext>(defaultContext);
+
+type DashboardContextType = {
+  transactions: TransactionSupabase[];
+};
+
+const defaultDashboardContext: DashboardContextType = {
+  transactions: [],
+};
+
+export const DashboardContext = createContext<DashboardContextType>(
+  defaultDashboardContext
+);
