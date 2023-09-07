@@ -10,3 +10,11 @@ export interface ColHeader {
   name: string;
   col: number;
 }
+
+export interface TransactionSupabase {
+  date: string;
+  concept: string;
+  amount: number;
+  category: string;
+  user_id: string;
+}
