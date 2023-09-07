@@ -10,7 +10,7 @@ export default function SignOutButton() {
     toast({ description: "✅ You have successfully signed out." });
     try {
       await supabase.auth.signOut();
-      window.location.href = "/signin";
+      window.location.href = "/";
     } catch (error) {
       console.error("Error signing out:", error);
     }

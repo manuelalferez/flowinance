@@ -1,28 +1,13 @@
-import { Transaction, TransactionSupabase } from "@/app/types/global";
+import { TransactionSupabase } from "@/app/types/global";
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { SpecialCategories } from "./categories";
 
 const DELIMITER = ";";
 export const TRANSACTIONS_TABLE_NAME = "transactions";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
-}
-
-function createTransaction(
-  date: string,
-  concept: string,
-  amount: string
-): Transaction {
-  return {
-    id: new Date().valueOf().toString(),
-    date,
-    concept,
-    amount: parseFloat(amount),
-    category: SpecialCategories.Uncategorized,
-  };
 }
 
 export function getNumColumns(matrix: string[][]) {
@@ -71,13 +56,14 @@ export async function getUserId(supabase: SupabaseClient<any, "public", any>) {
 export async function getTransactions(
   supabase: SupabaseClient<any, "public", any>,
   userId: string
-) {
+): Promise<TransactionSupabase[] | undefined> {
   const { data, error } = await supabase
     .from(TRANSACTIONS_TABLE_NAME)
     .select()
     .eq("user_id", userId);
   if (error) {
     console.log(`Error getting transactions for the user ${userId}: `, error);
+    return;
   }
   return data;
 }
