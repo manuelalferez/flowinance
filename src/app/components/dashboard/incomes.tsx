@@ -1,4 +1,4 @@
-import { INCOMES_CATEGORIES } from "@/lib/categories";
+import { getTotalIncomes } from "@/lib/calculations";
 import { DashboardContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
@@ -8,13 +8,7 @@ export function Incomes() {
   const { transactions } = useContext(DashboardContext);
 
   function getIncomes() {
-    const incomes = transactions.reduce((acc, curr) => {
-      if (INCOMES_CATEGORIES.some((category) => category === curr.category)) {
-        return acc + curr.amount;
-      }
-      return acc;
-    }, 0);
-
+    const incomes = getTotalIncomes(transactions);
     return roundToTwoDecimal(incomes);
   }
 

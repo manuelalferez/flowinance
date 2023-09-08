@@ -5,6 +5,7 @@ import { useSupabase } from "@/app/supabase-provider";
 import { TransactionSupabase } from "@/app/types/global";
 import { UploadTransactionsContext } from "@/lib/context";
 import {
+  encryptData,
   getUserId,
   roundToTwoDecimal,
   uploadTransactionsToSupabase,
@@ -61,10 +62,10 @@ export function FinalStep() {
         parseFloat(transactionsCopy[i][2])
       );
       const transaction = {
-        date: transactionsCopy[i][0],
-        concept: transactionsCopy[i][1],
-        amount: Math.abs(amountWithTwoDecimals),
-        category: transactionsCopy[i][3],
+        date: encryptData(transactionsCopy[i][0], userId),
+        concept: encryptData(transactionsCopy[i][1], userId),
+        amount: encryptData(Math.abs(amountWithTwoDecimals), userId),
+        category: encryptData(transactionsCopy[i][3], userId),
         user_id: userId,
       };
       transactionsToInsert.push(transaction);

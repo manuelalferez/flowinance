@@ -1,9 +1,11 @@
 export interface Transaction {
-  id: string;
   date: string;
   concept: string;
   amount: number;
   category: string;
+  user_id: string;
+  id?: string;
+  created_at?: string;
 }
 
 export interface ColHeader {
@@ -14,7 +16,7 @@ export interface ColHeader {
 export interface TransactionSupabase {
   date: string;
   concept: string;
-  amount: number;
+  amount: string;
   category: string;
   user_id: string;
   id?: string;
