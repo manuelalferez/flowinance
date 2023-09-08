@@ -45,7 +45,7 @@ export function IncomesTable() {
 
   return (
     <DashboardCard title="Incomes by categories">
-      <Table>
+      <Table key="incomes-table">
         <TableHeader>
           <TableRow>
             <TableHead className="p-2">Category</TableHead>

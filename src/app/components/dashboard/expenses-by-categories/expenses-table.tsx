@@ -45,7 +45,7 @@ export function ExpensesTable() {
 
   return (
     <DashboardCard title="Expenses by categories">
-      <Table>
+      <Table key="expenses-table">
         <TableHeader>
           <TableRow>
             <TableHead className="p-2">Category</TableHead>
