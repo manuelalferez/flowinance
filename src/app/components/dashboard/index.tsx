@@ -10,22 +10,21 @@ import { Expenses } from "./expenses";
 import { Incomes } from "./incomes";
 import ExpensesChart from "./expenses-chart";
 import IncomesChart from "./incomes-chart";
-import { useToast } from "../ui/use-toast";
 import Link from "next/link";
+import { IncomesPieChart } from "./incomes-by-categories/incomes-piechart";
+import { ExpensesPieChart } from "./expenses-by-categories/expenses-piechart";
+import { ExpensesTable } from "./expenses-by-categories/expenses-table";
+import { IncomesTable } from "./incomes-by-categories/incomes-table";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<TransactionSupabase[]>([]);
   const { supabase } = useSupabase();
-  const { toast } = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
       const userId = await getUserId(supabase);
 
       if (!userId) {
-        toast({
-          description: "Error uploading transactions, try again later",
-        });
         return;
       }
       const data = await getTransactions(supabase, userId);
@@ -46,6 +45,14 @@ export default function Dashboard() {
             <Expenses />
             <Incomes />
           </div>
+        </div>
+        <div className="flex justify-around gap-2">
+          <ExpensesTable />
+          <IncomesTable />
+        </div>
+        <div className="flex justify-around gap-2">
+          <ExpensesPieChart />
+          <IncomesPieChart />
         </div>
         <ExpensesChart />
         <IncomesChart />

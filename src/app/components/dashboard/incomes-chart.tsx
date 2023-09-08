@@ -10,11 +10,12 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { Card, CardDescription, CardTitle } from "../ui/card";
+import { Card, CardTitle } from "../ui/card";
+import { DashboardNoDataCard } from "./dashboard-no-data-card";
 
 interface ChartData {
   name: string;
-  spent: number;
+  income: number;
 }
 
 export default function IncomesChart() {
@@ -29,7 +30,7 @@ export default function IncomesChart() {
     const dataArray = incomes.map((transaction) => {
       return {
         name: transaction.date,
-        spent: transaction.amount,
+        income: transaction.amount,
       };
     });
     setData(dataArray);
@@ -57,19 +58,17 @@ export default function IncomesChart() {
             <Legend />
             <Line
               type="monotone"
-              dataKey="spent"
+              dataKey="income"
               stroke="#4eb87d"
               activeDot={{ r: 8 }}
             />
           </LineChart>
         </Card>
       ) : (
-        <Card className="p-8">
-          <CardTitle className="mb-6">Incomes</CardTitle>
-          <CardDescription className="mb-6">
-            You have not generated any income so far.
-          </CardDescription>
-        </Card>
+        <DashboardNoDataCard
+          title="Incomes"
+          description=" You have not generated any income so far."
+        />
       )}
     </div>
   );

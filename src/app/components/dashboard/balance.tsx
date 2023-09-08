@@ -1,4 +1,5 @@
 import { DashboardContext } from "@/lib/context";
+import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 
@@ -10,7 +11,7 @@ export function Balance() {
       return acc + curr.amount;
     }, 0);
 
-    return balance;
+    return roundToTwoDecimal(balance);
   }
 
   return (

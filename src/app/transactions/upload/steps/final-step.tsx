@@ -4,7 +4,11 @@ import { useToast } from "@/app/components/ui/use-toast";
 import { useSupabase } from "@/app/supabase-provider";
 import { TransactionSupabase } from "@/app/types/global";
 import { UploadTransactionsContext } from "@/lib/context";
-import { getUserId, uploadTransactionsToSupabase } from "@/lib/utils";
+import {
+  getUserId,
+  roundToTwoDecimal,
+  uploadTransactionsToSupabase,
+} from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { TransactionsTable } from "../../components/transactions-table";
 
@@ -53,10 +57,13 @@ export function FinalStep() {
     }
 
     for (let i = 1; i < transactionsCopy.length; i++) {
+      const amountWithTwoDecimals = roundToTwoDecimal(
+        parseFloat(transactionsCopy[i][2])
+      );
       const transaction = {
         date: transactionsCopy[i][0],
         concept: transactionsCopy[i][1],
-        amount: parseFloat(transactionsCopy[i][2]),
+        amount: Math.abs(amountWithTwoDecimals),
         category: transactionsCopy[i][3],
         user_id: userId,
       };

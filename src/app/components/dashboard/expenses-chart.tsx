@@ -10,7 +10,8 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { Card, CardDescription, CardTitle } from "../ui/card";
+import { Card, CardTitle } from "../ui/card";
+import { DashboardNoDataCard } from "./dashboard-no-data-card";
 
 interface ChartData {
   name: string;
@@ -64,12 +65,10 @@ export default function ExpensesChart() {
           </LineChart>
         </Card>
       ) : (
-        <Card className="p-8">
-          <CardTitle className="mb-6">Expenses</CardTitle>
-          <CardDescription className="mb-6">
-            You have not generated any expense so far.
-          </CardDescription>
-        </Card>
+        <DashboardNoDataCard
+          title="Expenses"
+          description=" You have not generated any expense so far."
+        />
       )}
     </div>
   );

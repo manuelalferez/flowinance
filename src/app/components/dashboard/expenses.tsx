@@ -1,5 +1,6 @@
 import { EXPENSES_CATEGORIES } from "@/lib/categories";
 import { DashboardContext } from "@/lib/context";
+import { roundToTwoDecimal } from "@/lib/utils";
 import * as React from "react";
 import { useContext } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
@@ -15,7 +16,7 @@ export function Expenses() {
       return acc;
     }, 0);
 
-    return Math.abs(incomes);
+    return roundToTwoDecimal(incomes);
   }
 
   return (
