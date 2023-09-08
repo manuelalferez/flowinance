@@ -1,4 +1,4 @@
-import { EXPENSES_CATEGORIES } from "@/lib/categories";
+import { getTotalExpenses } from "@/lib/calculations";
 import { DashboardContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import * as React from "react";
@@ -9,12 +9,7 @@ export function Expenses() {
   const { transactions } = useContext(DashboardContext);
 
   function getExpenses() {
-    const incomes = transactions.reduce((acc, curr) => {
-      if (EXPENSES_CATEGORIES.some((category) => category === curr.category)) {
-        return acc + curr.amount;
-      }
-      return acc;
-    }, 0);
+    const incomes = getTotalExpenses(transactions);
 
     return roundToTwoDecimal(incomes);
   }

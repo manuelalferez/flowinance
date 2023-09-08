@@ -1,7 +1,8 @@
-import { TransactionSupabase } from "@/app/types/global";
+import { Transaction, TransactionSupabase } from "@/app/types/global";
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import * as CryptoJS from "crypto-js";
 
 const DELIMITER = ";";
 export const TRANSACTIONS_TABLE_NAME = "transactions";
@@ -82,4 +83,38 @@ export async function uploadTransactionsToSupabase(
   if (error) {
     console.log("Error uploading transactions: ", error);
   }
+}
+
+export function encryptData(text: string | number, key: string) {
+  const data = CryptoJS.AES.encrypt(JSON.stringify(text), key).toString();
+  return data;
+}
+
+export function decryptData(text: string | number, key: string) {
+  const bytes = CryptoJS.AES.decrypt(text.toString(), key);
+  const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  return data;
+}
+
+export function decryptTransactions(
+  transactions: TransactionSupabase[],
+  key: string
+): Transaction[] {
+  const transactionsDecrypted = transactions.map(
+    (transaction: TransactionSupabase) => {
+      const amountDecrypt = decryptData(transaction.amount, key);
+      const amountWithTwoDecimals = roundToTwoDecimal(
+        parseFloat(amountDecrypt)
+      );
+
+      return {
+        ...transaction,
+        amount: amountWithTwoDecimals,
+        category: decryptData(transaction.category, key),
+        concept: decryptData(transaction.concept, key),
+        date: decryptData(transaction.date, key),
+      };
+    }
+  );
+  return transactionsDecrypted;
 }

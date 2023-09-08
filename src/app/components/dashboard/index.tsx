@@ -1,9 +1,9 @@
 "use client";
 
 import { useSupabase } from "@/app/supabase-provider";
-import { TransactionSupabase } from "@/app/types/global";
+import { Transaction } from "@/app/types/global";
 import { DashboardContext } from "@/lib/context";
-import { getTransactions, getUserId } from "@/lib/utils";
+import { decryptTransactions, getTransactions, getUserId } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Balance } from "./balance";
 import { Expenses } from "./expenses";
@@ -17,7 +17,7 @@ import { ExpensesTable } from "./expenses-by-categories/expenses-table";
 import { IncomesTable } from "./incomes-by-categories/incomes-table";
 
 export default function Dashboard() {
-  const [transactions, setTransactions] = useState<TransactionSupabase[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { supabase } = useSupabase();
 
   useEffect(() => {
@@ -29,7 +29,9 @@ export default function Dashboard() {
       }
       const data = await getTransactions(supabase, userId);
       if (data) {
-        setTransactions(data);
+        const decryptData = decryptTransactions(data, userId);
+
+        setTransactions(decryptData);
       }
     };
 

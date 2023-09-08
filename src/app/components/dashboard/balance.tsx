@@ -1,3 +1,4 @@
+import { getTotalExpenses, getTotalIncomes } from "@/lib/calculations";
 import { DashboardContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
@@ -7,9 +8,9 @@ export function Balance() {
   const { transactions } = useContext(DashboardContext);
 
   function getBalance() {
-    const balance = transactions.reduce((acc, curr) => {
-      return acc + curr.amount;
-    }, 0);
+    const expenses = getTotalExpenses(transactions);
+    const incomes = getTotalIncomes(transactions);
+    const balance = incomes - expenses;
 
     return roundToTwoDecimal(balance);
   }
