@@ -10,8 +10,8 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { Card, CardTitle } from "../ui/card";
-import { DashboardNoDataCard } from "./dashboard-no-data-card";
+import { Card, CardTitle } from "../../ui/card";
+import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
 interface ChartData {
   name: string;

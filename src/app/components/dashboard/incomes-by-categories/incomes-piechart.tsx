@@ -4,8 +4,8 @@ import { DashboardContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
-import { DashboardCard } from "../dashboard-card";
-import { DashboardNoDataCard } from "../dashboard-no-data-card";
+import { DashboardCard } from "../ui/dashboard-card";
+import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
 interface ChartData {
   name: string;

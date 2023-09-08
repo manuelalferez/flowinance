@@ -1,36 +1,44 @@
 import { INCOMES_CATEGORIES } from "@/lib/categories";
 import { DashboardContext } from "@/lib/context";
+import { roundToTwoDecimal } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
+  Area,
+  AreaChart,
 } from "recharts";
-import { Card, CardTitle } from "../ui/card";
-import { DashboardNoDataCard } from "./dashboard-no-data-card";
+import { Card, CardTitle } from "../../ui/card";
+import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
 interface ChartData {
   name: string;
   income: number;
 }
 
-export default function IncomesChart() {
+export default function IncomesEvolutionChart() {
   const { transactions } = useContext(DashboardContext);
   const [data, setData] = useState<ChartData[]>([]);
   useEffect(() => {
-    const incomes = transactions.filter((transaction) => {
+    const expenses = transactions.filter((transaction) => {
       return INCOMES_CATEGORIES.some(
         (category) => category === transaction.category
       );
     });
-    const dataArray = incomes.map((transaction) => {
+    const shortedExpenses = expenses.sort((a, b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+    let accumulatedAmount = 0;
+    const accumulatedExpenses = shortedExpenses.map((expense) => {
+      accumulatedAmount += expense.amount;
+      return roundToTwoDecimal(accumulatedAmount);
+    });
+    const dataArray = shortedExpenses.map((transaction, index) => {
       return {
         name: transaction.date,
-        income: transaction.amount,
+        income: accumulatedExpenses[index],
       };
     });
     setData(dataArray);
@@ -39,30 +47,29 @@ export default function IncomesChart() {
     <div>
       {data.length !== 0 ? (
         <Card className="flex flex-col items-center p-8">
-          <CardTitle className="mb-6">Incomes</CardTitle>
-          <LineChart
-            width={600}
-            height={300}
+          <CardTitle className="mb-6">Incomes Evolution</CardTitle>
+          <AreaChart
+            width={500}
+            height={400}
             data={data}
             margin={{
-              top: 20,
+              top: 10,
               right: 30,
-              left: 20,
-              bottom: 5,
+              left: 0,
+              bottom: 0,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Legend />
-            <Line
+            <Area
               type="monotone"
               dataKey="income"
-              stroke="#4eb87d"
-              activeDot={{ r: 8 }}
+              stroke="#8884d8"
+              fill="#8884d8"
             />
-          </LineChart>
+          </AreaChart>
         </Card>
       ) : (
         <DashboardNoDataCard

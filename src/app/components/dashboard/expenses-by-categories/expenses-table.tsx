@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../ui/table";
-import { DashboardCard } from "../dashboard-card";
+import { DashboardCard } from "../ui/dashboard-card";
 
 type ExpenseCategory = {
   name: string;

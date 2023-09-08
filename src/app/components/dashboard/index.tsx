@@ -5,16 +5,19 @@ import { Transaction } from "@/app/types/global";
 import { DashboardContext } from "@/lib/context";
 import { decryptTransactions, getTransactions, getUserId } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { Balance } from "./balance";
-import { Expenses } from "./expenses";
-import { Incomes } from "./incomes";
-import ExpensesChart from "./expenses-chart";
-import IncomesChart from "./incomes-chart";
+import { Balance } from "./total/balance";
+import { Expenses } from "./total/expenses";
+import { Incomes } from "./total/incomes";
+import ExpensesChart from "./expenses/expenses-chart";
+import IncomesChart from "./incomes/incomes-chart";
 import Link from "next/link";
 import { IncomesPieChart } from "./incomes-by-categories/incomes-piechart";
 import { ExpensesPieChart } from "./expenses-by-categories/expenses-piechart";
 import { ExpensesTable } from "./expenses-by-categories/expenses-table";
 import { IncomesTable } from "./incomes-by-categories/incomes-table";
+import ExpensesEvolutionChart from "./expenses/expenses-evolution-chart";
+import IncomesEvolutionChart from "./incomes/incomes-evolution-chart";
+import { DashboardRow } from "./ui/dashboard-row";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -41,23 +44,33 @@ export default function Dashboard() {
   return transactions.length !== 0 ? (
     <DashboardContext.Provider value={{ transactions }}>
       <div className="flex flex-col w-2/3 gap-20">
-        <div className="flex justify-around">
+        <DashboardRow>
           <Balance />
           <div className="flex gap-2">
             <Expenses />
             <Incomes />
           </div>
-        </div>
-        <div className="flex justify-around gap-2">
+        </DashboardRow>
+
+        <DashboardRow>
           <ExpensesTable />
           <IncomesTable />
-        </div>
-        <div className="flex justify-around gap-2">
+        </DashboardRow>
+
+        <DashboardRow>
           <ExpensesPieChart />
           <IncomesPieChart />
-        </div>
-        <ExpensesChart />
-        <IncomesChart />
+        </DashboardRow>
+
+        <DashboardRow>
+          <ExpensesChart />
+          <IncomesChart />
+        </DashboardRow>
+
+        <DashboardRow>
+          <ExpensesEvolutionChart />
+          <IncomesEvolutionChart />
+        </DashboardRow>
       </div>
     </DashboardContext.Provider>
   ) : (
