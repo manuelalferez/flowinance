@@ -21,10 +21,10 @@ export default async function RootLayout({
 }) {
   const session = await getSession();
   return (
-    <html lang="en" className="h-full">
+    <html lang="en">
       <SupabaseProvider>
         <body className={`h-full ${inter.className}`}>
-          <div className="">
+          <div>
             <Narbar session={session} />
             <div>{children}</div>
           </div>

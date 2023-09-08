@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,12 +12,10 @@ import { TABLE_HEADERS } from "@/lib/constants";
 import { shortTransactions } from "@/lib/utils";
 import { Button } from "@/app/components/ui/button";
 import { DashboardCard } from "@/app/components/dashboard/ui/dashboard-card";
+import { AppContext } from "@/lib/context";
 
-export function TransactionsTable({
-  transactions,
-}: {
-  transactions: Transaction[];
-}) {
+export function TransactionsTable() {
+  const { transactions } = useContext(AppContext);
   const [currentPage, setCurrentPage] = useState(1);
   const transactionsPerPage = 10;
 
@@ -36,7 +34,10 @@ export function TransactionsTable({
           <TableHeader>
             <TableRow>
               {TABLE_HEADERS.map((header, index) => (
-                <TableHead className="p-2 lg:pr-44 md:pr-28" key={index}>
+                <TableHead
+                  className="p-2 lg:pr-44 md:pr-28"
+                  key={`${index}-header`}
+                >
                   {header}
                 </TableHead>
               ))}
@@ -44,17 +45,17 @@ export function TransactionsTable({
           </TableHeader>
           <TableBody>
             {paginatedTransactions.map((item: Transaction, index: number) => (
-              <TableRow key={index}>
-                <TableCell className="p-2" key={index}>
+              <TableRow key={`${index}-row`}>
+                <TableCell className="p-2" key={`${index}-date`}>
                   {item.date}
                 </TableCell>
-                <TableCell className="p-2" key={index}>
+                <TableCell className="p-2" key={`${index}-concept`}>
                   {item.concept}
                 </TableCell>
-                <TableCell className="p-2" key={index}>
+                <TableCell className="p-2" key={`${index}-amount`}>
                   {item.amount}
                 </TableCell>
-                <TableCell className="p-2" key={index}>
+                <TableCell className="p-2" key={`${index}-category`}>
                   {item.category}
                 </TableCell>
               </TableRow>
