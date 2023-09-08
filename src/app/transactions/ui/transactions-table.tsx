@@ -9,7 +9,7 @@ import {
 } from "@/app/components/ui/table";
 import { Transaction } from "@/app/types/global";
 import { TABLE_HEADERS } from "@/lib/constants";
-import { shortTransactions } from "@/lib/utils";
+import { sortTransactions } from "@/lib/utils";
 import { Button } from "@/app/components/ui/button";
 import { DashboardCard } from "@/app/components/dashboard/ui/dashboard-card";
 import { AppContext } from "@/lib/context";
@@ -22,7 +22,7 @@ export function TransactionsTable() {
   const startIndex = (currentPage - 1) * transactionsPerPage;
   const endIndex = startIndex + transactionsPerPage;
 
-  const paginatedTransactions = shortTransactions(transactions).slice(
+  const paginatedTransactions = sortTransactions(transactions).slice(
     startIndex,
     endIndex
   );
@@ -73,7 +73,7 @@ export function TransactionsTable() {
           <Button
             className="mx-2 bg-emerald-200 text-white px-4 py-2 rounded-md"
             onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={endIndex >= shortTransactions(transactions).length}
+            disabled={endIndex >= sortTransactions(transactions).length}
           >
             Next
           </Button>

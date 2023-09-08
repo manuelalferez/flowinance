@@ -1,4 +1,8 @@
-import { getTotalExpenses, getTotalIncomes } from "@/lib/calculations";
+import {
+  getSpecialCategories,
+  getTotalExpenses,
+  getTotalIncomes,
+} from "@/lib/calculations";
 import { AppContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
@@ -10,7 +14,8 @@ export function Balance() {
   function getBalance() {
     const expenses = getTotalExpenses(transactions);
     const incomes = getTotalIncomes(transactions);
-    const balance = incomes - expenses;
+    const special = getSpecialCategories(transactions);
+    const balance = incomes - expenses + special;
 
     return roundToTwoDecimal(balance);
   }

@@ -85,6 +85,34 @@ export async function uploadTransactionsToSupabase(
   }
 }
 
+export async function addTransactionToSupabase(
+  supabase: SupabaseClient<any, "public", any>,
+  transaction: TransactionSupabase
+) {
+  const transactionEncrypted = encryptTransactions(
+    transaction,
+    transaction.user_id
+  );
+  const { error } = await supabase
+    .from(TRANSACTIONS_TABLE_NAME)
+    .insert(transactionEncrypted);
+  if (error) {
+    console.log("Error uploading transaction: ", error);
+  }
+}
+
+function encryptTransactions(transaction: TransactionSupabase, key: string) {
+  const amountEncrypt = encryptData(transaction.amount, key);
+  const transactionEncrypted = {
+    ...transaction,
+    amount: amountEncrypt,
+    category: encryptData(transaction.category, key),
+    concept: encryptData(transaction.concept, key),
+    date: encryptData(transaction.date, key),
+  };
+  return transactionEncrypted;
+}
+
 export function encryptData(text: string | number, key: string) {
   const data = CryptoJS.AES.encrypt(JSON.stringify(text), key).toString();
   return data;
@@ -119,8 +147,33 @@ export function decryptTransactions(
   return transactionsDecrypted;
 }
 
-export function shortTransactions(transactions: Transaction[]): Transaction[] {
+export function sortTransactions(transactions: Transaction[]): Transaction[] {
   return transactions.sort((a, b) => {
-    return new Date(a.date).getTime() - new Date(b.date).getTime();
+    const dateA = parseDate(a.date);
+    const dateB = parseDate(b.date);
+
+    if (!dateA || !dateB) {
+      return 0;
+    }
+
+    return dateA.getTime() - dateB.getTime();
   });
+}
+
+function parseDate(dateString: string): Date | null {
+  const [day, month, year] = dateString.split("/").map(Number);
+
+  if (isNaN(day) || isNaN(month) || isNaN(year)) {
+    return null;
+  }
+
+  return new Date(year, month - 1, day);
+}
+
+export function formatDate(date: Date): string {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear());
+
+  return `${day}/${month}/${year}`;
 }

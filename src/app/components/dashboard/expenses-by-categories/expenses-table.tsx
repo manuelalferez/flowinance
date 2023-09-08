@@ -20,28 +20,19 @@ type ExpenseCategory = {
 export function ExpensesTable() {
   const { transactions } = useContext(AppContext);
 
-  const expenses = transactions.filter((transaction) => {
-    return EXPENSES_CATEGORIES.some(
-      (category) => category === transaction.category
-    );
-  });
   const categoriesWithTotalExpenses = EXPENSES_CATEGORIES.map((category) => {
-    const totalForCategory = expenses.reduce((acc, curr) => {
-      if (curr.category === category) {
-        return acc + curr.amount;
-      }
-      return acc;
-    }, 0);
+    const totalForCategory = transactions
+      .filter((transaction) => transaction.category === category)
+      .reduce((acc, curr) => acc + curr.amount, 0);
 
-    if (totalForCategory === 0) {
-      return null;
-    }
     const totalForCategoryRounded = roundToTwoDecimal(totalForCategory);
-    return {
-      name: category,
-      value: totalForCategoryRounded,
-    };
-  }).filter((item): item is ExpenseCategory => item !== null);
+
+    return totalForCategoryRounded !== 0
+      ? { name: category, value: totalForCategoryRounded }
+      : null;
+  })
+    .filter((item): item is ExpenseCategory => item !== null)
+    .sort((a, b) => b.value - a.value);
 
   return (
     <DashboardCard title="Expenses by categories">

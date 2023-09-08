@@ -1,10 +1,14 @@
 "use client";
 
 import { AppContext } from "@/lib/context";
-import { decryptTransactions, getTransactions, getUserId } from "@/lib/utils";
+import {
+  decryptTransactions,
+  getTransactions,
+  getUserId,
+  sortTransactions,
+} from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { DashboardCard } from "../components/dashboard/ui/dashboard-card";
 import { Button } from "../components/ui/button";
 import Loading from "../loading";
 import { useSupabase } from "../supabase-provider";
@@ -25,7 +29,8 @@ export default function Transactions() {
       const data = await getTransactions(supabase, userId);
       if (data) {
         const decryptData = decryptTransactions(data, userId);
-        setTransactions(decryptData);
+        const sortedTransactions = sortTransactions(decryptData);
+        setTransactions(sortedTransactions);
       }
     };
 
@@ -34,9 +39,12 @@ export default function Transactions() {
 
   return (
     <AppContext.Provider value={{ transactions }}>
-      <div className="flex flex-col items-start mb-10">
+      <div className="flex items-start mb-10 gap-2">
         <Button asChild>
           <Link href="/transactions/upload">Upload</Link>
+        </Button>
+        <Button asChild>
+          <Link href="/transactions/add">Add</Link>
         </Button>
       </div>
       {transactions.length != 0 ? <TransactionsTable /> : <Loading />}
