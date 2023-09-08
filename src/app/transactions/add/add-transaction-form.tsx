@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/app/components/ui/button";
+import { Card } from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";
 import {
   Table,
@@ -25,10 +26,6 @@ export default function AddTransactionForm() {
   const { toast } = useToast();
 
   const date = formatDate(new Date());
-  console.log(
-    "🚀 ~ file: add-transaction-form.tsx:28 ~ AddTransactionForm ~ date:",
-    date
-  );
 
   function handleAmountChange(value: any) {
     if (isNaN(value)) {
@@ -69,55 +66,57 @@ export default function AddTransactionForm() {
   }
 
   return (
-    <div>
-      <Table key="form-table">
-        <TableHeader>
-          <TableRow>
-            {TABLE_HEADERS.map((header, index) => (
-              <TableHead className="p-2 lg:pr-44 md:pr-28" key={index}>
-                {header}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="p-2" key="form-date">
-              {date}
-            </TableCell>
-            <TableCell className="p-2" key="form-concept">
-              <Input
-                onChange={(e) => setConcept(e.target.value)}
-                value={concept}
-                placeholder="Concept"
-              />
-            </TableCell>
-            <TableCell className="p-2" key="form-amount">
-              <Input
-                onChange={(e) => handleAmountChange(e.target.value)}
-                value={amount}
-                placeholder="Amount"
-              />
-            </TableCell>
-            <TableCell className="p-2" key="form-category">
-              <select
-                className="w-[180px] p-2 border rounded"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="" disabled selected>
-                  Select category
-                </option>
-                {ALL_CATEGORIES.map((item, index) => (
-                  <option value={item} key={index}>
-                    {item}
+    <>
+      <Card className="p-2">
+        <Table key="form-table">
+          <TableHeader>
+            <TableRow>
+              {TABLE_HEADERS.map((header, index) => (
+                <TableHead className="p-2 lg:pr-44 md:pr-28" key={index}>
+                  {header}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell className="p-2" key="form-date">
+                {date}
+              </TableCell>
+              <TableCell className="p-2" key="form-concept">
+                <Input
+                  onChange={(e) => setConcept(e.target.value)}
+                  value={concept}
+                  placeholder="Concept"
+                />
+              </TableCell>
+              <TableCell className="p-2" key="form-amount">
+                <Input
+                  onChange={(e) => handleAmountChange(e.target.value)}
+                  value={amount}
+                  placeholder="Amount"
+                />
+              </TableCell>
+              <TableCell className="p-2" key="form-category">
+                <select
+                  className="w-[180px] p-2 border rounded"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="" disabled selected>
+                    Select category
                   </option>
-                ))}
-              </select>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+                  {ALL_CATEGORIES.map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </Card>
       <div className="flex justify-center mt-10">
         <Button
           onClick={uploadTransaction}
@@ -127,6 +126,6 @@ export default function AddTransactionForm() {
           Upload transaction
         </Button>
       </div>
-    </div>
+    </>
   );
 }
