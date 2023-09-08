@@ -18,14 +18,14 @@ const defaultContext: TransactionsContext = {
 export const UploadTransactionsContext =
   createContext<TransactionsContext>(defaultContext);
 
-type DashboardContextType = {
+type AppContextType = {
   transactions: Transaction[];
 };
 
-const defaultDashboardContext: DashboardContextType = {
+const defaultDashboardContext: AppContextType = {
   transactions: [],
 };
 
-export const DashboardContext = createContext<DashboardContextType>(
+export const AppContext = createContext<AppContextType>(
   defaultDashboardContext
 );

@@ -1,21 +1,52 @@
+"use client";
+
+import { decryptTransactions, getTransactions, getUserId } from "@/lib/utils";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { DashboardCard } from "../components/dashboard/ui/dashboard-card";
 import { Button } from "../components/ui/button";
-import { getSession } from "../supabase-server";
+import { useSupabase } from "../supabase-provider";
+import { Transaction } from "../types/global";
+import { TransactionsTable } from "./ui/transactions-table";
 
 export default async function Page() {
-  const session = await getSession();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { supabase } = useSupabase();
 
-  if (!session || !session.user.email) {
-    return redirect("/signin");
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const userId = await getUserId(supabase);
+
+      if (!userId) {
+        return;
+      }
+      const data = await getTransactions(supabase, userId);
+      if (data) {
+        const decryptData = decryptTransactions(data, userId);
+        setTransactions(decryptData);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center p-24">
-        <h1 className="text-xl pb-10">Welcome to the transactions page</h1>
-        <Button asChild>
-          <Link href="/transactions/upload">Upload</Link>
-        </Button>
+      <main className="flex min-h-screen flex-col  p-24">
+        <div className="flex flex-col items-start mb-10">
+          <Button asChild>
+            <Link href="/transactions/upload">Upload</Link>
+          </Button>
+        </div>
+        {transactions.length != 0 ? (
+          <TransactionsTable transactions={transactions} />
+        ) : (
+          <DashboardCard title="No transactions yet">
+            <p>
+              Click 'Upload' to begin viewing your transactions in this section
+            </p>
+          </DashboardCard>
+        )}
       </main>
     </>
   );

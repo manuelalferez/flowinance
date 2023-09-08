@@ -1,5 +1,5 @@
 import { EXPENSES_CATEGORIES } from "@/lib/categories";
-import { DashboardContext } from "@/lib/context";
+import { AppContext } from "@/lib/context";
 import { roundToTwoDecimal, shortTransactions } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -19,7 +19,7 @@ interface ChartData {
 }
 
 export default function ExpensesEvolutionChart() {
-  const { transactions } = useContext(DashboardContext);
+  const { transactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
   useEffect(() => {
     const expenses = transactions.filter((transaction) => {

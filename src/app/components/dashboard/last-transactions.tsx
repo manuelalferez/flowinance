@@ -1,5 +1,5 @@
 import { Transaction } from "@/app/types/global";
-import { DashboardContext } from "@/lib/context";
+import { AppContext } from "@/lib/context";
 import { shortTransactions } from "@/lib/utils";
 import { useContext } from "react";
 import {
@@ -15,7 +15,7 @@ import { DashboardCard } from "./ui/dashboard-card";
 const headers = ["date", "concept", "amount", "category"];
 
 export function LastTransactions() {
-  const { transactions } = useContext(DashboardContext);
+  const { transactions } = useContext(AppContext);
 
   const shortedTransactions = shortTransactions(transactions);
   const lastTransactions = shortedTransactions.slice(0, 10);

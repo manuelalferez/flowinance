@@ -2,7 +2,7 @@
 
 import { useSupabase } from "@/app/supabase-provider";
 import { Transaction } from "@/app/types/global";
-import { DashboardContext } from "@/lib/context";
+import { AppContext } from "@/lib/context";
 import { decryptTransactions, getTransactions, getUserId } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Balance } from "./total/balance";
@@ -43,7 +43,7 @@ export default function Dashboard() {
   }, []);
 
   return transactions.length !== 0 ? (
-    <DashboardContext.Provider value={{ transactions }}>
+    <AppContext.Provider value={{ transactions }}>
       <div className="flex flex-col w-2/3 gap-20">
         <DashboardRow>
           <Balance />
@@ -76,7 +76,7 @@ export default function Dashboard() {
           <LastTransactions />
         </DashboardRow>
       </div>
-    </DashboardContext.Provider>
+    </AppContext.Provider>
   ) : (
     <div className="flex flex-col">
       <h1 className="text-xl mb-2">Welcome to Finance Graph 💸</h1>
