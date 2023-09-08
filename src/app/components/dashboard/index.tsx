@@ -18,6 +18,7 @@ import { IncomesTable } from "./incomes-by-categories/incomes-table";
 import ExpensesEvolutionChart from "./expenses/expenses-evolution-chart";
 import IncomesEvolutionChart from "./incomes/incomes-evolution-chart";
 import { DashboardRow } from "./ui/dashboard-row";
+import { LastTransactions } from "./last-transactions";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -70,6 +71,9 @@ export default function Dashboard() {
         <DashboardRow>
           <ExpensesEvolutionChart />
           <IncomesEvolutionChart />
+        </DashboardRow>
+        <DashboardRow>
+          <LastTransactions />
         </DashboardRow>
       </div>
     </DashboardContext.Provider>

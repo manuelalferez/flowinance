@@ -1,6 +1,6 @@
 import { EXPENSES_CATEGORIES } from "@/lib/categories";
 import { DashboardContext } from "@/lib/context";
-import { roundToTwoDecimal } from "@/lib/utils";
+import { roundToTwoDecimal, shortTransactions } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
   XAxis,
@@ -27,9 +27,7 @@ export default function ExpensesEvolutionChart() {
         (category) => category === transaction.category
       );
     });
-    const shortedExpenses = expenses.sort((a, b) => {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-    });
+    const shortedExpenses = shortTransactions(expenses);
     let accumulatedAmount = 0;
     const accumulatedExpenses = shortedExpenses.map((expense) => {
       accumulatedAmount += expense.amount;

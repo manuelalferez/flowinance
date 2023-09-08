@@ -118,3 +118,9 @@ export function decryptTransactions(
   );
   return transactionsDecrypted;
 }
+
+export function shortTransactions(transactions: Transaction[]): Transaction[] {
+  return transactions.sort((a, b) => {
+    return new Date(a.date).getTime() - new Date(b.date).getTime();
+  });
+}
