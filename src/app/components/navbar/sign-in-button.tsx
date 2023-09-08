@@ -1,4 +1,5 @@
 import { redirect, useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import { useToast } from "../ui/use-toast";
 
@@ -13,9 +14,7 @@ export function SignInButton() {
 
   return (
     <div>
-      <button className={navigationMenuTriggerStyle()} onClick={handleSignOut}>
-        Sign in
-      </button>
+      <Button onClick={handleSignOut}>Sign in</Button>
     </div>
   );
 }

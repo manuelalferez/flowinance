@@ -20,3 +20,5 @@ export const PIE_CHART_COLORS = [
   "#FFAF33",
   "#FF3333",
 ];
+
+export const TABLE_HEADERS = ["date", "concept", "amount", "category"];

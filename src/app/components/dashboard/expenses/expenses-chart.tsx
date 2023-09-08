@@ -1,5 +1,5 @@
 import { EXPENSES_CATEGORIES } from "@/lib/categories";
-import { DashboardContext } from "@/lib/context";
+import { AppContext } from "@/lib/context";
 import React, { useContext, useEffect, useState } from "react";
 import {
   LineChart,
@@ -19,7 +19,7 @@ interface ChartData {
 }
 
 export default function ExpensesChart() {
-  const { transactions } = useContext(DashboardContext);
+  const { transactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
   useEffect(() => {
     const expenses = transactions.filter((transaction) => {

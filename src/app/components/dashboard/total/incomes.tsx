@@ -1,11 +1,11 @@
 import { getTotalIncomes } from "@/lib/calculations";
-import { DashboardContext } from "@/lib/context";
+import { AppContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 
 export function Incomes() {
-  const { transactions } = useContext(DashboardContext);
+  const { transactions } = useContext(AppContext);
 
   function getIncomes() {
     const incomes = getTotalIncomes(transactions);

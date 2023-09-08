@@ -1,5 +1,5 @@
 import { INCOMES_CATEGORIES } from "@/lib/categories";
-import { DashboardContext } from "@/lib/context";
+import { AppContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
 import {
@@ -18,7 +18,7 @@ type IncomeCategory = {
 };
 
 export function IncomesTable() {
-  const { transactions } = useContext(DashboardContext);
+  const { transactions } = useContext(AppContext);
 
   const incomes = transactions.filter((transaction) => {
     return INCOMES_CATEGORIES.some(

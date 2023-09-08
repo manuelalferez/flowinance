@@ -1,5 +1,5 @@
 import { EXPENSES_CATEGORIES } from "@/lib/categories";
-import { DashboardContext } from "@/lib/context";
+import { AppContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
 import {
@@ -18,7 +18,7 @@ type ExpenseCategory = {
 };
 
 export function ExpensesTable() {
-  const { transactions } = useContext(DashboardContext);
+  const { transactions } = useContext(AppContext);
 
   const expenses = transactions.filter((transaction) => {
     return EXPENSES_CATEGORIES.some(
