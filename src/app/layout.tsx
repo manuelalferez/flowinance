@@ -23,7 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <SupabaseProvider>
-        <body className={`h-full ${inter.className}`}>
+        <body className={`overflow-x-hidden ${inter.className}`}>
           <div>
             <Narbar session={session} />
             <div>{children}</div>
