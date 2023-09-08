@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardTitle } from "../ui/card";
+import { Card, CardDescription, CardTitle } from "../../ui/card";
 
 export function DashboardNoDataCard({
   title,
