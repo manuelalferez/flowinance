@@ -7,12 +7,12 @@ export function DashboardCard({
   className = "",
 }: {
   children: React.ReactNode;
-  title: string;
+  title?: string;
   className?: string;
 }) {
   return (
     <Card className={`flex flex-col items-center p-8 h-fit ${className}`}>
-      <CardTitle className="mb-6">{title}</CardTitle>
+      {title && <CardTitle className="mb-6">{title}</CardTitle>}
       {children}
     </Card>
   );

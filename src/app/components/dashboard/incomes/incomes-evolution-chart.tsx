@@ -1,6 +1,6 @@
 import { INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
-import { roundToTwoDecimal, shortTransactions } from "@/lib/utils";
+import { roundToTwoDecimal, sortTransactions } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
   XAxis,
@@ -27,7 +27,7 @@ export default function IncomesEvolutionChart() {
         (category) => category === transaction.category
       );
     });
-    const shortedExpenses = shortTransactions(expenses);
+    const shortedExpenses = sortTransactions(expenses);
     let accumulatedAmount = 0;
     const accumulatedExpenses = shortedExpenses.map((expense) => {
       accumulatedAmount += expense.amount;

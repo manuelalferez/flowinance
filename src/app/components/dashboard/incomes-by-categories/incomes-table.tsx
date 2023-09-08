@@ -20,28 +20,19 @@ type IncomeCategory = {
 export function IncomesTable() {
   const { transactions } = useContext(AppContext);
 
-  const incomes = transactions.filter((transaction) => {
-    return INCOMES_CATEGORIES.some(
-      (category) => category === transaction.category
-    );
-  });
   const categoriesWithTotalExpenses = INCOMES_CATEGORIES.map((category) => {
-    const totalForCategory = incomes.reduce((acc, curr) => {
-      if (curr.category === category) {
-        return acc + curr.amount;
-      }
-      return acc;
-    }, 0);
+    const totalForCategory = transactions
+      .filter((transaction) => transaction.category === category)
+      .reduce((acc, curr) => acc + curr.amount, 0);
 
-    if (totalForCategory === 0) {
-      return null;
-    }
     const totalForCategoryRounded = roundToTwoDecimal(totalForCategory);
-    return {
-      name: category,
-      value: totalForCategoryRounded,
-    };
-  }).filter((item): item is IncomeCategory => item !== null);
+
+    return totalForCategoryRounded !== 0
+      ? { name: category, value: totalForCategoryRounded }
+      : null;
+  })
+    .filter((item): item is IncomeCategory => item !== null)
+    .sort((a, b) => b.value - a.value);
 
   return (
     <DashboardCard title="Incomes by categories">

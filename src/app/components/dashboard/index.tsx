@@ -19,6 +19,7 @@ import ExpensesEvolutionChart from "./expenses/expenses-evolution-chart";
 import IncomesEvolutionChart from "./incomes/incomes-evolution-chart";
 import { DashboardRow } from "./ui/dashboard-row";
 import { LastTransactions } from "./last-transactions";
+import Loading from "@/app/loading";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -78,11 +79,6 @@ export default function Dashboard() {
       </div>
     </AppContext.Provider>
   ) : (
-    <div className="flex flex-col">
-      <h1 className="text-xl mb-2">Welcome to Finance Graph 💸</h1>
-      <button className="max-w-xs p-4 text-lg bg-black hover:bg-gray-800 rounded-md text-white">
-        <Link href="/signin">Sign in to start</Link>
-      </button>
-    </div>
+    <Loading />
   );
 }

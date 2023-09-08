@@ -9,7 +9,7 @@ export default async function Page() {
   }
   return (
     <div>
-      <main className="flex min-h-screen flex-col p-24">
+      <main className="flex flex-col p-24">
         <Transactions />
       </main>
     </div>
