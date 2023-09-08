@@ -54,7 +54,7 @@ export function IncomesTable() {
         </TableHeader>
         {categoriesWithTotalExpenses.map(
           (item: IncomeCategory, index: number) => (
-            <TableBody>
+            <TableBody key={index}>
               <TableRow key={index}>
                 <TableCell className="p-2">{item.name}</TableCell>
                 <TableCell className="p-2 pl-8">{item.value}€</TableCell>

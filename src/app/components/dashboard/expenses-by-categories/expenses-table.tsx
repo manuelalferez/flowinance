@@ -54,9 +54,11 @@ export function ExpensesTable() {
         </TableHeader>
         {categoriesWithTotalExpenses.map(
           (item: ExpenseCategory, index: number) => (
-            <TableBody>
+            <TableBody key={index}>
               <TableRow key={index}>
-                <TableCell className="p-2">{item.name}</TableCell>
+                <TableCell className="p-2" key={index}>
+                  {item.name}
+                </TableCell>
                 <TableCell className="p-2 pl-8">{item.value}€</TableCell>
               </TableRow>
             </TableBody>
