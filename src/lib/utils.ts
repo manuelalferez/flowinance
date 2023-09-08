@@ -26,6 +26,10 @@ function hasEmptyStringExceptFirst(arr: string[]): boolean {
   return arr.slice(1).some((item) => item === "");
 }
 
+export function roundToTwoDecimal(num: number) {
+  return Math.round(num * 100) / 100;
+}
+
 export function extractFields(lines: string[]): string[][] {
   let fields: string[][] = [];
 
