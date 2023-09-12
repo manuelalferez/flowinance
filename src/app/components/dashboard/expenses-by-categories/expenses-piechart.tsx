@@ -5,6 +5,7 @@ import { roundToTwoDecimal } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import { DashboardCard } from "../ui/dashboard-card";
+import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
 interface ChartData {
   name: string;
@@ -12,11 +13,11 @@ interface ChartData {
 }
 
 export function ExpensesPieChart() {
-  const { transactions } = useContext(AppContext);
+  const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
 
   useEffect(() => {
-    const expenses = transactions.filter((transaction) => {
+    const expenses = filteredTransactions!.filter((transaction) => {
       return EXPENSES_CATEGORIES.some(
         (category) => category === transaction.category
       );
@@ -40,9 +41,9 @@ export function ExpensesPieChart() {
     }).filter((item): item is ChartData => item !== null);
 
     setData(dataArray);
-  }, [transactions]);
+  }, [filteredTransactions]);
 
-  return (
+  return data.length !== 0 ? (
     <DashboardCard title="Expenses by category">
       <PieChart width={300} height={300}>
         <Pie
@@ -65,5 +66,10 @@ export function ExpensesPieChart() {
         <Tooltip />
       </PieChart>
     </DashboardCard>
+  ) : (
+    <DashboardNoDataCard
+      title="Expenses by category"
+      description="You have not generated any expenses in this category."
+    />
   );
 }

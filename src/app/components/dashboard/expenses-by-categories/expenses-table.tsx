@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "../../ui/table";
 import { DashboardCard } from "../ui/dashboard-card";
+import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
 type ExpenseCategory = {
   name: string;
@@ -18,10 +19,10 @@ type ExpenseCategory = {
 };
 
 export function ExpensesTable() {
-  const { transactions } = useContext(AppContext);
+  const { filteredTransactions } = useContext(AppContext);
 
   const categoriesWithTotalExpenses = EXPENSES_CATEGORIES.map((category) => {
-    const totalForCategory = transactions
+    const totalForCategory = filteredTransactions!
       .filter((transaction) => transaction.category === category)
       .reduce((acc, curr) => acc + curr.amount, 0);
 
@@ -34,7 +35,7 @@ export function ExpensesTable() {
     .filter((item): item is ExpenseCategory => item !== null)
     .sort((a, b) => b.value - a.value);
 
-  return (
+  return categoriesWithTotalExpenses.length !== 0 ? (
     <DashboardCard title="Expenses by categories">
       <Table key="expenses-table">
         <TableHeader>
@@ -57,5 +58,10 @@ export function ExpensesTable() {
         )}
       </Table>
     </DashboardCard>
+  ) : (
+    <DashboardNoDataCard
+      title="Expenses by categories"
+      description="You have not generated any expense so far."
+    />
   );
 }

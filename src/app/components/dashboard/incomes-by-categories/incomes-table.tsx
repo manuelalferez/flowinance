@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "../../ui/table";
 import { DashboardCard } from "../ui/dashboard-card";
+import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
 type IncomeCategory = {
   name: string;
@@ -18,10 +19,10 @@ type IncomeCategory = {
 };
 
 export function IncomesTable() {
-  const { transactions } = useContext(AppContext);
+  const { filteredTransactions } = useContext(AppContext);
 
   const categoriesWithTotalExpenses = INCOMES_CATEGORIES.map((category) => {
-    const totalForCategory = transactions
+    const totalForCategory = filteredTransactions!
       .filter((transaction) => transaction.category === category)
       .reduce((acc, curr) => acc + curr.amount, 0);
 
@@ -34,7 +35,7 @@ export function IncomesTable() {
     .filter((item): item is IncomeCategory => item !== null)
     .sort((a, b) => b.value - a.value);
 
-  return (
+  return categoriesWithTotalExpenses.length !== 0 ? (
     <DashboardCard title="Incomes by categories">
       <Table key="incomes-table">
         <TableHeader>
@@ -55,5 +56,10 @@ export function IncomesTable() {
         )}
       </Table>
     </DashboardCard>
+  ) : (
+    <DashboardNoDataCard
+      title="Incomes by categories"
+      description="You have not generated any income so far."
+    />
   );
 }

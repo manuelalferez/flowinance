@@ -19,10 +19,10 @@ interface ChartData {
 }
 
 export default function ExpensesEvolutionChart() {
-  const { transactions } = useContext(AppContext);
+  const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
   useEffect(() => {
-    const expenses = transactions.filter((transaction) => {
+    const expenses = filteredTransactions!.filter((transaction) => {
       return EXPENSES_CATEGORIES.some(
         (category) => category === transaction.category
       );
@@ -40,7 +40,7 @@ export default function ExpensesEvolutionChart() {
       };
     });
     setData(dataArray);
-  }, [transactions]);
+  }, [filteredTransactions]);
   return (
     <div>
       {data.length !== 0 ? (
