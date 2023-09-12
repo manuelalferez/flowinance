@@ -85,3 +85,9 @@
 .supabase-auth-ui_ui-button:hover {
   background: #c7f9deff !important;
 }
+
+tr:hover .hoverable-cell {
+  display: block;
+  justify-content: end;
+  width: 20px;
+}
