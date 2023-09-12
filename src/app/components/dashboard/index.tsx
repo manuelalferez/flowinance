@@ -45,8 +45,8 @@ export default function Dashboard() {
 
   return transactions.length !== 0 ? (
     <AppContext.Provider value={{ transactions }}>
-      <div className="flex flex-col w-2/3 gap-20">
-        <DashboardRow>
+      <div className="flex flex-col w-1/2 gap-10">
+        <DashboardRow className="justify-between mb-10">
           <Balance />
           <div className="flex gap-2">
             <Expenses />
@@ -54,26 +54,26 @@ export default function Dashboard() {
           </div>
         </DashboardRow>
 
-        <DashboardRow>
+        <DashboardRow className="justify-center">
           <ExpensesTable />
           <IncomesTable />
         </DashboardRow>
 
-        <DashboardRow>
+        <DashboardRow className="justify-center">
           <ExpensesPieChart />
           <IncomesPieChart />
         </DashboardRow>
 
-        <DashboardRow>
+        <DashboardRow className="justify-center">
           <ExpensesChart />
           <IncomesChart />
         </DashboardRow>
 
-        <DashboardRow>
+        <DashboardRow className="justify-center">
           <ExpensesEvolutionChart />
           <IncomesEvolutionChart />
         </DashboardRow>
-        <DashboardRow>
+        <DashboardRow className="justify-center">
           <LastTransactions />
         </DashboardRow>
       </div>

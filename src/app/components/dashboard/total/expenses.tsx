@@ -18,7 +18,9 @@ export function Expenses() {
     <Card className="pr-6">
       <CardHeader>
         <CardDescription>Expenses</CardDescription>
-        <CardTitle className="text-red-500">-{getExpenses()}€</CardTitle>
+        <CardTitle className="text-red-500 text-xl">
+          -{getExpenses()}€
+        </CardTitle>
       </CardHeader>
     </Card>
   );

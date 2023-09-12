@@ -16,7 +16,9 @@ export function Incomes() {
     <Card className="pr-6">
       <CardHeader>
         <CardDescription>Incomes</CardDescription>
-        <CardTitle className="text-green-500">+{getIncomes()}€</CardTitle>
+        <CardTitle className="text-green-500 text-xl">
+          +{getIncomes()}€
+        </CardTitle>
       </CardHeader>
     </Card>
   );
