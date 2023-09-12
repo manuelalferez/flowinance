@@ -6,10 +6,10 @@ import { useContext } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 
 export function Expenses() {
-  const { transactions } = useContext(AppContext);
+  const { filteredTransactions } = useContext(AppContext);
 
   function getExpenses() {
-    const incomes = getTotalExpenses(transactions);
+    const incomes = getTotalExpenses(filteredTransactions);
 
     return roundToTwoDecimal(incomes);
   }

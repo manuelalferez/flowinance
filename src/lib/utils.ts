@@ -190,3 +190,22 @@ export function formatDate(date: Date): string {
 
   return `${day}/${month}/${year}`;
 }
+
+export function getWeek(date: Date) {
+  const onejan = new Date(date.getFullYear(), 0, 1);
+  const week = Math.ceil(
+    ((date.getTime() - onejan.getTime()) / 86400000 + onejan.getDay() + 1) / 7
+  );
+  return week;
+}
+
+export function createDate(dateString: string) {
+  const [day, month, year] = dateString.split("/").map(Number);
+
+  if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+    const adjustedMonth = month - 1;
+    return new Date(year, adjustedMonth, day);
+  } else {
+    throw new Error("Invalid date format");
+  }
+}

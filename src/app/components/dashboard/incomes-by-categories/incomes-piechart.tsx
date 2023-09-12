@@ -13,11 +13,11 @@ interface ChartData {
 }
 
 export function IncomesPieChart() {
-  const { transactions } = useContext(AppContext);
+  const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
 
   useEffect(() => {
-    const incomes = transactions.filter((transaction) => {
+    const incomes = filteredTransactions.filter((transaction) => {
       return INCOMES_CATEGORIES.some(
         (category) => category === transaction.category
       );
@@ -41,9 +41,9 @@ export function IncomesPieChart() {
     }).filter((item): item is ChartData => item !== null);
 
     setData(dataArray);
-  }, [transactions]);
+  }, [filteredTransactions]);
 
-  return data ? (
+  return data.length !== 0 ? (
     <DashboardCard title="Incomes by category">
       <PieChart width={300} height={300}>
         <Pie

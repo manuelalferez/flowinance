@@ -19,10 +19,10 @@ interface ChartData {
 }
 
 export default function IncomesChart() {
-  const { transactions } = useContext(AppContext);
+  const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
   useEffect(() => {
-    const incomes = transactions.filter((transaction) => {
+    const incomes = filteredTransactions.filter((transaction) => {
       return INCOMES_CATEGORIES.some(
         (category) => category === transaction.category
       );
@@ -34,7 +34,7 @@ export default function IncomesChart() {
       };
     });
     setData(dataArray);
-  }, [transactions]);
+  }, [filteredTransactions]);
   return (
     <div>
       {data.length !== 0 ? (
