@@ -9,7 +9,7 @@ export function Expenses() {
   const { filteredTransactions } = useContext(AppContext);
 
   function getExpenses() {
-    const incomes = getTotalExpenses(filteredTransactions);
+    const incomes = getTotalExpenses(filteredTransactions!);
 
     return roundToTwoDecimal(incomes);
   }

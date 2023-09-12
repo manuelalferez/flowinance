@@ -20,9 +20,9 @@ export const UploadTransactionsContext =
 
 type AppContextType = {
   transactions: Transaction[];
-  filteredTransactions: Transaction[];
-  selected: number;
-  setSelected: (selected: number) => void;
+  filteredTransactions?: Transaction[];
+  selected?: number;
+  setSelected?: (selected: number) => void;
 };
 
 const defaultDashboardContext: AppContextType = {

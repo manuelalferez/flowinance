@@ -17,7 +17,7 @@ export function IncomesPieChart() {
   const [data, setData] = useState<ChartData[]>([]);
 
   useEffect(() => {
-    const incomes = filteredTransactions.filter((transaction) => {
+    const incomes = filteredTransactions!.filter((transaction) => {
       return INCOMES_CATEGORIES.some(
         (category) => category === transaction.category
       );

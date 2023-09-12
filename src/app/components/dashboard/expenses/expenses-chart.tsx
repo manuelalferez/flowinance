@@ -22,7 +22,7 @@ export default function ExpensesChart() {
   const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
   useEffect(() => {
-    const expenses = filteredTransactions.filter((transaction) => {
+    const expenses = filteredTransactions!.filter((transaction) => {
       return EXPENSES_CATEGORIES.some(
         (category) => category === transaction.category
       );

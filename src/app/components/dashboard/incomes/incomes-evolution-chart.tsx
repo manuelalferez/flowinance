@@ -22,7 +22,7 @@ export default function IncomesEvolutionChart() {
   const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
   useEffect(() => {
-    const expenses = filteredTransactions.filter((transaction) => {
+    const expenses = filteredTransactions!.filter((transaction) => {
       return INCOMES_CATEGORIES.some(
         (category) => category === transaction.category
       );

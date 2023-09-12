@@ -12,7 +12,7 @@ export function Filter() {
         <Toggle
           key={index}
           pressed={selected === index}
-          onPressedChange={() => setSelected(index)}
+          onPressedChange={() => setSelected!(index)}
           className="w-max"
         >
           {option}

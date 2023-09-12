@@ -22,7 +22,7 @@ export function IncomesTable() {
   const { filteredTransactions } = useContext(AppContext);
 
   const categoriesWithTotalExpenses = INCOMES_CATEGORIES.map((category) => {
-    const totalForCategory = filteredTransactions
+    const totalForCategory = filteredTransactions!
       .filter((transaction) => transaction.category === category)
       .reduce((acc, curr) => acc + curr.amount, 0);
 
