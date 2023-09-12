@@ -8,6 +8,8 @@ export function DashboardRow({
   className?: string;
 }) {
   return (
-    <div className={`flex justify-around gap-2 ${className}`}>{children}</div>
+    <div className={`flex gap-2 flex-wrap lg:flex-nowrap ${className}`}>
+      {children}
+    </div>
   );
 }

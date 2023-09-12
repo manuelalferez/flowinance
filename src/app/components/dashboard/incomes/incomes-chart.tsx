@@ -38,7 +38,7 @@ export default function IncomesChart() {
   return (
     <div>
       {data.length !== 0 ? (
-        <Card className="flex flex-col items-center p-8">
+        <Card className="flex flex-col items-center p-4">
           <CardTitle className="mb-6">Incomes</CardTitle>
           <LineChart
             width={600}
