@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 import * as CryptoJS from "crypto-js";
 
 const DELIMITER = ";";
-export const TRANSACTIONS_TABLE_NAME = "transactions";
+export const TRANSACTIONS_TABLE = "transactions";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -63,7 +63,7 @@ export async function getTransactions(
   userId: string
 ): Promise<TransactionSupabase[] | undefined> {
   const { data, error } = await supabase
-    .from(TRANSACTIONS_TABLE_NAME)
+    .from(TRANSACTIONS_TABLE)
     .select()
     .eq("user_id", userId);
   if (error) {
@@ -78,10 +78,23 @@ export async function uploadTransactionsToSupabase(
   transactions: TransactionSupabase[]
 ) {
   const { error } = await supabase
-    .from(TRANSACTIONS_TABLE_NAME)
+    .from(TRANSACTIONS_TABLE)
     .insert(transactions);
   if (error) {
     console.log("Error uploading transactions: ", error);
+  }
+}
+
+export async function deleteTransactionFromSupabase(
+  supabase: SupabaseClient<any, "public", any>,
+  id: string
+) {
+  const { error } = await supabase
+    .from(TRANSACTIONS_TABLE)
+    .delete()
+    .eq("id", id);
+  if (error) {
+    console.log("Error deleting transaction: ", error);
   }
 }
 
@@ -94,7 +107,7 @@ export async function addTransactionToSupabase(
     transaction.user_id
   );
   const { error } = await supabase
-    .from(TRANSACTIONS_TABLE_NAME)
+    .from(TRANSACTIONS_TABLE)
     .insert(transactionEncrypted);
   if (error) {
     console.log("Error uploading transaction: ", error);
