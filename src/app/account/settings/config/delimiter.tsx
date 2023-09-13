@@ -8,7 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
-import { useState } from "react";
+import { useSupabase } from "@/app/supabase-provider";
+import { getDelimiter, updateDelimiterInSupabase } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export function DelimiterConfig() {
   const delimiters = [
@@ -22,15 +24,29 @@ export function DelimiterConfig() {
     { value: "_", label: "Underscore" },
     { value: " ", label: "Space" },
   ];
-  const defaultDelimiter = delimiters[0].value;
-  const [delimiter, setDelimiter] = useState<string>(defaultDelimiter);
+  const [delimiter, setDelimiter] = useState<string>(delimiters[0].value);
+  const { supabase } = useSupabase();
+  async function handleDelimiterChange(value: string) {
+    setDelimiter(value);
+    await updateDelimiterInSupabase(supabase, value);
+  }
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getDelimiter(supabase);
+      setDelimiter(data);
+    }
+    fetchData();
+  }, []);
   return (
     <div>
       <h3 className="text-lg font-medium">Delimiter</h3>
       <p className="text-sm text-muted-foreground mb-2">
         Set your preferred delimiter for your csv files.
       </p>
-      <Select value={delimiter} onValueChange={setDelimiter}>
+      <Select
+        value={delimiter}
+        onValueChange={(value) => handleDelimiterChange(value)}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a delimiter" />
         </SelectTrigger>

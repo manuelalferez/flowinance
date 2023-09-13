@@ -22,3 +22,10 @@ export interface TransactionSupabase {
   id?: string;
   created_at?: string;
 }
+
+export interface UserSettingsSupabase {
+  id: string;
+  user_id: string;
+  currency: string;
+  delimiter: string;
+}

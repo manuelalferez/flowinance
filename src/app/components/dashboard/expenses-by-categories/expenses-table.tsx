@@ -19,7 +19,7 @@ type ExpenseCategory = {
 };
 
 export function ExpensesTable() {
-  const { filteredTransactions } = useContext(AppContext);
+  const { filteredTransactions, currency } = useContext(AppContext);
 
   const categoriesWithTotalExpenses = EXPENSES_CATEGORIES.map((category) => {
     const totalForCategory = filteredTransactions!
@@ -51,7 +51,10 @@ export function ExpensesTable() {
                 <TableCell className="p-2" key={index}>
                   {item.name}
                 </TableCell>
-                <TableCell className="p-2 pl-8">{item.value}€</TableCell>
+                <TableCell className="p-2 pl-8">
+                  {item.value}
+                  {currency}
+                </TableCell>
               </TableRow>
             </TableBody>
           )

@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 
 export function Balance() {
-  const { transactions } = useContext(AppContext);
+  const { transactions, currency } = useContext(AppContext);
 
   function getBalance() {
     const expenses = getTotalExpenses(transactions);
@@ -24,7 +24,10 @@ export function Balance() {
     <Card className="pr-14">
       <CardHeader>
         <CardDescription>Balance</CardDescription>
-        <CardTitle>{getBalance()}€</CardTitle>
+        <CardTitle>
+          {getBalance()}
+          {currency}
+        </CardTitle>
       </CardHeader>
     </Card>
   );

@@ -23,6 +23,7 @@ type AppContextType = {
   filteredTransactions?: Transaction[];
   selected?: number;
   setSelected?: (selected: number) => void;
+  currency?: string;
 };
 
 const defaultDashboardContext: AppContextType = {
