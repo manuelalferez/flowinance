@@ -58,7 +58,7 @@ export async function getUserId(supabase: SupabaseClient<any, "public", any>) {
   return userId;
 }
 
-export async function getTransactions(
+export async function getTransactionsFromSupabase(
   supabase: SupabaseClient<any, "public", any>,
   userId: string
 ): Promise<TransactionSupabase[] | undefined> {
@@ -95,6 +95,8 @@ export async function deleteTransactionFromSupabase(
     .eq("id", id);
   if (error) {
     console.log("Error deleting transaction: ", error);
+  } else {
+    revalidateTransactions();
   }
 }
 
@@ -111,7 +113,14 @@ export async function addTransactionToSupabase(
     .insert(transactionEncrypted);
   if (error) {
     console.log("Error uploading transaction: ", error);
+  } else {
+    revalidateTransactions();
   }
+}
+
+function revalidateTransactions() {
+  console.log("revalidating transactions");
+  localStorage.setItem("transactions-changed", "true");
 }
 
 function encryptTransactions(transaction: TransactionSupabase, key: string) {
@@ -207,5 +216,61 @@ export function createDate(dateString: string) {
     return new Date(year, adjustedMonth, day);
   } else {
     throw new Error("Invalid date format");
+  }
+}
+
+function isTransactionsExpired() {
+  const timestamp = localStorage.getItem("transactions-timestamp");
+  if (!timestamp) {
+    return true;
+  }
+
+  const date = new Date(timestamp);
+  const now = new Date();
+  const timeDifference = now.getTime() - date.getTime();
+  const oneHourInMilliseconds = 1000 * 60 * 60;
+
+  if (timeDifference > oneHourInMilliseconds) {
+    return true;
+  }
+
+  return false;
+}
+
+function getTransactionsFromLocalStorage() {
+  const transactions = localStorage.getItem("transactions");
+  const timestamp = localStorage.getItem("transactions-timestamp");
+  const transactionsChanged = localStorage.getItem("transactions-changed");
+
+  if (!!transactions && !!timestamp && transactionsChanged) {
+    return null;
+  }
+  if (isTransactionsExpired()) {
+    return null;
+  } else {
+    return JSON.parse(transactions!) as TransactionSupabase[];
+  }
+}
+
+function saveTransactionsToLocalStorage(transactions: TransactionSupabase[]) {
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+  localStorage.setItem("transactions-timestamp", new Date().toString());
+  localStorage.setItem("transactions-changed", "false");
+}
+
+export async function getTransactions(
+  supabase: SupabaseClient<any, "public", any>,
+  userId: string
+): Promise<TransactionSupabase[] | null> {
+  const transactions = getTransactionsFromLocalStorage();
+  if (transactions) {
+    return transactions;
+  } else {
+    const data = await getTransactionsFromSupabase(supabase, userId);
+    if (!data) {
+      return null;
+    }
+    saveTransactionsToLocalStorage(data);
+    return data;
   }
 }

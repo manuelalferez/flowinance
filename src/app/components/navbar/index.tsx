@@ -8,7 +8,7 @@ import {
   navigationMenuTriggerStyle,
 } from "../ui/navigation-menu";
 import { SignInButton } from "./sign-in-button";
-import SignOutButton from "./sign-out-button";
+import { AccountButton } from "./account-button";
 
 export function Narbar({ session }: any) {
   return (
@@ -27,7 +27,7 @@ export function Narbar({ session }: any) {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          {session ? <SignOutButton /> : <SignInButton />}
+          {session ? <AccountButton /> : <SignInButton />}
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
