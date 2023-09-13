@@ -5,7 +5,8 @@ import { twMerge } from "tailwind-merge";
 import * as CryptoJS from "crypto-js";
 
 const DELIMITER = ";";
-export const TRANSACTIONS_TABLE = "transactions";
+const TRANSACTIONS_TABLE = "transactions";
+const DELETED_USERS_TABLE = "deleted_users";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -58,10 +59,20 @@ export async function getUserId(supabase: SupabaseClient<any, "public", any>) {
   return userId;
 }
 
-export async function getTransactions(
-  supabase: SupabaseClient<any, "public", any>,
-  userId: string
+async function getUserEmail(supabase: SupabaseClient<any, "public", any>) {
+  const email = await (
+    await supabase.auth.getSession()
+  ).data.session?.user.email;
+  return email;
+}
+
+export async function getTransactionsFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
 ): Promise<TransactionSupabase[] | undefined> {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
   const { data, error } = await supabase
     .from(TRANSACTIONS_TABLE)
     .select()
@@ -95,6 +106,8 @@ export async function deleteTransactionFromSupabase(
     .eq("id", id);
   if (error) {
     console.log("Error deleting transaction: ", error);
+  } else {
+    revalidateTransactions();
   }
 }
 
@@ -111,6 +124,87 @@ export async function addTransactionToSupabase(
     .insert(transactionEncrypted);
   if (error) {
     console.log("Error uploading transaction: ", error);
+  } else {
+    revalidateTransactions();
+  }
+}
+
+function revalidateTransactions() {
+  localStorage.setItem("transactions-changed", "true");
+}
+
+async function deleteAllTransactionsFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { error } = await supabase
+    .from(TRANSACTIONS_TABLE)
+    .delete()
+    .eq("user_id", userId);
+  if (error) {
+    console.log("Error deleting transactions: ", error);
+  }
+  console.log("All Transactions deleted for user: ", userId);
+}
+async function deleteLocalStorage() {
+  localStorage.removeItem("transactions");
+  localStorage.removeItem("transactions-timestamp");
+  localStorage.removeItem("transactions-changed");
+}
+
+async function deleteUserFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  const userEmail = await getUserEmail(supabase);
+  if (!userId || !userEmail) {
+    return;
+  }
+  const { error } = await supabase
+    .from(DELETED_USERS_TABLE)
+    .insert({ user_id: userId, email: userEmail });
+  if (error) {
+    console.log("Error deleting user: ", error);
+  } else {
+    console.log("User deleted successfully");
+  }
+}
+
+export async function deleteAccountFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+
+  await deleteAllTransactionsFromSupabase(supabase);
+  deleteLocalStorage();
+  await deleteUserFromSupabase(supabase);
+}
+
+export async function userHasBeenDeleted(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { data, error } = await supabase
+    .from(DELETED_USERS_TABLE)
+    .select()
+    .eq("user_id", userId);
+  if (error) {
+    console.log("Error getting deleted users: ", error);
+    return;
+  }
+  if (data && data.length > 0) {
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -207,5 +301,60 @@ export function createDate(dateString: string) {
     return new Date(year, adjustedMonth, day);
   } else {
     throw new Error("Invalid date format");
+  }
+}
+
+function isTransactionsExpired() {
+  const timestamp = localStorage.getItem("transactions-timestamp");
+  if (!timestamp) {
+    return true;
+  }
+
+  const date = new Date(timestamp);
+  const now = new Date();
+  const timeDifference = now.getTime() - date.getTime();
+  const oneHourInMilliseconds = 1000 * 60 * 60;
+
+  if (timeDifference > oneHourInMilliseconds) {
+    return true;
+  }
+
+  return false;
+}
+
+function getTransactionsFromLocalStorage() {
+  const transactions = localStorage.getItem("transactions");
+  const timestamp = localStorage.getItem("transactions-timestamp");
+  const transactionsChanged = localStorage.getItem("transactions-changed");
+
+  if (!!transactions && !!timestamp && transactionsChanged) {
+    return null;
+  }
+  if (isTransactionsExpired()) {
+    return null;
+  } else {
+    return JSON.parse(transactions!) as TransactionSupabase[];
+  }
+}
+
+function saveTransactionsToLocalStorage(transactions: TransactionSupabase[]) {
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+  localStorage.setItem("transactions-timestamp", new Date().toString());
+  localStorage.setItem("transactions-changed", "false");
+}
+
+export async function getTransactions(
+  supabase: SupabaseClient<any, "public", any>
+): Promise<TransactionSupabase[] | null> {
+  const transactions = getTransactionsFromLocalStorage();
+  if (transactions) {
+    return transactions;
+  } else {
+    const data = await getTransactionsFromSupabase(supabase);
+    if (!data) {
+      return null;
+    }
+    saveTransactionsToLocalStorage(data);
+    return data;
   }
 }

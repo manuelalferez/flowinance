@@ -18,3 +18,13 @@ export async function getSession() {
     return null;
   }
 }
+
+export async function getSupabase() {
+  const supabase = createServerSupabaseClient();
+  try {
+    return supabase;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+}

@@ -1,12 +1,7 @@
 "use client";
 
 import { AppContext } from "@/lib/context";
-import {
-  decryptTransactions,
-  getTransactions,
-  getUserId,
-  sortTransactions,
-} from "@/lib/utils";
+import { decryptTransactions, getTransactions, getUserId } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
@@ -14,10 +9,12 @@ import Loading from "../loading";
 import { useSupabase } from "../supabase-provider";
 import { Transaction } from "../types/global";
 import { TransactionsTable } from "./ui/transactions-table";
+import { useToast } from "../components/ui/use-toast";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { supabase } = useSupabase();
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,11 +23,16 @@ export default function Transactions() {
       if (!userId) {
         return;
       }
-      const data = await getTransactions(supabase, userId);
-      if (data) {
+      const data = await getTransactions(supabase);
+
+      if (!data) {
+        toast({
+          description:
+            "❎ Error fetching transactions. Please, try again later.",
+        });
+      } else {
         const decryptData = decryptTransactions(data, userId);
-        const sortedTransactions = sortTransactions(decryptData);
-        setTransactions(sortedTransactions);
+        setTransactions(decryptData);
       }
     };
 

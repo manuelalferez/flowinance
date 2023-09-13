@@ -26,6 +26,7 @@ import { DashboardRow } from "./ui/dashboard-row";
 import { LastTransactions } from "./last-transactions";
 import Loading from "@/app/loading";
 import { Filter } from "./filter";
+import { useToast } from "../ui/use-toast";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -34,6 +35,7 @@ export default function Dashboard() {
   >([]);
   const { supabase } = useSupabase();
   const [selected, setSelected] = useState(1);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,10 +44,15 @@ export default function Dashboard() {
       if (!userId) {
         return;
       }
-      const data = await getTransactions(supabase, userId);
-      if (data) {
-        const decryptData = decryptTransactions(data, userId);
+      const data = await getTransactions(supabase);
 
+      if (!data) {
+        toast({
+          description:
+            "❎ Error fetching transactions. Please, try again later.",
+        });
+      } else {
+        const decryptData = decryptTransactions(data, userId);
         setTransactions(decryptData);
       }
     };
