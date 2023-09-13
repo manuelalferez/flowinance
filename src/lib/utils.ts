@@ -4,9 +4,20 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as CryptoJS from "crypto-js";
 
-const DELIMITER = ";";
+const DEFAULT_DELIMITER = ";";
+const DEFAULT_CURRENCY = "eur";
 const TRANSACTIONS_TABLE = "transactions";
 const DELETED_USERS_TABLE = "deleted_users";
+const SETTINGS_TABLE = "settings";
+
+export enum LocalStorage {
+  currency = "currency",
+  delimiter = "delimiter",
+  transactions = "transactions",
+  settingsUpdated = "settings-updated",
+  transactionsTimeStamp = "transactions-timestamp",
+  transactionsChanged = "transactions-changed",
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,9 +45,9 @@ export function roundToTwoDecimal(num: number) {
 
 export function extractFields(lines: string[]): string[][] {
   let fields: string[][] = [];
-
+  const delimiter = getDelimiterFromLocalStorage();
   lines.forEach((line) => {
-    const splittedLine = line.split(DELIMITER);
+    const splittedLine = line.split(delimiter ?? DEFAULT_DELIMITER);
     if (!hasEmptyStringExceptFirst(splittedLine)) {
       fields.push(splittedLine);
     }
@@ -130,7 +141,7 @@ export async function addTransactionToSupabase(
 }
 
 function revalidateTransactions() {
-  localStorage.setItem("transactions-changed", "true");
+  localStorage.setItem(LocalStorage.transactionsChanged, "true");
 }
 
 async function deleteAllTransactionsFromSupabase(
@@ -150,9 +161,9 @@ async function deleteAllTransactionsFromSupabase(
   console.log("All Transactions deleted for user: ", userId);
 }
 async function deleteLocalStorage() {
-  localStorage.removeItem("transactions");
-  localStorage.removeItem("transactions-timestamp");
-  localStorage.removeItem("transactions-changed");
+  localStorage.removeItem(LocalStorage.transactions);
+  localStorage.removeItem(LocalStorage.transactionsTimeStamp);
+  localStorage.removeItem(LocalStorage.transactionsChanged);
 }
 
 async function deleteUserFromSupabase(
@@ -305,7 +316,7 @@ export function createDate(dateString: string) {
 }
 
 function isTransactionsExpired() {
-  const timestamp = localStorage.getItem("transactions-timestamp");
+  const timestamp = localStorage.getItem(LocalStorage.transactionsTimeStamp);
   if (!timestamp) {
     return true;
   }
@@ -323,9 +334,11 @@ function isTransactionsExpired() {
 }
 
 function getTransactionsFromLocalStorage() {
-  const transactions = localStorage.getItem("transactions");
-  const timestamp = localStorage.getItem("transactions-timestamp");
-  const transactionsChanged = localStorage.getItem("transactions-changed");
+  const transactions = localStorage.getItem(LocalStorage.transactions);
+  const timestamp = localStorage.getItem(LocalStorage.transactionsTimeStamp);
+  const transactionsChanged = localStorage.getItem(
+    LocalStorage.transactionsChanged
+  );
 
   if (!!transactions && !!timestamp && transactionsChanged) {
     return null;
@@ -338,9 +351,12 @@ function getTransactionsFromLocalStorage() {
 }
 
 function saveTransactionsToLocalStorage(transactions: TransactionSupabase[]) {
-  localStorage.setItem("transactions", JSON.stringify(transactions));
-  localStorage.setItem("transactions-timestamp", new Date().toString());
-  localStorage.setItem("transactions-changed", "false");
+  localStorage.setItem(LocalStorage.transactions, JSON.stringify(transactions));
+  localStorage.setItem(
+    LocalStorage.transactionsTimeStamp,
+    new Date().toString()
+  );
+  localStorage.setItem(LocalStorage.transactionsChanged, "false");
 }
 
 export async function getTransactions(
@@ -357,4 +373,162 @@ export async function getTransactions(
     saveTransactionsToLocalStorage(data);
     return data;
   }
+}
+
+async function getDelimiterFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+): Promise<string | undefined> {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { data, error } = await supabase
+    .from(SETTINGS_TABLE)
+    .select("delimiter")
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error getting transactions for the user ${userId}: `, error);
+    return;
+  }
+  if (!data || data.length === 0) {
+    return;
+  }
+  return data[0].delimiter;
+}
+
+function saveDelimiterInLocalStorage(delimiter: string) {
+  localStorage.setItem(LocalStorage.delimiter, delimiter);
+  localStorage.setItem(LocalStorage.settingsUpdated, "false");
+}
+
+function saveCurrencyInLocalStorage(currency: string) {
+  localStorage.setItem(LocalStorage.currency, currency);
+  localStorage.setItem(LocalStorage.settingsUpdated, "false");
+}
+
+async function createSettings(supabase: SupabaseClient<any, "public", any>) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { error } = await supabase.from(SETTINGS_TABLE).insert({
+    user_id: userId,
+    currency: DEFAULT_CURRENCY,
+    delimiter: DEFAULT_DELIMITER,
+  });
+  if (error) {
+    console.log("Error creating settings: ", error);
+  }
+}
+
+export async function getDelimiter(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const delimiterFromLocalStorage = getDelimiterFromLocalStorage();
+  if (!!delimiterFromLocalStorage && !isSettingsUpdated()) {
+    return delimiterFromLocalStorage;
+  }
+  const delimiter = await getDelimiterFromSupabase(supabase);
+
+  if (!delimiter) {
+    saveDelimiterInLocalStorage(DEFAULT_DELIMITER);
+    await createSettings(supabase);
+    return DEFAULT_DELIMITER;
+  }
+  saveDelimiterInLocalStorage(delimiter);
+  return delimiter;
+}
+
+export async function getCurrency(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const currencyFromLocalStorage = getCurrencyFromLocalStorage();
+  if (!!currencyFromLocalStorage && !isSettingsUpdated()) {
+    return currencyFromLocalStorage;
+  }
+  const currency = await getCurrencyFromSupabase(supabase);
+  if (!currency) {
+    createSettings(supabase);
+    saveCurrencyInLocalStorage(DEFAULT_CURRENCY);
+    return DEFAULT_CURRENCY;
+  }
+  saveCurrencyInLocalStorage(currency);
+  return currency;
+}
+
+async function getCurrencyFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { data, error } = await supabase
+    .from(SETTINGS_TABLE)
+    .select("currency")
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error getting currency for the user ${userId}: `, error);
+    return;
+  }
+  if (!data || data.length === 0) {
+    return;
+  }
+  return data[0].currency;
+}
+
+function getDelimiterFromLocalStorage() {
+  const delimiter = localStorage.getItem(LocalStorage.delimiter);
+  return delimiter;
+}
+
+function isSettingsUpdated() {
+  return localStorage.getItem(LocalStorage.settingsUpdated);
+}
+
+function getCurrencyFromLocalStorage() {
+  const currency = localStorage.getItem(LocalStorage.currency);
+  return currency;
+}
+
+function revalidateSettings() {
+  localStorage.setItem(LocalStorage.settingsUpdated, "true");
+}
+
+export async function updateCurrencyInSupabase(
+  supabase: SupabaseClient<any, "public", any>,
+  currency: string
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { error } = await supabase
+    .from(SETTINGS_TABLE)
+    .update({ currency: currency })
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error setting currency for the user ${userId}: `, error);
+    return;
+  }
+  revalidateSettings();
+}
+
+export async function updateDelimiterInSupabase(
+  supabase: SupabaseClient<any, "public", any>,
+  delimiter: string
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { error } = await supabase
+    .from(SETTINGS_TABLE)
+    .update({ delimiter: delimiter })
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error setting delimiter for the user ${userId}: `, error);
+    return;
+  }
+  revalidateSettings();
 }

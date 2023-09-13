@@ -19,7 +19,7 @@ type IncomeCategory = {
 };
 
 export function IncomesTable() {
-  const { filteredTransactions } = useContext(AppContext);
+  const { filteredTransactions, currency } = useContext(AppContext);
 
   const categoriesWithTotalExpenses = INCOMES_CATEGORIES.map((category) => {
     const totalForCategory = filteredTransactions!
@@ -49,7 +49,10 @@ export function IncomesTable() {
             <TableBody key={index}>
               <TableRow key={index}>
                 <TableCell className="p-2">{item.name}</TableCell>
-                <TableCell className="p-2 pl-8">{item.value}€</TableCell>
+                <TableCell className="p-2 pl-8">
+                  {item.value}
+                  {currency}
+                </TableCell>
               </TableRow>
             </TableBody>
           )

@@ -6,6 +6,8 @@ import { AppContext } from "@/lib/context";
 import {
   createDate,
   decryptTransactions,
+  getCurrency,
+  getDelimiter,
   getTransactions,
   getUserId,
   getWeek,
@@ -35,27 +37,35 @@ export default function Dashboard() {
   >([]);
   const { supabase } = useSupabase();
   const [selected, setSelected] = useState(1);
+  const [currency, setCurrency] = useState("€");
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       const userId = await getUserId(supabase);
 
       if (!userId) {
         return;
       }
-      const data = await getTransactions(supabase);
 
-      if (!data) {
-        toast({
-          description:
-            "❎ Error fetching transactions. Please, try again later.",
-        });
-      } else {
-        const decryptData = decryptTransactions(data, userId);
-        setTransactions(decryptData);
+      try {
+        const data = await getTransactions(supabase);
+        if (!data) {
+          toast({
+            description:
+              "❎ Error fetching transactions. Please, try again later.",
+          });
+        } else {
+          const decryptData = decryptTransactions(data, userId);
+          setTransactions(decryptData);
+        }
+
+        const currency = await getCurrency(supabase);
+        setCurrency(currency === "eur" ? "€" : "$");
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    };
+    }
 
     fetchData();
   }, []);
@@ -102,7 +112,13 @@ export default function Dashboard() {
 
   return transactions.length !== 0 ? (
     <AppContext.Provider
-      value={{ filteredTransactions, transactions, selected, setSelected }}
+      value={{
+        filteredTransactions,
+        transactions,
+        selected,
+        setSelected,
+        currency,
+      }}
     >
       <div className="flex flex-col w-1/2 gap-10">
         <Filter />

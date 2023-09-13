@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 
 export function Expenses() {
-  const { filteredTransactions } = useContext(AppContext);
+  const { filteredTransactions, currency } = useContext(AppContext);
 
   function getExpenses() {
     const incomes = getTotalExpenses(filteredTransactions!);
@@ -19,7 +19,8 @@ export function Expenses() {
       <CardHeader>
         <CardDescription>Expenses</CardDescription>
         <CardTitle className="text-red-500 text-xl">
-          -{getExpenses()}€
+          -{getExpenses()}
+          {currency}
         </CardTitle>
       </CardHeader>
     </Card>

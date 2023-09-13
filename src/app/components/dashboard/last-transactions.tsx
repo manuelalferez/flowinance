@@ -14,7 +14,7 @@ import {
 import { DashboardCard } from "./ui/dashboard-card";
 
 export function LastTransactions() {
-  const { transactions } = useContext(AppContext);
+  const { transactions, currency } = useContext(AppContext);
 
   const shortedTransactions = sortTransactions(transactions);
   const lastTransactions = shortedTransactions.slice(
@@ -44,6 +44,7 @@ export function LastTransactions() {
               </TableCell>
               <TableCell className="p-2" key={`${index}-amount`}>
                 {item.amount}
+                {currency}
               </TableCell>
               <TableCell className="p-2" key={`${index}-category`}>
                 {item.category}
