@@ -1,12 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import SupabaseProvider from "./supabase-provider";
 import { Narbar } from "./components/navbar";
-import { getSession } from "./supabase-server";
+import { getSession, getSupabase } from "./supabase-server";
 import { Toaster } from "./components/ui/toaster";
+import { userHasBeenDeleted } from "@/lib/utils";
+import AccountDeleted from "./account/deleted/page";
 
-const inter = Inter({ subsets: ["latin"] });
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -20,10 +20,31 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
+  const supabase = await getSupabase();
+  if (supabase) {
+    const userDeleted = await userHasBeenDeleted(supabase);
+    if (userDeleted) {
+      await supabase.auth.signOut();
+      return (
+        <html lang="en">
+          <SupabaseProvider>
+            <body>
+              <div>
+                <Narbar session={session} />
+                <AccountDeleted />
+              </div>
+              <Toaster />
+            </body>
+          </SupabaseProvider>
+        </html>
+      );
+    }
+  }
+
   return (
     <html lang="en">
       <SupabaseProvider>
-        <body className={`overflow-x-hidden ${inter.className}`}>
+        <body>
           <div>
             <Narbar session={session} />
             <div>{children}</div>

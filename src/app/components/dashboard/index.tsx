@@ -44,7 +44,7 @@ export default function Dashboard() {
       if (!userId) {
         return;
       }
-      const data = await getTransactions(supabase, userId);
+      const data = await getTransactions(supabase);
 
       if (!data) {
         toast({

@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/app/components/ui/button";
 import {
   Dialog,
@@ -10,9 +11,12 @@ import {
   DialogTrigger,
 } from "@/app/components/ui/dialog";
 import { Input } from "@/app/components/ui/input";
+import { useSupabase } from "@/app/supabase-provider";
+import { deleteAccountFromSupabase } from "@/lib/utils";
 import { useState } from "react";
 
 export function CustomDialog({ children }: { children: React.ReactNode }) {
+  const { supabase } = useSupabase();
   const [open, setOpen] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
@@ -20,12 +24,23 @@ export function CustomDialog({ children }: { children: React.ReactNode }) {
     setIsValid(e.target.value === "delete-account");
   }
 
+  async function handleDelete() {
+    try {
+      await deleteAccountFromSupabase(supabase);
+      await supabase.auth.signOut();
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+    setOpen(false);
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {children}
-      <DialogTrigger>
+      <div className="mt-2">
         <Button variant={"destructive"}>Delete account</Button>
-      </DialogTrigger>
+      </div>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Are you sure?</DialogTitle>
@@ -43,7 +58,7 @@ export function CustomDialog({ children }: { children: React.ReactNode }) {
           <Button
             variant={"destructive"}
             disabled={!isValid}
-            onClick={() => setOpen(false)}
+            onClick={handleDelete}
           >
             I want to delete my account
           </Button>

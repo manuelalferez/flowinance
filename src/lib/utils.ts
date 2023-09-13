@@ -5,7 +5,8 @@ import { twMerge } from "tailwind-merge";
 import * as CryptoJS from "crypto-js";
 
 const DELIMITER = ";";
-export const TRANSACTIONS_TABLE = "transactions";
+const TRANSACTIONS_TABLE = "transactions";
+const DELETED_USERS_TABLE = "deleted_users";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -58,10 +59,20 @@ export async function getUserId(supabase: SupabaseClient<any, "public", any>) {
   return userId;
 }
 
+async function getUserEmail(supabase: SupabaseClient<any, "public", any>) {
+  const email = await (
+    await supabase.auth.getSession()
+  ).data.session?.user.email;
+  return email;
+}
+
 export async function getTransactionsFromSupabase(
-  supabase: SupabaseClient<any, "public", any>,
-  userId: string
+  supabase: SupabaseClient<any, "public", any>
 ): Promise<TransactionSupabase[] | undefined> {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
   const { data, error } = await supabase
     .from(TRANSACTIONS_TABLE)
     .select()
@@ -119,8 +130,82 @@ export async function addTransactionToSupabase(
 }
 
 function revalidateTransactions() {
-  console.log("revalidating transactions");
   localStorage.setItem("transactions-changed", "true");
+}
+
+async function deleteAllTransactionsFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { error } = await supabase
+    .from(TRANSACTIONS_TABLE)
+    .delete()
+    .eq("user_id", userId);
+  if (error) {
+    console.log("Error deleting transactions: ", error);
+  }
+  console.log("All Transactions deleted for user: ", userId);
+}
+async function deleteLocalStorage() {
+  localStorage.removeItem("transactions");
+  localStorage.removeItem("transactions-timestamp");
+  localStorage.removeItem("transactions-changed");
+}
+
+async function deleteUserFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  const userEmail = await getUserEmail(supabase);
+  if (!userId || !userEmail) {
+    return;
+  }
+  const { error } = await supabase
+    .from(DELETED_USERS_TABLE)
+    .insert({ user_id: userId, email: userEmail });
+  if (error) {
+    console.log("Error deleting user: ", error);
+  } else {
+    console.log("User deleted successfully");
+  }
+}
+
+export async function deleteAccountFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+
+  await deleteAllTransactionsFromSupabase(supabase);
+  deleteLocalStorage();
+  await deleteUserFromSupabase(supabase);
+}
+
+export async function userHasBeenDeleted(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { data, error } = await supabase
+    .from(DELETED_USERS_TABLE)
+    .select()
+    .eq("user_id", userId);
+  if (error) {
+    console.log("Error getting deleted users: ", error);
+    return;
+  }
+  if (data && data.length > 0) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function encryptTransactions(transaction: TransactionSupabase, key: string) {
@@ -259,14 +344,13 @@ function saveTransactionsToLocalStorage(transactions: TransactionSupabase[]) {
 }
 
 export async function getTransactions(
-  supabase: SupabaseClient<any, "public", any>,
-  userId: string
+  supabase: SupabaseClient<any, "public", any>
 ): Promise<TransactionSupabase[] | null> {
   const transactions = getTransactionsFromLocalStorage();
   if (transactions) {
     return transactions;
   } else {
-    const data = await getTransactionsFromSupabase(supabase, userId);
+    const data = await getTransactionsFromSupabase(supabase);
     if (!data) {
       return null;
     }

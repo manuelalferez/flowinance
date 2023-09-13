@@ -23,7 +23,7 @@ export default function Transactions() {
       if (!userId) {
         return;
       }
-      const data = await getTransactions(supabase, userId);
+      const data = await getTransactions(supabase);
 
       if (!data) {
         toast({
