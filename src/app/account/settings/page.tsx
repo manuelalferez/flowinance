@@ -13,7 +13,7 @@ export default function Settings() {
             <h3 className="text-lg font-medium">Settings</h3>
             <p className="text-sm text-muted-foreground">
               Update your account settings. Set your preferred currency, the
-              delimiter your ".csv" files have and much more.
+              delimiter your .csv files have and much more.
             </p>
           </div>
           <UserInfo />
