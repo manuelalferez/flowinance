@@ -40,16 +40,18 @@ export default function Transactions() {
   }, []);
 
   return (
-    <AppContext.Provider value={{ transactions }}>
-      <div className="flex items-start mb-10 gap-2">
-        <Button asChild>
-          <Link href="/transactions/upload">Upload</Link>
-        </Button>
-        <Button asChild>
-          <Link href="/transactions/add">Add</Link>
-        </Button>
-      </div>
-      {transactions.length != 0 ? <TransactionsTable /> : <Loading />}
-    </AppContext.Provider>
+    <div className="min-h-screen mb-2">
+      <AppContext.Provider value={{ transactions }}>
+        <div className="flex items-start mb-10 gap-2 ">
+          <Button asChild>
+            <Link href="/transactions/upload">Upload</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/transactions/add">Add</Link>
+          </Button>
+        </div>
+        {transactions.length != 0 ? <TransactionsTable /> : <Loading />}
+      </AppContext.Provider>
+    </div>
   );
 }
