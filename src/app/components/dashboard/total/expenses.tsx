@@ -10,16 +10,18 @@ export function Expenses() {
 
   function getExpenses() {
     const incomes = getTotalExpenses(filteredTransactions!);
-
     return roundToTwoDecimal(incomes);
   }
+
+  const expenses = getExpenses();
 
   return (
     <Card className="pr-6">
       <CardHeader>
         <CardDescription>Expenses</CardDescription>
         <CardTitle className="text-red-500 text-xl">
-          -{getExpenses()}
+          {expenses !== 0 && "-"}
+          {expenses}
           {currency}
         </CardTitle>
       </CardHeader>

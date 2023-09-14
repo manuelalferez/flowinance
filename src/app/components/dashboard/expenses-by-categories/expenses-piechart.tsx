@@ -69,7 +69,7 @@ export function ExpensesPieChart() {
   ) : (
     <DashboardNoDataCard
       title="Expenses by category"
-      description="You have not generated any expenses in this category."
+      description="You have not generated any expense so far."
     />
   );
 }
