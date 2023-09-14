@@ -11,13 +11,14 @@ export function Incomes() {
     const incomes = getTotalIncomes(filteredTransactions!);
     return roundToTwoDecimal(incomes);
   }
-
+  const incomes = getIncomes();
   return (
     <Card className="pr-6">
       <CardHeader>
         <CardDescription>Incomes</CardDescription>
         <CardTitle className="text-green-500 text-xl">
-          +{getIncomes()}
+          {incomes !== 0 && "+"}
+          {incomes}
           {currency}
         </CardTitle>
       </CardHeader>

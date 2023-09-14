@@ -6,6 +6,7 @@ import { getSession, getSupabase } from "./supabase-server";
 import { Toaster } from "./components/ui/toaster";
 import { userHasBeenDeleted } from "@/lib/utils";
 import AccountDeleted from "./account/deleted/page";
+import { Footer } from "./components/footer";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +34,7 @@ export default async function RootLayout({
                 <Narbar session={session} />
                 <AccountDeleted />
               </div>
+              <Footer />
               <Toaster />
             </body>
           </SupabaseProvider>
@@ -44,11 +46,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <SupabaseProvider>
-        <body>
+        <body className="overflow-x-hidden">
           <div>
             <Narbar session={session} />
             <div>{children}</div>
           </div>
+          <Footer className="w-screen border-t-2" />
           <Toaster />
         </body>
       </SupabaseProvider>

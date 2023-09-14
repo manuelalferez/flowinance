@@ -70,7 +70,9 @@ export async function getUserId(supabase: SupabaseClient<any, "public", any>) {
   return userId;
 }
 
-async function getUserEmail(supabase: SupabaseClient<any, "public", any>) {
+export async function getUserEmail(
+  supabase: SupabaseClient<any, "public", any>
+) {
   const email = await (
     await supabase.auth.getSession()
   ).data.session?.user.email;
