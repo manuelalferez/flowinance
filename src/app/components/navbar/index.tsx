@@ -12,20 +12,32 @@ import { AccountButton } from "./account-button";
 
 export function Narbar({ session }: any) {
   return (
-    <NavigationMenu className="p-4">
+    <NavigationMenu className="p-4 overflow-x-hidden">
       <NavigationMenuList className="flex justify-around w-screen">
-        <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Dashboard
-            </NavigationMenuLink>
-          </Link>
-          <Link href="/transactions" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Transactions
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
+        <div className="flex gap-1">
+          <NavigationMenuItem>
+            <Link href="/" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Home
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+
+          {session && (
+            <NavigationMenuItem className="flex gap-1">
+              <Link href="/dashboard" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Dashboard
+                </NavigationMenuLink>
+              </Link>
+              <Link href="/transactions" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Transactions
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          )}
+        </div>
         <NavigationMenuItem>
           {session ? <AccountButton /> : <SignInButton />}
         </NavigationMenuItem>
