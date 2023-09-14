@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { DashboardCard } from "./ui/dashboard-card";
+import { CardDescription } from "../ui/card";
 
 export function LastTransactions() {
   const { transactions, currency } = useContext(AppContext);
@@ -23,6 +24,11 @@ export function LastTransactions() {
 
   return (
     <DashboardCard title="Last transactions">
+      <CardDescription className="mb-4">
+        Here&apos;s the latest gossip from your wallet: Your 10 most recent
+        moves!
+      </CardDescription>
+
       <Table key="expenses-table">
         <TableHeader>
           <TableRow>

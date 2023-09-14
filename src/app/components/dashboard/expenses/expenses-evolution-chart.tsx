@@ -10,7 +10,7 @@ import {
   Area,
   AreaChart,
 } from "recharts";
-import { Card, CardTitle } from "../../ui/card";
+import { Card, CardDescription, CardTitle } from "../../ui/card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
 interface ChartData {
@@ -46,6 +46,10 @@ export default function ExpensesEvolutionChart() {
       {data.length !== 0 ? (
         <Card className="flex flex-col items-center p-4">
           <CardTitle className="mb-6">Expenses Evolution</CardTitle>
+          <CardDescription className="mb-4">
+            Visualize the trend of your expenses, how they have grown over the
+            days.
+          </CardDescription>
           <AreaChart
             width={500}
             height={400}

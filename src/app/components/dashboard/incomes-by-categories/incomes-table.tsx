@@ -12,6 +12,7 @@ import {
 } from "../../ui/table";
 import { DashboardCard } from "../ui/dashboard-card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
+import { CardDescription } from "../../ui/card";
 
 type IncomeCategory = {
   name: string;
@@ -37,6 +38,10 @@ export function IncomesTable() {
 
   return categoriesWithTotalExpenses.length !== 0 ? (
     <DashboardCard title="Incomes by categories">
+      <CardDescription className="mb-4">
+        Explore a detailed breakdown of your incomes in the table below,
+        conveniently organized for easy reference and understanding.
+      </CardDescription>
       <Table key="incomes-table">
         <TableHeader>
           <TableRow>

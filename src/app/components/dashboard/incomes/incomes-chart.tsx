@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { Card, CardTitle } from "../../ui/card";
+import { Card, CardDescription, CardTitle } from "../../ui/card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
 interface ChartData {
@@ -40,6 +40,10 @@ export default function IncomesChart() {
       {data.length !== 0 ? (
         <Card className="flex flex-col items-center p-4">
           <CardTitle className="mb-6">Incomes</CardTitle>
+          <CardDescription className="mb-4">
+            See your daily incomes at a glance. Effortlessly understand your
+            daily incomes trends.
+          </CardDescription>
           <LineChart
             width={600}
             height={300}
