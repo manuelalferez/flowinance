@@ -6,6 +6,7 @@ interface TransactionsContext {
   setTransactions: (transactions: string[][]) => void;
   nextStep: () => void;
   uploadTransactions: (matrix: string[][]) => void;
+  setLoading?: (loading: boolean) => void;
 }
 
 const defaultContext: TransactionsContext = {

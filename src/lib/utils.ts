@@ -3,6 +3,7 @@ import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as CryptoJS from "crypto-js";
+import OpenAI from "openai";
 
 const DEFAULT_DELIMITER = ";";
 const DEFAULT_CURRENCY = "eur";
@@ -53,6 +54,36 @@ export function extractFields(lines: string[]): string[][] {
     }
   });
   return fields;
+}
+
+function stringToNestedArray(inputString: string): string[][] {
+  const lines = inputString.split("\n");
+  const result = lines
+    .map((line) => line.split("|").map((item) => item.trim()))
+    .filter((subArray) => subArray.length > 1)
+    .filter((_, index) => index !== 1);
+
+  return result;
+}
+
+export async function extractFieldsUsingOpenAi(
+  lines: string[]
+): Promise<string[][] | undefined> {
+  const text = `given the next table: ${lines} give me the result table in a string format with a column for date, concept and amount. Delete those rows that don't bellow to the column. Dont give me the code. I just want the result. I want the amount to be always positive. The date has to be in the format DD/MM/YYYY. After it, add a new column called category. Categorize each row account with the next list of categories depending of the concept. Exacly the next categories: "Home", "Groceries", "Transportation", "Subscriptions", "Trips", "Hobbies", "Health", "Bar. cafe. restaurant", "Clothes & shoes", "Internet", "Others", "Online shopping", "Donations & Gifts", "Rent", "Salary", "Refunds / Reimbursements", "Savings", "Investing" Categorize it to "Others" if the amount is negative and to "Refunds / Reimbursements" if the amount is positive.`;
+  const openai = new OpenAI({
+    apiKey: process.env.NEXT_PUBLIC_OPEN_AI,
+    dangerouslyAllowBrowser: true,
+  });
+
+  const completion = await openai.chat.completions.create({
+    messages: [{ role: "user", content: text }],
+    model: "gpt-3.5-turbo",
+  });
+  if (!completion.choices[0].message.content) {
+    console.log("Error getting the result from OpenAI");
+    return;
+  }
+  return stringToNestedArray(completion.choices[0].message.content!);
 }
 
 export const getURL = () => {
