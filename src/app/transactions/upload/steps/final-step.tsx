@@ -12,6 +12,7 @@ import {
 } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { TransactionsTable } from "../../components/transactions-table";
+import { redirect } from "next/navigation";
 
 export function FinalStep() {
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
@@ -76,6 +77,7 @@ export function FinalStep() {
     toast({
       description: "🎉 Transactions uploaded successfully",
     });
+    window.location.href = "/transactions";
   }
 
   const contents = getTableContents();

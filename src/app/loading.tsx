@@ -2,7 +2,7 @@ import React from "react";
 
 const Loading = () => {
   return (
-    <div className="flex items-center justify-center mt-32">
+    <div className="min-h-screen flex justify-center mt-32">
       <div className="text-center">
         <div role="status">
           <svg
