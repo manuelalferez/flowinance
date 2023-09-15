@@ -7,7 +7,6 @@ import {
   createDate,
   decryptTransactions,
   getCurrency,
-  getDelimiter,
   getTransactions,
   getUserEmail,
   getUserId,
@@ -31,12 +30,14 @@ import Loading from "@/app/loading";
 import { Filter } from "./filter";
 import { useToast } from "../ui/use-toast";
 import { CardDescription } from "../ui/card";
+import NoTransactions from "./ui/no-transactions";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<
     Transaction[]
   >([]);
+  const [loading, setLoading] = useState(true);
   const { supabase } = useSupabase();
   const [selected, setSelected] = useState(1);
   const [currency, setCurrency] = useState("€");
@@ -71,6 +72,7 @@ export default function Dashboard() {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+      setLoading(false);
     }
 
     fetchData();
@@ -116,17 +118,17 @@ export default function Dashboard() {
     return selected === 1;
   }
 
-  return transactions.length !== 0 ? (
-    <AppContext.Provider
-      value={{
-        filteredTransactions,
-        transactions,
-        selected,
-        setSelected,
-        currency,
-      }}
-    >
-      <div className="flex flex-col w-1/2 gap-10">
+  return (
+    <div className="flex flex-col w-1/2 gap-10">
+      <AppContext.Provider
+        value={{
+          filteredTransactions,
+          transactions,
+          selected,
+          setSelected,
+          currency,
+        }}
+      >
         <div>
           <h1 className="text-4xl font-semibold text-gray-800 mb-2">
             Dashboard
@@ -136,41 +138,47 @@ export default function Dashboard() {
             <span className="bg-emerald-100 p-1 rounded-sm">{email}</span>
           </CardDescription>
         </div>
+        {loading ? (
+          <Loading />
+        ) : transactions.length !== 0 ? (
+          <>
+            <Filter />
+            <DashboardRow className="justify-between mb-10">
+              <Balance />
+              <div className="flex gap-2">
+                <Expenses />
+                <Incomes />
+              </div>
+            </DashboardRow>
 
-        <Filter />
-        <DashboardRow className="justify-between mb-10">
-          <Balance />
-          <div className="flex gap-2">
-            <Expenses />
-            <Incomes />
-          </div>
-        </DashboardRow>
+            <DashboardRow className="justify-center">
+              <ExpensesTable />
+              <IncomesTable />
+            </DashboardRow>
 
-        <DashboardRow className="justify-center">
-          <ExpensesTable />
-          <IncomesTable />
-        </DashboardRow>
+            <DashboardRow className="justify-center">
+              <ExpensesPieChart />
+              <IncomesPieChart />
+            </DashboardRow>
 
-        <DashboardRow className="justify-center">
-          <ExpensesPieChart />
-          <IncomesPieChart />
-        </DashboardRow>
+            <DashboardRow className="justify-center">
+              <ExpensesChart />
+              <IncomesChart />
+            </DashboardRow>
 
-        <DashboardRow className="justify-center">
-          <ExpensesChart />
-          <IncomesChart />
-        </DashboardRow>
+            <DashboardRow className="justify-center">
+              <ExpensesEvolutionChart />
+              <IncomesEvolutionChart />
+            </DashboardRow>
 
-        <DashboardRow className="justify-center">
-          <ExpensesEvolutionChart />
-          <IncomesEvolutionChart />
-        </DashboardRow>
-        <DashboardRow className="justify-center">
-          <LastTransactions />
-        </DashboardRow>
-      </div>
-    </AppContext.Provider>
-  ) : (
-    <Loading />
+            <DashboardRow className="justify-center">
+              <LastTransactions />
+            </DashboardRow>
+          </>
+        ) : (
+          <NoTransactions />
+        )}
+      </AppContext.Provider>
+    </div>
   );
 }

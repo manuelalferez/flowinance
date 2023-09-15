@@ -16,9 +16,11 @@ import { Transaction } from "../types/global";
 import { TransactionsTable } from "./ui/transactions-table";
 import { useToast } from "../components/ui/use-toast";
 import { CardDescription } from "../components/ui/card";
+import NoTransactions from "./ui/no-transactions";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const { supabase } = useSupabase();
   const { toast } = useToast();
@@ -45,6 +47,7 @@ export default function Transactions() {
         const decryptData = decryptTransactions(data, userId);
         setTransactions(decryptData);
       }
+      setLoading(false);
     };
 
     fetchData();
@@ -64,13 +67,22 @@ export default function Transactions() {
       <AppContext.Provider value={{ transactions }}>
         <div className="flex items-start mb-10 gap-2 ">
           <Button asChild>
+            <Link href="/transactions/upload-ai">Smart Upload</Link>
+          </Button>
+          <Button asChild>
             <Link href="/transactions/upload">Upload</Link>
           </Button>
           <Button asChild>
             <Link href="/transactions/add">Add</Link>
           </Button>
         </div>
-        {transactions.length != 0 ? <TransactionsTable /> : <Loading />}
+        {loading ? (
+          <Loading />
+        ) : transactions.length !== 0 ? (
+          <TransactionsTable />
+        ) : (
+          <NoTransactions />
+        )}
       </AppContext.Provider>
     </div>
   );
