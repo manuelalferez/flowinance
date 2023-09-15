@@ -9,7 +9,7 @@ import { CategorizeTransactions } from "./steps/categorize-transactions";
 import { UploadTransactionsContext } from "@/lib/context";
 import { FinalStep } from "./steps/final-step";
 
-export default async function Upload() {
+export default function Upload() {
   const [transactions, setTransactions] = useState<string[][]>([]);
   const [step, setStep] = useState(0);
 
