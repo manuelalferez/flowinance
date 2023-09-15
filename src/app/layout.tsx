@@ -33,9 +33,9 @@ export default async function RootLayout({
               <div>
                 <Narbar session={session} />
                 <AccountDeleted />
+                <Toaster />
               </div>
               <Footer />
-              <Toaster />
             </body>
           </SupabaseProvider>
         </html>
@@ -50,9 +50,9 @@ export default async function RootLayout({
           <div>
             <Narbar session={session} />
             <div>{children}</div>
+            <Toaster />
           </div>
           <Footer className="w-screen border-t-2" />
-          <Toaster />
         </body>
       </SupabaseProvider>
     </html>

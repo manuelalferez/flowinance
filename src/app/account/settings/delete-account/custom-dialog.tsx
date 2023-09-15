@@ -39,7 +39,9 @@ export function CustomDialog({ children }: { children: React.ReactNode }) {
     <Dialog open={open} onOpenChange={setOpen}>
       {children}
       <div className="mt-2">
-        <Button variant={"destructive"}>Delete account</Button>
+        <Button variant={"destructive"} onClick={() => setOpen(true)}>
+          Delete account
+        </Button>
       </div>
       <DialogContent>
         <DialogHeader>

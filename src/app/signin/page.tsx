@@ -13,7 +13,7 @@ export default async function SignIn() {
     }
   }
   return (
-    <div className="flex justify-center items-center mt-24 p-2">
+    <div className="min-h-screen flex justify-center mt-24 p-2">
       <AuthUI />
     </div>
   );
