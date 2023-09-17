@@ -8,6 +8,7 @@ import { CategorizeColumns } from "./steps/categorize-columns";
 import { CategorizeTransactions } from "./steps/categorize-transactions";
 import { UploadTransactionsContext } from "@/lib/context";
 import { FinalStep } from "./steps/final-step";
+import { deleteEmptyRowsAndColumns } from "@/lib/utils";
 
 export default function Upload() {
   const [transactions, setTransactions] = useState<string[][]>([]);
@@ -20,7 +21,7 @@ export default function Upload() {
     setStep(step - 1);
   }
   function uploadTransactions(matrix: string[][]) {
-    setTransactions(matrix);
+    setTransactions(deleteEmptyRowsAndColumns(matrix));
     nextStep();
   }
   return (

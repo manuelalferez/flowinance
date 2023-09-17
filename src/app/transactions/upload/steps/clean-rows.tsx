@@ -6,6 +6,12 @@ import { removeRow } from "../../components/operators";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
 import { UploadTransactionsContext } from "@/lib/context";
+import {
+  calculatePercentageWithCondition,
+  headersOrderIndexs,
+  isDateCondition,
+  isNumberCondition,
+} from "@/lib/utils";
 
 export function CleanRows() {
   const { transactions, setTransactions, nextStep } = useContext(
@@ -19,8 +25,14 @@ export function CleanRows() {
     setTransactionsCopy(transactions);
   }, [transactions]);
 
-  function restoreTransactionsMatrix() {
-    setTransactionsCopy(transactions);
+  function restoreTransactionsMatrix(isError?: boolean) {
+    if (isError) {
+      setTransactionsCopy(transactions);
+      return;
+    }
+    toast({
+      description: "✅ Transactions restored.",
+    });
   }
 
   function getTableHeaders(): any {
@@ -71,6 +83,34 @@ export function CleanRows() {
   }
 
   function handleNextStep() {
+    if (
+      calculatePercentageWithCondition(
+        transactionsCopy.slice(1),
+        headersOrderIndexs.amount,
+        isNumberCondition
+      ) !== 100
+    ) {
+      toast({
+        description:
+          "❎ The column &apos;amount&apos; should contain numbers. Please, delete those rows that are not numbers.",
+      });
+      restoreTransactionsMatrix(true);
+      return;
+    }
+    if (
+      calculatePercentageWithCondition(
+        transactionsCopy.slice(1),
+        headersOrderIndexs.date,
+        isDateCondition
+      ) !== 100
+    ) {
+      toast({
+        description:
+          "❎ The column &apos;date&apos; should contain dates. Please, delete those rows that are not dates.",
+      });
+      restoreTransactionsMatrix(true);
+      return;
+    }
     setTransactions(transactionsCopy);
     nextStep();
   }
@@ -87,7 +127,7 @@ export function CleanRows() {
       <div className="flex gap-2">
         <Button
           variant="outline"
-          onClick={restoreTransactionsMatrix}
+          onClick={() => restoreTransactionsMatrix(false)}
           className="mb-5 bg-emerald-200"
           disabled={transactionsCopy === transactions}
         >

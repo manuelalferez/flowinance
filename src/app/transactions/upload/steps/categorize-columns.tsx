@@ -1,6 +1,13 @@
 "use client";
 import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
-import { getNumColumns } from "@/lib/utils";
+import {
+  calculatePercentageWithCondition,
+  getNumColumns,
+  headersOrderIndexs,
+  isDateCondition,
+  isNumberCondition,
+  switchColumns,
+} from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { ColHeader } from "@/app/types/global";
 import { useToast } from "@/app/components/ui/use-toast";
@@ -32,7 +39,7 @@ export function CategorizeColumns() {
   function handleSelectChange(headerName: string, column: number) {
     if (isHeaderChosen(headerName)) {
       toast({
-        description: `⛔️ You have already assigned that '${headerName}' to another column.`,
+        description: `⛔️ You have already assigned that &apos;${headerName}&apos; to another column.`,
       });
       return;
     }
@@ -93,19 +100,87 @@ export function CategorizeColumns() {
     ));
   }
 
+  function getMatrixSortedByHeaders(matrix: string[][]) {
+    let sortedTransactions = [...matrix];
+    const dateIndex = sortedTransactions[0].findIndex((col) => col === "date");
+
+    if (dateIndex !== headersOrderIndexs.date) {
+      sortedTransactions = switchColumns(
+        sortedTransactions,
+        headersOrderIndexs.date,
+        dateIndex
+      );
+    }
+    const conceptIndex = sortedTransactions[0].findIndex(
+      (col) => col === "concept"
+    );
+    if (conceptIndex !== headersOrderIndexs.concept) {
+      sortedTransactions = switchColumns(
+        sortedTransactions,
+        headersOrderIndexs.concept,
+        conceptIndex
+      );
+    }
+    const amountIndex = sortedTransactions[0].findIndex(
+      (col) => col === "amount"
+    );
+    if (amountIndex !== headersOrderIndexs.amount) {
+      sortedTransactions = switchColumns(
+        sortedTransactions,
+        headersOrderIndexs.amount,
+        amountIndex
+      );
+    }
+    return sortedTransactions;
+  }
+
   function handleNext() {
-    const sortedCols = colTitles.sort((a, b) => a.col - b.col);
-    const headers = sortedCols.map((col) => col.name);
-    const matrixWithCategories = addRowToMatrix(transactionsCopy, headers);
-    setTransactions(matrixWithCategories);
+    const headers = colTitles.map((col) => col.name);
+    const copy = transactionsCopy.map((row) => [...row]);
+    const matrixWithCategories = addRowToMatrix(copy, headers);
+    const sortedMatrix = getMatrixSortedByHeaders(matrixWithCategories);
+
+    if (
+      calculatePercentageWithCondition(
+        sortedMatrix,
+        headersOrderIndexs.amount,
+        isNumberCondition
+      ) < 0.5
+    ) {
+      toast({
+        description:
+          "❎ The column &apos;amount&apos; should contain numbers. Please, check the column and try again.",
+      });
+      restoreCategories(true);
+      return;
+    }
+    if (
+      calculatePercentageWithCondition(
+        sortedMatrix,
+        headersOrderIndexs.date,
+        isDateCondition
+      ) < 0.5
+    ) {
+      toast({
+        description:
+          "❎ The column &apos;date&apos; should contain dates. Please, check the column and try again.",
+      });
+      restoreCategories(true);
+      return;
+    }
+
+    setTransactions(sortedMatrix);
     nextStep();
   }
 
-  function restoreCategories() {
+  function restoreCategories(isError?: boolean) {
+    if (isError) {
+      setColTitles([]);
+      return;
+    }
     toast({
-      description: "🎉 Default categories restored",
+      description: " Default categories restored",
     });
-    setColTitles([]);
   }
 
   const contents = getTableContents();
@@ -122,7 +197,7 @@ export function CategorizeColumns() {
       </div>
       <Button
         variant="outline"
-        onClick={restoreCategories}
+        onClick={() => restoreCategories(false)}
         className="mb-5 bg-white-200"
         disabled={colTitles.length === 0}
       >

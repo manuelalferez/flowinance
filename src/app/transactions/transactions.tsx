@@ -17,6 +17,7 @@ import { TransactionsTable } from "./ui/transactions-table";
 import { useToast } from "../components/ui/use-toast";
 import { CardDescription } from "../components/ui/card";
 import NoTransactions from "./ui/no-transactions";
+import { LoadingIcon } from "../components/dashboard/ui/loading-icon";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -60,8 +61,12 @@ export default function Transactions() {
           Transactions
         </h1>
         <CardDescription className="mb-4">
-          Logged as:{" "}
-          <span className="bg-emerald-100 p-1 rounded-sm">{email}</span>
+          Logged as: {}
+          {loading ? (
+            <LoadingIcon />
+          ) : (
+            <span className="bg-emerald-100 p-1 rounded-sm">{email}</span>
+          )}
         </CardDescription>
       </div>
       <AppContext.Provider value={{ transactions }}>

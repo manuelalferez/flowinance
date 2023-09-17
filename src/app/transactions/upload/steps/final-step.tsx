@@ -7,6 +7,7 @@ import { UploadTransactionsContext } from "@/lib/context";
 import {
   encryptData,
   getUserId,
+  headersOrderIndexs,
   roundToTwoDecimal,
   uploadTransactionsToSupabase,
 } from "@/lib/utils";
@@ -59,9 +60,17 @@ export function FinalStep() {
     }
 
     for (let i = 1; i < transactionsCopy.length; i++) {
+      if (isNaN(parseFloat(transactionsCopy[i][headersOrderIndexs.amount]))) {
+        toast({
+          description:
+            "❎ Error uploading transactions. Please, check the &apos;amount&apos; column. It should be a number.",
+        });
+        return;
+      }
       const amountWithTwoDecimals = roundToTwoDecimal(
         parseFloat(transactionsCopy[i][2])
       );
+
       const transaction = {
         date: encryptData(transactionsCopy[i][0], userId),
         concept: encryptData(transactionsCopy[i][1], userId),
