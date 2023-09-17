@@ -20,6 +20,12 @@ export enum LocalStorage {
   transactionsChanged = "transactions-changed",
 }
 
+export enum headersOrderIndexs {
+  date = 0,
+  concept = 1,
+  amount = 2,
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -42,6 +48,88 @@ function hasEmptyStringExceptFirst(arr: string[]): boolean {
 
 export function roundToTwoDecimal(num: number) {
   return Math.round(num * 100) / 100;
+}
+
+export function deleteEmptyRowsAndColumns(matrix: string[][]): string[][] {
+  const nonEmptyRows = matrix.filter((row) =>
+    row.some((cell) => cell.trim() !== "")
+  );
+
+  if (nonEmptyRows.length === 0) return nonEmptyRows;
+
+  const transposeMatrix = (matrix: string[][]) =>
+    matrix[0].map((_, colIndex) => matrix.map((row) => row[colIndex]));
+
+  const filteredColumns = transposeMatrix(nonEmptyRows).filter((column) =>
+    column.some((cell) => cell.trim() !== "")
+  );
+
+  return transposeMatrix(filteredColumns);
+}
+
+export function calculatePercentageWithCondition(
+  matrix: string[][],
+  columnIndex: number,
+  condition: (value: string) => boolean
+): number {
+  if (matrix.length === 0) {
+    return 0;
+  }
+
+  const totalRows = matrix.length;
+  const rowsSatisfyingCondition = matrix.filter((row) =>
+    condition(row[columnIndex])
+  ).length;
+  return (rowsSatisfyingCondition / totalRows) * 100;
+}
+
+export function isDateCondition(value: string): boolean {
+  if (!value) return false;
+  const dateParts = value.split("/");
+
+  if (dateParts.length !== 3) {
+    return false;
+  }
+
+  const day = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10);
+  const year = parseInt(dateParts[2], 10);
+
+  if (isNaN(day) || isNaN(month) || isNaN(year)) {
+    return false;
+  }
+
+  const jsMonth = month - 1;
+
+  const date = new Date(year, jsMonth, day);
+
+  return !isNaN(date.getTime());
+}
+
+export function isNumberCondition(value: string): boolean {
+  return !isNaN(Number(value));
+}
+
+export function switchColumns(
+  matrix: string[][],
+  col1: number,
+  col2: number
+): string[][] {
+  if (
+    col1 < 0 ||
+    col1 >= matrix[0].length ||
+    col2 < 0 ||
+    col2 >= matrix[0].length
+  ) {
+    throw new Error("Column indices are out of bounds.");
+  }
+
+  return matrix.map((row) => {
+    const temp = row[col1];
+    row[col1] = row[col2];
+    row[col2] = temp;
+    return row;
+  });
 }
 
 export function extractFields(lines: string[]): string[][] {
@@ -69,7 +157,7 @@ function stringToNestedArray(inputString: string): string[][] {
 export async function extractFieldsUsingOpenAi(
   lines: string[]
 ): Promise<string[][] | undefined> {
-  const text = `given the next table: ${lines} give me the result table in a string format with a column for date, concept and amount. Delete those rows that don't bellow to the column. Dont give me the code. I just want the result. I want the amount to be always positive. The date has to be in the format DD/MM/YYYY. After it, add a new column called category. Categorize each row account with the next list of categories depending of the concept. Exacly the next categories: "Home", "Groceries", "Transportation", "Subscriptions", "Trips", "Hobbies", "Health", "Bar. cafe. restaurant", "Clothes & shoes", "Internet", "Others", "Online shopping", "Donations & Gifts", "Rent", "Salary", "Refunds / Reimbursements", "Savings", "Investing" Categorize it to "Others" if the amount is negative and to "Refunds / Reimbursements" if the amount is positive.`;
+  const text = `given the next table: ${lines} give me the result table in a string format with a column for date, concept and amount. Delete those rows that don&apos;t bellow to the column. Dont give me the code. I just want the result. I want the amount to be always positive. The date has to be in the format DD/MM/YYYY. After it, add a new column called category. Categorize each row account with the next list of categories depending of the concept. Exacly the next categories: "Home", "Groceries", "Transportation", "Subscriptions", "Trips", "Hobbies", "Health", "Bar. cafe. restaurant", "Clothes & shoes", "Internet", "Others", "Online shopping", "Donations & Gifts", "Rent", "Salary", "Refunds / Reimbursements", "Savings", "Investing" Categorize it to "Others" if the amount is negative and to "Refunds / Reimbursements" if the amount is positive.`;
   const openai = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPEN_AI,
     dangerouslyAllowBrowser: true,
