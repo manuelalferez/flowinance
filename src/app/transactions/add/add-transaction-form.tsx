@@ -14,7 +14,11 @@ import { useToast } from "@/app/components/ui/use-toast";
 import { useSupabase } from "@/app/supabase-provider";
 import { ALL_CATEGORIES } from "@/lib/categories";
 import { TABLE_HEADERS } from "@/lib/constants";
-import { addTransactionToSupabase, formatDate, getUserId } from "@/lib/utils";
+import {
+  addTransactionToSupabase,
+  formatDateToString,
+  getUserId,
+} from "@/lib/utils";
 import { useState } from "react";
 
 export default function AddTransactionForm() {
@@ -25,7 +29,7 @@ export default function AddTransactionForm() {
 
   const { toast } = useToast();
 
-  const date = formatDate(new Date());
+  const date = formatDateToString(new Date());
 
   function handleAmountChange(value: any) {
     if (isNaN(value)) {

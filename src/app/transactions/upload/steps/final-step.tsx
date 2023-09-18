@@ -6,6 +6,7 @@ import { TransactionSupabase } from "@/app/types/global";
 import { UploadTransactionsContext } from "@/lib/context";
 import {
   encryptData,
+  formatDateStringToDdMmYyyy,
   getUserId,
   headersOrderIndexs,
   roundToTwoDecimal,
@@ -13,16 +14,24 @@ import {
 } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { TransactionsTable } from "../../components/transactions-table";
-import { redirect } from "next/navigation";
 
 export function FinalStep() {
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
   const { transactions } = useContext(UploadTransactionsContext);
   const { toast } = useToast();
   const { supabase } = useSupabase();
-
+  function getTransactionsWithDateFormated() {
+    const copy = transactions.map((row) => [...row]);
+    for (let i = 1; i < copy.length; i++) {
+      const dateStr = copy[i][0];
+      const formattedDate = formatDateStringToDdMmYyyy(dateStr);
+      copy[i][0] = formattedDate;
+    }
+    return copy;
+  }
   useEffect(() => {
-    setTransactionsCopy(transactions);
+    const transactionsWithDateFormated = getTransactionsWithDateFormated();
+    setTransactionsCopy(transactionsWithDateFormated);
   }, [transactions]);
 
   function getTableHeaders(): any {
@@ -63,7 +72,7 @@ export function FinalStep() {
       if (isNaN(parseFloat(transactionsCopy[i][headersOrderIndexs.amount]))) {
         toast({
           description:
-            "❎ Error uploading transactions. Please, check the &apos;amount&apos; column. It should be a number.",
+            "❎ Error uploading transactions. Please, check the 'amount' column. It should be a number.",
         });
         return;
       }

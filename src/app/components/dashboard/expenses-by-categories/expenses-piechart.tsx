@@ -51,7 +51,7 @@ export function ExpensesPieChart() {
         charts provide an intuitive representation, making it easy to see how
         your expenses are distributed among the different categories.
       </CardDescription>
-      <PieChart width={300} height={300}>
+      <PieChart width={400} height={300}>
         <Pie
           dataKey="value"
           isAnimationActive={false}

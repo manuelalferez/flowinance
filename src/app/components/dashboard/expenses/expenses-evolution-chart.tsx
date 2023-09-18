@@ -51,13 +51,13 @@ export default function ExpensesEvolutionChart() {
             days.
           </CardDescription>
           <AreaChart
-            width={500}
-            height={400}
+            width={600}
+            height={300}
             data={data}
             margin={{
               top: 10,
               right: 30,
-              left: 0,
+              left: 30,
               bottom: 0,
             }}
           >

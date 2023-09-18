@@ -9,7 +9,11 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { useSupabase } from "@/app/supabase-provider";
-import { getDelimiter, updateDelimiterInSupabase } from "@/lib/utils";
+import {
+  getDelimiter,
+  saveDelimiterInLocalStorage,
+  updateDelimiterInSupabase,
+} from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 export function DelimiterConfig() {
@@ -29,6 +33,7 @@ export function DelimiterConfig() {
   async function handleDelimiterChange(value: string) {
     setDelimiter(value);
     await updateDelimiterInSupabase(supabase, value);
+    saveDelimiterInLocalStorage(value);
   }
   useEffect(() => {
     async function fetchData() {

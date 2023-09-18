@@ -4,8 +4,8 @@ import {
   calculatePercentageWithCondition,
   getNumColumns,
   headersOrderIndexs,
-  isDateCondition,
   isNumberCondition,
+  isValidDate,
   switchColumns,
 } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
@@ -158,7 +158,7 @@ export function CategorizeColumns() {
       calculatePercentageWithCondition(
         sortedMatrix,
         headersOrderIndexs.date,
-        isDateCondition
+        isValidDate
       ) < 0.5
     ) {
       toast({

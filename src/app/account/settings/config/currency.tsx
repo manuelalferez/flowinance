@@ -9,7 +9,11 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { useSupabase } from "@/app/supabase-provider";
-import { getCurrency, updateCurrencyInSupabase } from "@/lib/utils";
+import {
+  getCurrency,
+  saveCurrencyInLocalStorage,
+  updateCurrencyInSupabase,
+} from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 export function CurrencyConfig() {
@@ -18,6 +22,7 @@ export function CurrencyConfig() {
   async function handleCurrencyChange(value: string) {
     setCurrency(value);
     await updateCurrencyInSupabase(supabase, value);
+    saveCurrencyInLocalStorage(value);
   }
   useEffect(() => {
     async function fetchData() {

@@ -8,7 +8,6 @@ import {
   decryptTransactions,
   getCurrency,
   getTransactions,
-  getUserEmail,
   getUserId,
   getWeek,
 } from "@/lib/utils";
@@ -29,7 +28,6 @@ import { LastTransactions } from "./last-transactions";
 import Loading from "@/app/loading";
 import { Filter } from "./filter";
 import { useToast } from "../ui/use-toast";
-import { CardDescription } from "../ui/card";
 import NoTransactions from "./ui/no-transactions";
 
 export default function Dashboard() {
@@ -41,20 +39,14 @@ export default function Dashboard() {
   const { supabase } = useSupabase();
   const [selected, setSelected] = useState(1);
   const [currency, setCurrency] = useState("€");
-  const [email, setEmail] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
     async function fetchData() {
       const userId = await getUserId(supabase);
-      const email = await getUserEmail(supabase);
-      if (!email) {
-        return;
-      }
       if (!userId) {
         return;
       }
-      setEmail(email);
       try {
         const data = await getTransactions(supabase);
         if (!data) {
@@ -119,7 +111,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col w-1/2 gap-10">
+    <div className="flex flex-col w-3/4 gap-10">
       <AppContext.Provider
         value={{
           filteredTransactions,
@@ -130,13 +122,9 @@ export default function Dashboard() {
         }}
       >
         <div>
-          <h1 className="text-4xl font-semibold text-gray-800 mb-2">
+          <h1 className="text-4xl font-semibold text-gray-800 mb-4">
             Dashboard
           </h1>
-          <CardDescription className="mb-4">
-            Logged as:{" "}
-            <span className="bg-emerald-100 p-1 rounded-sm">{email}</span>
-          </CardDescription>
         </div>
         {loading ? (
           <Loading />
