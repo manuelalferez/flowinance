@@ -9,8 +9,8 @@ import { UploadTransactionsContext } from "@/lib/context";
 import {
   calculatePercentageWithCondition,
   headersOrderIndexs,
-  isDateCondition,
   isNumberCondition,
+  isValidDate,
 } from "@/lib/utils";
 
 export function CleanRows() {
@@ -102,7 +102,7 @@ export function CleanRows() {
       calculatePercentageWithCondition(
         transactionsCopy.slice(1),
         headersOrderIndexs.date,
-        isDateCondition
+        isValidDate
       ) !== 100
     ) {
       toast({

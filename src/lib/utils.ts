@@ -4,6 +4,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as CryptoJS from "crypto-js";
 import OpenAI from "openai";
+import dayjs from "dayjs";
 
 const DEFAULT_DELIMITER = ";";
 const DEFAULT_CURRENCY = "eur";
@@ -83,7 +84,26 @@ export function calculatePercentageWithCondition(
   return (rowsSatisfyingCondition / totalRows) * 100;
 }
 
-export function isDateCondition(value: string): boolean {
+export function formatDateStringToDdMmYyyy(dateString: string): string {
+  if (isDateInFormatDdMmYyyy(dateString)) {
+    return dateString;
+  }
+  const parsedDate = dayjs(dateString);
+  return parsedDate.format("DD/MM/YYYY");
+}
+
+export function isValidDate(dateString: string): boolean {
+  const parsedDate = dayjs(dateString);
+  if (parsedDate.isValid()) {
+    return true;
+  }
+  if (isDateInFormatDdMmYyyy(dateString)) {
+    return true;
+  }
+  return false;
+}
+
+function isDateInFormatDdMmYyyy(value: string): boolean {
   if (!value) return false;
   const dateParts = value.split("/");
 
@@ -409,7 +429,7 @@ function parseDate(dateString: string): Date | null {
   return new Date(year, month - 1, day);
 }
 
-export function formatDate(date: Date): string {
+export function formatDateToString(date: Date): string {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = String(date.getFullYear());
@@ -517,14 +537,12 @@ async function getDelimiterFromSupabase(
   return data[0].delimiter;
 }
 
-function saveDelimiterInLocalStorage(delimiter: string) {
+export function saveDelimiterInLocalStorage(delimiter: string) {
   localStorage.setItem(LocalStorage.delimiter, delimiter);
-  localStorage.setItem(LocalStorage.settingsUpdated, "false");
 }
 
-function saveCurrencyInLocalStorage(currency: string) {
+export function saveCurrencyInLocalStorage(currency: string) {
   localStorage.setItem(LocalStorage.currency, currency);
-  localStorage.setItem(LocalStorage.settingsUpdated, "false");
 }
 
 async function createSettings(supabase: SupabaseClient<any, "public", any>) {
