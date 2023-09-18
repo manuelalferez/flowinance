@@ -119,7 +119,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col w-1/2 gap-10">
+    <div className="flex flex-col w-3/4 gap-10">
       <AppContext.Provider
         value={{
           filteredTransactions,
