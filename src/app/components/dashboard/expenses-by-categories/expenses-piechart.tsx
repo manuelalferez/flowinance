@@ -6,7 +6,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import { DashboardCard } from "../ui/dashboard-card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
-import { CardDescription } from "../../ui/card";
 
 interface ChartData {
   name: string;
@@ -45,12 +44,12 @@ export function ExpensesPieChart() {
   }, [filteredTransactions]);
 
   return data.length !== 0 ? (
-    <DashboardCard title="Expenses by category">
-      <CardDescription className="mb-4">
-        Explore a visual breakdown of your expenses using a pie chart. Pie
-        charts provide an intuitive representation, making it easy to see how
-        your expenses are distributed among the different categories.
-      </CardDescription>
+    <DashboardCard
+      title="Expenses by category"
+      description="Explore a visual breakdown of your expenses using a pie chart. Pie
+    charts provide an intuitive representation, making it easy to see how
+    your expenses are distributed among the different categories."
+    >
       <PieChart width={400} height={300}>
         <Pie
           dataKey="value"

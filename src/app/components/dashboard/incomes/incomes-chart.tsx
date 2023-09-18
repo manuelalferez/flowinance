@@ -10,8 +10,8 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { Card, CardDescription, CardTitle } from "../../ui/card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
+import { DashboardCard } from "../ui/dashboard-card";
 
 interface ChartData {
   name: string;
@@ -38,12 +38,11 @@ export default function IncomesChart() {
   return (
     <div>
       {data.length !== 0 ? (
-        <Card className="flex flex-col items-center p-4">
-          <CardTitle className="mb-6">Incomes</CardTitle>
-          <CardDescription className="mb-4">
-            See your daily incomes at a glance. Effortlessly understand your
-            daily incomes trends.
-          </CardDescription>
+        <DashboardCard
+          title="Incomes"
+          description="See your daily incomes at a glance. Effortlessly understand your
+        daily incomes trends."
+        >
           <LineChart
             width={600}
             height={300}
@@ -67,7 +66,7 @@ export default function IncomesChart() {
               activeDot={{ r: 8 }}
             />
           </LineChart>
-        </Card>
+        </DashboardCard>
       ) : (
         <DashboardNoDataCard
           title="Incomes"
