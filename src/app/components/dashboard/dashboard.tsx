@@ -131,7 +131,7 @@ export default function Dashboard() {
         ) : transactions.length !== 0 ? (
           <>
             <Filter />
-            <DashboardRow className="justify-between mb-10">
+            <DashboardRow className="justify-evenly mb-10">
               <Balance />
               <div className="flex gap-2">
                 <Expenses />
