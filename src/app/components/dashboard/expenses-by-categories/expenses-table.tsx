@@ -12,7 +12,6 @@ import {
 } from "../../ui/table";
 import { DashboardCard } from "../ui/dashboard-card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
-import { CardDescription } from "../../ui/card";
 
 type ExpenseCategory = {
   name: string;
@@ -37,11 +36,12 @@ export function ExpensesTable() {
     .sort((a, b) => b.value - a.value);
 
   return categoriesWithTotalExpenses.length !== 0 ? (
-    <DashboardCard title="Expenses by categories">
-      <CardDescription className="mb-4">
-        Explore a detailed breakdown of your expenses in the table below,
-        conveniently organized for easy reference and understanding.
-      </CardDescription>
+    <DashboardCard
+      title="Expenses by categories"
+      description="Explore a detailed breakdown of your expenses in the table
+    below, conveniently organized for easy reference and
+    understanding."
+    >
       <Table key="expenses-table">
         <TableHeader>
           <TableRow>

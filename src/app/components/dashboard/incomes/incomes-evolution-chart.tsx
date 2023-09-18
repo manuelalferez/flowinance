@@ -10,8 +10,8 @@ import {
   Area,
   AreaChart,
 } from "recharts";
-import { Card, CardDescription, CardTitle } from "../../ui/card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
+import { DashboardCard } from "../ui/dashboard-card";
 
 interface ChartData {
   name: string;
@@ -44,13 +44,11 @@ export default function IncomesEvolutionChart() {
   return (
     <div>
       {data.length !== 0 ? (
-        <Card className="flex flex-col items-center p-8">
-          <CardTitle className="mb-6">Incomes Evolution</CardTitle>
-          <CardDescription className="mb-4">
-            Visualize the trend of your incomes, how they have grown over the
-            days.
-          </CardDescription>
-
+        <DashboardCard
+          title="Incomes Evolution"
+          description="Visualize the trend of your incomes, how they have grown over the
+        days."
+        >
           <AreaChart
             width={600}
             height={300}
@@ -73,7 +71,7 @@ export default function IncomesEvolutionChart() {
               fill="#8884d8"
             />
           </AreaChart>
-        </Card>
+        </DashboardCard>
       ) : (
         <DashboardNoDataCard
           title="Incomes"
