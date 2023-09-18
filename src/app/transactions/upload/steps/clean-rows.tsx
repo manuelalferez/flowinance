@@ -33,6 +33,7 @@ export function CleanRows() {
     toast({
       description: "✅ Transactions restored.",
     });
+    setTransactionsCopy(transactions);
   }
 
   function getTableHeaders(): any {
