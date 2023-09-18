@@ -92,7 +92,7 @@ export function CleanRows() {
     ) {
       toast({
         description:
-          "❎ The column &apos;amount&apos; should contain numbers. Please, delete those rows that are not numbers.",
+          "❎ The column 'amount' should contain numbers. Please, delete those rows that are not numbers.",
       });
       restoreTransactionsMatrix(true);
       return;
@@ -106,7 +106,7 @@ export function CleanRows() {
     ) {
       toast({
         description:
-          "❎ The column &apos;date&apos; should contain dates. Please, delete those rows that are not dates.",
+          "❎ The column 'date' should contain dates. Please, delete those rows that are not dates.",
       });
       restoreTransactionsMatrix(true);
       return;
