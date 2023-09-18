@@ -39,7 +39,7 @@ export function CategorizeColumns() {
   function handleSelectChange(headerName: string, column: number) {
     if (isHeaderChosen(headerName)) {
       toast({
-        description: `⛔️ You have already assigned that &apos;${headerName}&apos; to another column.`,
+        description: `⛔️ You have already assigned that '${headerName}' to another column.`,
       });
       return;
     }
@@ -149,7 +149,7 @@ export function CategorizeColumns() {
     ) {
       toast({
         description:
-          "❎ The column &apos;amount&apos; should contain numbers. Please, check the column and try again.",
+          "❎ The column 'amount' should contain numbers. Please, check the column and try again.",
       });
       restoreCategories(true);
       return;
@@ -163,7 +163,7 @@ export function CategorizeColumns() {
     ) {
       toast({
         description:
-          "❎ The column &apos;date&apos; should contain dates. Please, check the column and try again.",
+          "❎ The column 'date' should contain dates. Please, check the column and try again.",
       });
       restoreCategories(true);
       return;
