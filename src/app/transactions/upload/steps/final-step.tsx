@@ -63,7 +63,7 @@ export function FinalStep() {
       if (isNaN(parseFloat(transactionsCopy[i][headersOrderIndexs.amount]))) {
         toast({
           description:
-            "❎ Error uploading transactions. Please, check the &apos;amount&apos; column. It should be a number.",
+            "❎ Error uploading transactions. Please, check the 'amount' column. It should be a number.",
         });
         return;
       }
