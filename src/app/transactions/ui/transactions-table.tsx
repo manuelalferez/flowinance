@@ -53,7 +53,7 @@ export function TransactionsTable() {
   function targetTransactionToDelete(id: string, index: number) {
     setOpen(true);
     setTransactionToDeleteId(id);
-    setRowToDelete(index);
+    setRowToDelete(index + (currentPage - 1) * transactionsPerPage);
   }
 
   async function deleteTransaction() {

@@ -25,6 +25,7 @@ export enum headersOrderIndexs {
   date = 0,
   concept = 1,
   amount = 2,
+  category = 3,
 }
 
 export function cn(...inputs: ClassValue[]) {
