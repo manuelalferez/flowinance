@@ -3,7 +3,6 @@
 import { UploadTransactionsContext } from "@/lib/context";
 import { useState } from "react";
 import { DragAndDrop } from "../upload/steps/drag-and-drop";
-import { CategorizeTransactions } from "../upload/steps/categorize-transactions";
 import { FinalStep } from "../upload/steps/final-step";
 import Loading from "@/app/loading";
 import { CardTitle } from "@/app/components/ui/card";
