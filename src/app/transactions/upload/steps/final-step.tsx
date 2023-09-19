@@ -43,6 +43,7 @@ export function FinalStep() {
         {transactionsCopy[firstRow].map((col, colIndex) => (
           <TableHead key={colIndex}>{col}</TableHead>
         ))}
+        <TableHead className="p-2 w-2 pr-8" key={`options-header`}></TableHead>
       </>
     );
   }
@@ -51,6 +52,18 @@ export function FinalStep() {
     const editedCategory = [...transactionsCopy];
     editedCategory[rowIndex][headersOrderIndexs.category] = value;
     setTransactionsCopy(editedCategory);
+  }
+
+  function targetTransactionToDelete(index: number) {
+    const copy = [...transactionsCopy];
+    copy.splice(index, 1);
+    setTransactionsCopy(copy);
+    if (copy.length === 1) {
+      toast({
+        description:
+          "ℹ️ You have deleted all transactions. If you want to upload transactions. If you want to continue uploading transactions, click on 'Restore transactions' button.",
+      });
+    }
   }
 
   function getTableContents() {
@@ -65,7 +78,7 @@ export function FinalStep() {
                 <select
                   onChange={(e) => handleSelectChange(e.target.value, rowIndex)}
                   value={col}
-                  className="w-[180px] p-2 border rounded"
+                  className="w-auto p-2 border rounded"
                 >
                   <option value="" disabled>
                     Select category
@@ -81,6 +94,30 @@ export function FinalStep() {
               )}
             </TableCell>
           ))}
+          <TableCell
+            className="cursor-pointer hidden hoverable-cell"
+            key={`${rowIndex}-options`}
+          >
+            <span
+              className="p-0 pt-4 w-4 h-4 flex justify-center items-center"
+              onClick={() => targetTransactionToDelete(rowIndex)}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 15 15"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.5 1C5.22386 1 5 1.22386 5 1.5C5 1.77614 5.22386 2 5.5 2H9.5C9.77614 2 10 1.77614 10 1.5C10 1.22386 9.77614 1 9.5 1H5.5ZM3 3.5C3 3.22386 3.22386 3 3.5 3H5H10H11.5C11.7761 3 12 3.22386 12 3.5C12 3.77614 11.7761 4 11.5 4H11V12C11 12.5523 10.5523 13 10 13H5C4.44772 13 4 12.5523 4 12V4L3.5 4C3.22386 4 3 3.77614 3 3.5ZM5 4H10V12H5V4Z"
+                  fill="currentColor"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </span>
+          </TableCell>
         </TableRow>
       ))
       .slice(1);
@@ -127,6 +164,10 @@ export function FinalStep() {
     window.location.href = "/transactions";
   }
 
+  function restoreTransactionsMatrix() {
+    setTransactionsCopy(transactions);
+  }
+
   const contents = getTableContents();
   const headers = getTableHeaders();
   return (
@@ -134,8 +175,21 @@ export function FinalStep() {
       <div>
         <h1 className="text-xl pb-2">Step 6: Final step</h1>
         <p className="pb-10">Check everything is right before uploading. </p>
-        <div className="flex justify-center mb-10">
-          <Button onClick={uploadTransactions}>Upload transactions</Button>
+        <div className="flex justify-center mb-10 gap-2">
+          <Button
+            variant="outline"
+            onClick={restoreTransactionsMatrix}
+            className="mb-5 bg-emerald-200"
+            disabled={transactionsCopy.length === transactions.length}
+          >
+            Restore transactions
+          </Button>
+          <Button
+            onClick={uploadTransactions}
+            disabled={transactionsCopy.length === 1}
+          >
+            Upload transactions
+          </Button>
         </div>
       </div>
       <TransactionsTable headers={headers} contents={contents} />

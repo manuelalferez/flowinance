@@ -59,7 +59,7 @@ export function CategorizeTransactions() {
             <select
               onChange={(e) => handleSelectChange(e.target.value, rowIndex - 1)}
               value={categoriesSelected[rowIndex - 1]}
-              className="w-[180px] p-2 border rounded"
+              className="w-auto p-2 border rounded"
             >
               <option value="" disabled selected>
                 Select category
