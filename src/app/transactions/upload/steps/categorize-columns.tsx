@@ -28,9 +28,56 @@ export function CategorizeColumns() {
 
   const { toast } = useToast();
 
+  function findColumnWithDate(): number {
+    return transactions[0].findIndex((_, index) => {
+      const percentage = calculatePercentageWithCondition(
+        transactions,
+        index,
+        isValidDate
+      );
+      return percentage > 0.5;
+    });
+  }
+
+  function findColumnWithAmount(): number {
+    return transactions[0].findIndex((_, index) => {
+      const percentage = calculatePercentageWithCondition(
+        transactions,
+        index,
+        isNumberCondition
+      );
+      return percentage > 0.5;
+    });
+  }
+
   useEffect(() => {
+    let orderSuggestion = [...headerOptions];
     setTransactionsCopy(transactions);
+
+    const dateIndex = findColumnWithDate();
+    if (dateIndex === -1) return;
+    orderSuggestion = switchHeaderOrderSuggestions(
+      orderSuggestion,
+      headersOrderIndexs.date,
+      dateIndex
+    );
+
+    const amountIndex = findColumnWithAmount();
+    if (amountIndex === -1) return;
+    orderSuggestion = switchHeaderOrderSuggestions(
+      orderSuggestion,
+      headersOrderIndexs.amount,
+      amountIndex
+    );
+
+    handleNext(orderSuggestion.map((name, col) => ({ name, col })));
   }, [transactions]);
+
+  function switchHeaderOrderSuggestions(arr: any[], a: number, b: number) {
+    const copy = [...arr];
+    [copy[a], copy[b]] = [copy[b], copy[a]];
+    return copy;
+  }
 
   function isHeaderChosen(headerName: string) {
     return colTitles.some((col) => col.name === headerName);
@@ -134,9 +181,14 @@ export function CategorizeColumns() {
     return sortedTransactions;
   }
 
-  function handleNext() {
-    const headers = colTitles.map((col) => col.name);
-    const copy = transactionsCopy.map((row) => [...row]);
+  function handleNext(headerTitles: ColHeader[] | undefined) {
+    const headers = headerTitles
+      ? headerTitles.map((col) => col.name)
+      : colTitles.map((col) => col.name);
+    const copy = headerTitles
+      ? transactions.map((row) => [...row])
+      : transactionsCopy.map((row) => [...row]);
+
     const matrixWithCategories = addRowToMatrix(copy, headers);
     const sortedMatrix = getMatrixSortedByHeaders(matrixWithCategories);
 
@@ -205,7 +257,7 @@ export function CategorizeColumns() {
       </Button>
       <Button
         variant="outline"
-        onClick={handleNext}
+        onClick={() => handleNext}
         className="mb-5 bg-emerald-200"
       >
         Next step
