@@ -14,6 +14,7 @@ import {
 } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { TransactionsTable } from "../../components/transactions-table";
+import { ALL_CATEGORIES } from "@/lib/categories";
 
 export function FinalStep() {
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
@@ -45,18 +46,46 @@ export function FinalStep() {
       </>
     );
   }
+
+  function handleSelectChange(value: string, rowIndex: number) {
+    const editedCategory = [...transactionsCopy];
+    editedCategory[rowIndex][headersOrderIndexs.category] = value;
+    setTransactionsCopy(editedCategory);
+  }
+
   function getTableContents() {
     if (transactionsCopy.length === 0) return [];
+
     return transactionsCopy
       .map((row, rowIndex) => (
         <TableRow key={rowIndex}>
           {row.map((col, colIndex) => (
-            <TableCell key={colIndex}>{col}</TableCell>
+            <TableCell key={colIndex}>
+              {colIndex === headersOrderIndexs.category ? (
+                <select
+                  onChange={(e) => handleSelectChange(e.target.value, rowIndex)}
+                  value={col}
+                  className="w-[180px] p-2 border rounded"
+                >
+                  <option value="" disabled>
+                    Select category
+                  </option>
+                  {ALL_CATEGORIES.map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                col
+              )}
+            </TableCell>
           ))}
         </TableRow>
       ))
       .slice(1);
   }
+
   async function uploadTransactions() {
     const userId = await getUserId(supabase);
     const transactionsToInsert: TransactionSupabase[] = [];
