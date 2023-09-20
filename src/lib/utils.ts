@@ -11,6 +11,7 @@ const DEFAULT_CURRENCY = "eur";
 const TRANSACTIONS_TABLE = "transactions";
 const DELETED_USERS_TABLE = "deleted_users";
 const SETTINGS_TABLE = "settings";
+const BUGS_TABLE = "bugs";
 
 export enum LocalStorage {
   currency = "currency",
@@ -302,6 +303,21 @@ async function deleteAllTransactionsFromSupabase(
   }
   console.log("All Transactions deleted for user: ", userId);
 }
+
+export async function uploadBugToSupabase(
+  supabase: SupabaseClient<any, "public", any>,
+  bugDescription: string
+) {
+  const { error } = await supabase
+    .from(BUGS_TABLE)
+    .insert({ description: bugDescription });
+  if (error) {
+    console.log("Error uploading bugs: ", error);
+  } else {
+    revalidateTransactions();
+  }
+}
+
 async function deleteLocalStorage() {
   localStorage.removeItem(LocalStorage.transactions);
   localStorage.removeItem(LocalStorage.transactionsTimeStamp);

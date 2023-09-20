@@ -78,12 +78,12 @@
 }
 
 .supabase-auth-ui_ui-button {
-  background: "#66F0A4FF" !important;
+  background: "#0F172A" !important;
   border: none !important;
-  color: black !important;
+  color: white !important;
 }
 .supabase-auth-ui_ui-button:hover {
-  background: #c7f9deff !important;
+  background: #2c2d30 !important;
 }
 
 tr:hover .hoverable-cell {

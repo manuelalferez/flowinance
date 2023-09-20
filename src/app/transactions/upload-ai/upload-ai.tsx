@@ -25,7 +25,7 @@ export default function UploadAi() {
   return loading ? (
     <div>
       <CardTitle>
-        We&apos;re doing all the magic. It&apos;s gonna take a few seconds.{" "}
+        We&apos;re doing all the magic 🪄. It&apos;s gonna take a few seconds.{" "}
       </CardTitle>
       <Loading />
     </div>

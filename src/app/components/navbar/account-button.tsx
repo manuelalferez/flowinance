@@ -17,7 +17,6 @@ export function AccountButton() {
   const { toast } = useToast();
 
   const handleSignOut = async () => {
-    toast({ description: "✅ You have successfully signed out." });
     try {
       await supabase.auth.signOut();
       window.location.href = "/";

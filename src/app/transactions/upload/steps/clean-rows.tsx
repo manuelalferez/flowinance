@@ -12,6 +12,7 @@ import {
   isNumberCondition,
   isValidDate,
 } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 
 export function CleanRows() {
   const { transactions, setTransactions, nextStep } = useContext(
@@ -122,8 +123,14 @@ export function CleanRows() {
   return (
     <>
       <div>
-        <h1 className="text-xl pb-2">Step 4: Cleaning rows</h1>
-        <p className="pb-10">Exclude any unwanted rows</p>
+        <Alert className="mb-10 text-2xl border-none">
+          <AlertTitle>Cleaning transactions</AlertTitle>
+          <AlertDescription>
+            Remove those rows that you don&apos;t want or that aren&apos;t valid
+            transactions. For a transaction to be considered valid, every date
+            must be a date, and every amount must be a number.
+          </AlertDescription>
+        </Alert>
       </div>
       <div className="flex gap-2">
         <Button

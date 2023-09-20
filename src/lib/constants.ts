@@ -22,4 +22,4 @@ export const PIE_CHART_COLORS = [
 ];
 
 export const TABLE_HEADERS = ["date", "concept", "amount", "category"];
-export const LIMIT_TRANSACTIONS_TO_UPLOAD = 20;
+export const LIMIT_TRANSACTIONS_TO_UPLOAD = 100;
