@@ -58,12 +58,18 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
   });
 
   return (
-    <>
+    <div>
       <div>
-        <h1 className="text-xl pb-2">Step 1: Upload your transactions</h1>
-        <p className={ai === true ? "pb-2" : "pb-10"}>
-          Just drag and drop your transaction file right here 👇
-        </p>
+        <Alert
+          className={
+            ai ? "mb-2 text-2xl border-none" : "mb-10 text-2xl border-none"
+          }
+        >
+          <AlertTitle>Upload your file</AlertTitle>
+          <AlertDescription>
+            Just drag and drop your transaction file right here 👇
+          </AlertDescription>
+        </Alert>
         {ai && (
           <Alert className="mb-10 bg-emerald-50">
             <svg
@@ -98,6 +104,6 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
           Drag and drop your <b>csv</b> file here
         </p>
       </div>
-    </>
+    </div>
   );
 }

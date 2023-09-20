@@ -23,11 +23,13 @@ export function CategorizeTransactions() {
   );
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
   const [categoriesSelected, setCategoriesSelected] = useState<string[]>([]);
+  const [numTransactionsDeleted, setNumTransactionsDeleted] =
+    useState<number>(0);
   const { toast } = useToast();
   const { supabase } = useSupabase();
 
   async function fillCategoriesWithSuggestions() {
-    const numRows = getNumRows(transactions) - 1;
+    const numRows = getNumRows(transactions) - 1 - numTransactionsDeleted;
     const categoriesSuggested = new Array(numRows).fill("");
     const data = await getTransactions(supabase);
     const userId = await getUserId(supabase);
@@ -59,14 +61,22 @@ export function CategorizeTransactions() {
 
   function targetTransactionToDelete(index: number) {
     const copy = [...transactionsCopy];
+    const categoriesCopy = [...categoriesSelected];
     copy.splice(index, 1);
+    categoriesCopy.splice(index, 1);
     setTransactionsCopy(copy);
+    setCategoriesSelected(categoriesCopy);
+    setNumTransactionsDeleted(numTransactionsDeleted + 1);
     if (copy.length === 1) {
       toast({
         description:
           "ℹ️ You have deleted all transactions. If you want to upload transactions. If you want to continue uploading transactions, click on 'Restore transactions' button.",
       });
     }
+  }
+
+  function getNumTransactionsToBeCategorized() {
+    return categoriesSelected.filter((item) => item === "").length;
   }
 
   function cleanCategories() {
@@ -79,6 +89,7 @@ export function CategorizeTransactions() {
 
   function restoreTransactionsMatrix() {
     setTransactionsCopy(transactions);
+    setNumTransactionsDeleted(0);
   }
 
   function getTableHeaders(): any {
@@ -171,27 +182,27 @@ export function CategorizeTransactions() {
 
   const contents = getTableContents();
   const headers = getTableHeaders();
-
+  const transactionsToBeCategorized = getNumTransactionsToBeCategorized();
   return (
     <>
       <div>
-        <h1 className="text-xl pb-2">Step 5: Categorizing transactions</h1>
-        <p className="pb-2">
-          Classify each transaction according to the category you consider most
-          appropriate. It is completely personal.
-        </p>
+        <Alert className="mb-2 text-2xl border-none">
+          <AlertTitle>Categorizing transactions</AlertTitle>
+          <AlertDescription>
+            Classify each transaction according to the category you consider
+            most appropriate. It is completely personal.
+          </AlertDescription>
+        </Alert>
         <Alert className="mb-10 bg-emerald-50">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
             height="15"
-            viewBox="0 0 15 15"
+            viewBox="0 0 24 24"
           >
             <path
               fill="currentColor"
-              fillRule="evenodd"
-              d="M7.5.877a6.623 6.623 0 1 0 0 13.246A6.623 6.623 0 0 0 7.5.877ZM1.827 7.5a5.673 5.673 0 1 1 11.346 0a5.673 5.673 0 0 1-11.346 0Zm6.423-3a.75.75 0 1 1-1.5 0a.75.75 0 0 1 1.5 0ZM6 6h1.5a.5.5 0 0 1 .5.5V10h1v1H6v-1h1V7H6V6Z"
-              clipRule="evenodd"
+              d="m10 19l-2.5-5.5L2 11l5.5-2.5L10 3l2.5 5.5L18 11l-5.5 2.5L10 19Zm8 2l-1.25-2.75L14 17l2.75-1.25L18 13l1.25 2.75L22 17l-2.75 1.25L18 21Z"
             />
           </svg>
           <AlertTitle>Note</AlertTitle>
@@ -201,24 +212,39 @@ export function CategorizeTransactions() {
             row will turn gray, indicating that the category has been assigned.
           </AlertDescription>
         </Alert>
+        {transactionsToBeCategorized > 0 ? (
+          <p className="flex justify-center mb-4 text-lg">
+            Transactions to be categorized:
+            <span className="px-1 bg-black text-white ml-1 rounded-md">
+              {transactionsToBeCategorized}
+            </span>
+          </p>
+        ) : (
+          <p className="flex justify-center mb-4 text-lg">
+            All the transactions have been categorized 🎉
+          </p>
+        )}
       </div>
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          onClick={cleanCategories}
-          className="mb-5 bg-emerald-200"
-          disabled={!categoriesSelected.some((item) => item !== "")}
-        >
-          Clean categories
-        </Button>
-        <Button
-          variant="outline"
-          onClick={restoreTransactionsMatrix}
-          className="mb-5 bg-emerald-200"
-          disabled={transactionsCopy.length === transactions.length}
-        >
-          Restore transactions
-        </Button>
+      <div className="flex gap-4">
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={cleanCategories}
+            className="mb-5 bg-emerald-200"
+            disabled={!categoriesSelected.some((item) => item !== "")}
+          >
+            Clean categories
+          </Button>
+          <Button
+            variant="outline"
+            onClick={restoreTransactionsMatrix}
+            className="mb-5 bg-emerald-200"
+            disabled={transactionsCopy.length === transactions.length}
+          >
+            Restore transactions
+          </Button>
+        </div>
+
         <Button
           variant="outline"
           onClick={handleNextStep}

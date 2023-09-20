@@ -15,6 +15,8 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { TransactionsTable } from "../../components/transactions-table";
 import { ALL_CATEGORIES } from "@/lib/categories";
+import { Card, CardDescription, CardTitle } from "@/app/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 
 export function FinalStep() {
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
@@ -174,8 +176,13 @@ export function FinalStep() {
   return (
     <div>
       <div>
-        <h1 className="text-xl pb-2">Step 6: Final step</h1>
-        <p className="pb-10">Check everything is right before uploading. </p>
+        <Alert className="mb-10 text-2xl border-none">
+          <AlertTitle>Upload the transactions</AlertTitle>
+          <AlertDescription>
+            Check everything is right before uploading.
+          </AlertDescription>
+        </Alert>
+
         <div className="flex justify-center mb-10 gap-2">
           <Button
             variant="outline"

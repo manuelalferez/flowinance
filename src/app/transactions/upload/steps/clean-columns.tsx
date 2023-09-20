@@ -7,6 +7,7 @@ import { removeColumn } from "../../components/operators";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
 import { UploadTransactionsContext } from "@/lib/context";
+import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 
 export function CleanColumns() {
   const { transactions, setTransactions, nextStep } = useContext(
@@ -82,11 +83,13 @@ export function CleanColumns() {
   return (
     <>
       <div>
-        <h1 className="text-xl pb-2">Step 2: Cleaning columns</h1>
-        <p className="pb-10">
-          Exclude any unwanted columns. Ensure three columns remain: one for
-          date, another for concept, and one for amount.
-        </p>
+        <Alert className="mb-10 text-2xl border-none">
+          <AlertTitle>Cleaning columns</AlertTitle>
+          <AlertDescription>
+            Keep only three columns: one for <b>date</b>, one for <b>concept</b>
+            , and one for the <b>amount</b>. You can delete all the others.
+          </AlertDescription>
+        </Alert>
       </div>
       <div className="flex gap-2">
         <Button

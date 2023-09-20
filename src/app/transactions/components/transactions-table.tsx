@@ -1,3 +1,4 @@
+import { Card } from "@/app/components/ui/card";
 import {
   Table,
   TableBody,
@@ -15,11 +16,13 @@ export function TransactionsTable({
   contents,
 }: TransactionTableProps) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>{headers}</TableRow>
-      </TableHeader>
-      <TableBody>{contents}</TableBody>
-    </Table>
+    <Card className="p-2">
+      <Table>
+        <TableHeader>
+          <TableRow>{headers}</TableRow>
+        </TableHeader>
+        <TableBody>{contents}</TableBody>
+      </Table>
+    </Card>
   );
 }

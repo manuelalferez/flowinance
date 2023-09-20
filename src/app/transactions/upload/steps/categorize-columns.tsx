@@ -15,6 +15,7 @@ import { addRowToMatrix } from "../../components/operators";
 import { Button } from "@/app/components/ui/button";
 import { TransactionsTable } from "../../components/transactions-table";
 import { UploadTransactionsContext } from "@/lib/context";
+import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 
 const headerOptions = ["date", "concept", "amount"];
 
@@ -241,11 +242,13 @@ export function CategorizeColumns() {
   return (
     <>
       <div>
-        <h1 className="text-xl pb-2">Step 3: Classify columns</h1>
-        <p className="pb-10">
-          Classify every column according to its respective category: date,
-          concept, or amount.
-        </p>
+        <Alert className="mb-2 text-2xl border-none">
+          <AlertTitle>Classify columns</AlertTitle>
+          <AlertDescription>
+            Classify every column according to its respective category: date,
+            concept, or amount.
+          </AlertDescription>
+        </Alert>
       </div>
       <Button
         variant="outline"
