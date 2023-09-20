@@ -199,7 +199,7 @@ export default async function Home() {
               <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
                 Flowinance is powered by{" "}
                 <b className="hover:underline">
-                  <a href="https://supabase.com" target="_blank">
+                  <a href="https://nextjs.org" target="_blank">
                     Next.js
                   </a>
                 </b>
@@ -211,7 +211,7 @@ export default async function Home() {
                 </b>{" "}
                 and{" "}
                 <b className="hover:underline">
-                  <a href="https://supabase.com" target="_blank">
+                  <a href="https://ui.shadcn.com" target="_blank">
                     Shadcn.
                   </a>
                 </b>
