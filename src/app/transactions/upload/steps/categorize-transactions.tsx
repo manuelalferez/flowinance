@@ -38,7 +38,7 @@ export function CategorizeTransactions() {
     if (!transactionsHistory) return categoriesSuggested;
     transactions.slice(1).forEach((row, rowIndex) => {
       const concept = row[headersOrderIndexs.concept];
-      const categoryObj = transactionsHistory.find((row) =>
+      const categoryObj = transactionsHistory.findLast((row) =>
         row.concept.includes(concept)
       );
       const category = categoryObj ? categoryObj.category : null;
@@ -57,12 +57,28 @@ export function CategorizeTransactions() {
     getCategorySuggestions();
   }, [transactions]);
 
+  function targetTransactionToDelete(index: number) {
+    const copy = [...transactionsCopy];
+    copy.splice(index, 1);
+    setTransactionsCopy(copy);
+    if (copy.length === 1) {
+      toast({
+        description:
+          "ℹ️ You have deleted all transactions. If you want to upload transactions. If you want to continue uploading transactions, click on 'Restore transactions' button.",
+      });
+    }
+  }
+
   function cleanCategories() {
     toast({
       description: "🎉 All categories cleaned",
     });
     const numRows = getNumRows(transactionsCopy) - 1;
     setCategoriesSelected(new Array(numRows).fill(""));
+  }
+
+  function restoreTransactionsMatrix() {
+    setTransactionsCopy(transactions);
   }
 
   function getTableHeaders(): any {
@@ -74,6 +90,7 @@ export function CategorizeTransactions() {
         {transactionsCopy[firstRow].map((col, colIndex) => (
           <TableHead key={colIndex}>{col}</TableHead>
         ))}
+        <TableHead className="p-2 w-2 pr-8" key={`options-header`}></TableHead>
       </>
     );
   }
@@ -113,6 +130,30 @@ export function CategorizeTransactions() {
           {row.map((col, colIndex) => (
             <TableCell key={colIndex}>{col}</TableCell>
           ))}
+          <TableCell
+            className="cursor-pointer p-0 "
+            key={`${rowIndex}-options`}
+          >
+            <span
+              className="p-0 w-4 h-4 hidden hoverable-cell"
+              onClick={() => targetTransactionToDelete(rowIndex)}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 15 15"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.5 1C5.22386 1 5 1.22386 5 1.5C5 1.77614 5.22386 2 5.5 2H9.5C9.77614 2 10 1.77614 10 1.5C10 1.22386 9.77614 1 9.5 1H5.5ZM3 3.5C3 3.22386 3.22386 3 3.5 3H5H10H11.5C11.7761 3 12 3.22386 12 3.5C12 3.77614 11.7761 4 11.5 4H11V12C11 12.5523 10.5523 13 10 13H5C4.44772 13 4 12.5523 4 12V4L3.5 4C3.22386 4 3 3.77614 3 3.5ZM5 4H10V12H5V4Z"
+                  fill="currentColor"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </span>
+          </TableCell>
         </TableRow>
       ))
       .slice(1);
@@ -169,6 +210,14 @@ export function CategorizeTransactions() {
           disabled={!categoriesSelected.some((item) => item !== "")}
         >
           Clean categories
+        </Button>
+        <Button
+          variant="outline"
+          onClick={restoreTransactionsMatrix}
+          className="mb-5 bg-emerald-200"
+          disabled={transactionsCopy.length === transactions.length}
+        >
+          Restore transactions
         </Button>
         <Button
           variant="outline"

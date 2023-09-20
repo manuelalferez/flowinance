@@ -21,6 +21,7 @@ export function FinalStep() {
   const { transactions } = useContext(UploadTransactionsContext);
   const { toast } = useToast();
   const { supabase } = useSupabase();
+
   function getTransactionsWithDateFormated() {
     const copy = transactions.map((row) => [...row]);
     for (let i = 1; i < copy.length; i++) {
