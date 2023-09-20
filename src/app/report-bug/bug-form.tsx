@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 
 export default function BugForm() {
   const [input, setInput] = useState("");
-  const [isSent, setIsSent] = useState(true);
+  const [isSent, setIsSent] = useState(false);
   const { supabase } = useSupabase();
   async function handleSend() {
     await uploadBugToSupabase(supabase, input);
