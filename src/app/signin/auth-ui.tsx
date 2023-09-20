@@ -6,6 +6,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useEffect, useState } from "react";
 import Loading from "../loading";
 import { useSupabase } from "../supabase-provider";
+import { Card } from "../components/ui/card";
 
 export default function AuthUI() {
   const { supabase } = useSupabase();
@@ -18,7 +19,7 @@ export default function AuthUI() {
   if (loading) return <Loading />;
 
   return (
-    <div className="flex flex-col space-y-4 w-80">
+    <Card className="flex flex-col space-y-4 w-96 h-full p-8">
       <Auth
         supabaseClient={supabase}
         providers={[]}
@@ -29,7 +30,7 @@ export default function AuthUI() {
           variables: {
             default: {
               colors: {
-                brand: "#A7F3D0",
+                brand: "#0F172A",
                 brandAccent: "#52525b",
               },
             },
@@ -37,6 +38,6 @@ export default function AuthUI() {
         }}
         theme="light"
       />
-    </div>
+    </Card>
   );
 }
