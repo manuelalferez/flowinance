@@ -155,9 +155,9 @@ export function CategorizeTransactions() {
           </svg>
           <AlertTitle>Note</AlertTitle>
           <AlertDescription>
-            If you've uploaded transactions before, your assigned categories
-            will load automatically. When you select a category, the row will
-            turn gray, indicating that the category has been assigned.
+            If you&apos;ve uploaded transactions before, your assigned
+            categories will load automatically. When you select a category, the
+            row will turn gray, indicating that the category has been assigned.
           </AlertDescription>
         </Alert>
       </div>
