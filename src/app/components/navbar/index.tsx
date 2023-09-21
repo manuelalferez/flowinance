@@ -17,13 +17,21 @@ export function Narbar({ session }: any) {
     <NavigationMenu className="p-4 overflow-x-hidden">
       <NavigationMenuList className="flex justify-around items-center w-screen">
         <div className="flex gap-1">
-          <NavigationMenuItem className="hidden md:block md:mr-16">
+          <NavigationMenuItem className="p-0 m-0 md:mr-16">
             <Link href="/" legacyBehavior passHref className="p-0">
               <NavigationMenuLink
                 className={`text-emerald-700  hover:text-emerald-600 text-xl flex items-center gap-1 ${navigationMenuTriggerStyle()}`}
               >
-                <Image src={logo} alt="logo" className="w-8" />
-                <span className="hidden md:block">Flowinance</span>
+                <Image
+                  src={logo}
+                  alt="logo"
+                  className={session ? "hidden md:block w-8" : "w-8"}
+                />
+                <span
+                  className={session ? "hidden md:block" : "hidden md:block"}
+                >
+                  Flowinance
+                </span>
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
