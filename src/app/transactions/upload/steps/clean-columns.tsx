@@ -95,15 +95,14 @@ export function CleanColumns() {
         <Button
           variant="outline"
           onClick={restoreTransactionsMatrix}
-          className="mb-5 bg-emerald-200"
+          className="mb-5"
           disabled={transactionsCopy === transactions}
         >
           Restore columns
         </Button>
         <Button
-          variant="outline"
           onClick={handleNextStep}
-          className="mb-5 bg-emerald-200"
+          className="mb-5 bg-emerald-700 hover:bg-emerald-600"
           disabled={!hasDeletedMaxColumns()}
         >
           Next step
