@@ -9,21 +9,24 @@ import {
 } from "../ui/navigation-menu";
 import { SignInButton } from "./sign-in-button";
 import { AccountButton } from "./account-button";
+import Image from "next/image";
+import logo from "@/images/logo.svg";
 
 export function Narbar({ session }: any) {
   return (
     <NavigationMenu className="p-4 overflow-x-hidden">
-      <NavigationMenuList className="flex justify-around w-screen">
+      <NavigationMenuList className="flex justify-around items-center w-screen">
         <div className="flex gap-1">
-          {!session && (
-            <NavigationMenuItem>
-              <Link href="/" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Home
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          )}
+          <NavigationMenuItem className="hidden md:block md:mr-16">
+            <Link href="/" legacyBehavior passHref className="p-0">
+              <NavigationMenuLink
+                className={`text-emerald-700  hover:text-emerald-600 text-xl flex items-center gap-1 ${navigationMenuTriggerStyle()}`}
+              >
+                <Image src={logo} alt="logo" className="w-8" />
+                <span className="hidden md:block">Flowinance</span>
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
 
           {session && (
             <NavigationMenuItem className="flex gap-1">

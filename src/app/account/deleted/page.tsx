@@ -15,7 +15,7 @@ export default function AccountDeleted() {
         <CardContent>
           It will disappear completely in less than one month. If you would like
           to reactivate it, please contact technical support at{" "}
-          <b>support@finance-graph.com</b>.
+          <b>manuelalferezruiz+flowinance@gmail.com</b>.
         </CardContent>
       </Card>
     </div>

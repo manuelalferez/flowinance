@@ -11,8 +11,8 @@ import { Footer } from "./components/footer";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Finance graph",
-  description: "Track your expenses easily",
+  title: "Flowinance",
+  description: "Track your finances, focus on what is important",
 };
 
 export default async function RootLayout({
