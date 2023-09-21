@@ -136,15 +136,14 @@ export function CleanRows() {
         <Button
           variant="outline"
           onClick={() => restoreTransactionsMatrix(false)}
-          className="mb-5 bg-emerald-200"
+          className="mb-5"
           disabled={transactionsCopy === transactions}
         >
           Restore rows
         </Button>
         <Button
-          variant="outline"
           onClick={handleNextStep}
-          className="mb-5 bg-emerald-200"
+          className="mb-5 bg-emerald-700 hover:bg-emerald-600"
           disabled={hasDeletedMaxRows()}
         >
           Next step

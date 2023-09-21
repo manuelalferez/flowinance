@@ -132,14 +132,14 @@ export function TransactionsTable() {
 
       <div className="mt-4 flex justify-center">
         <Button
-          className="mx-2 bg-emerald-200 text-white px-4 py-2 rounded-md"
+          className="mx-2 px-4 py-2 rounded-md"
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
         >
           Previous
         </Button>
         <Button
-          className="mx-2 bg-emerald-200 text-white px-4 py-2 rounded-md"
+          className="mx-2 px-4 py-2 rounded-md"
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={endIndex >= sortTransactions(transactions).length}
         >
@@ -155,7 +155,9 @@ export function TransactionsTable() {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex justify-center">
-          <Button onClick={() => deleteTransaction()}>Yes</Button>
+          <Button variant="destructive" onClick={() => deleteTransaction()}>
+            Yes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

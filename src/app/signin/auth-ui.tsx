@@ -30,7 +30,7 @@ export default function AuthUI() {
           variables: {
             default: {
               colors: {
-                brand: "#0F172A",
+                brand: "#047857",
                 brandAccent: "#52525b",
               },
             },

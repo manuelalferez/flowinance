@@ -86,21 +86,34 @@ export default async function Home() {
                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="h-10 w-10 fill-current"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 48 48"
                   >
-                    <g fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <g fill="none" stroke="currentColor">
                       <path
-                        strokeLinecap="round"
-                        d="M22 10.5V12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2h1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="4.667"
+                        d="M19.036 44c-.98-3.195-2.458-5.578-4.435-7.147c-2.965-2.353-7.676-.89-9.416-3.318c-1.74-2.428 1.219-6.892 2.257-9.526c1.039-2.634-3.98-3.565-3.394-4.313c.39-.499 2.927-1.937 7.609-4.316C12.987 7.794 17.9 4 26.398 4C39.144 4 44 14.806 44 21.68c0 6.872-5.88 14.276-14.256 15.873c-.749 1.09.331 3.24 3.24 6.447"
                       />
-                      <path d="m16.652 3.455l.649-.649A2.753 2.753 0 0 1 21.194 6.7l-.65.649m-3.892-3.893s.081 1.379 1.298 2.595c1.216 1.217 2.595 1.298 2.595 1.298m-3.893-3.893L10.687 9.42c-.404.404-.606.606-.78.829c-.205.262-.38.547-.524.848c-.121.255-.211.526-.392 1.068L8.412 13.9m12.133-6.552l-5.965 5.965c-.404.404-.606.606-.829.78a4.59 4.59 0 0 1-.848.524c-.255.121-.526.211-1.068.392l-1.735.579m0 0l-1.123.374a.742.742 0 0 1-.939-.94l.374-1.122m1.688 1.688L8.412 13.9" />
+                      <path
+                        stroke-linejoin="round"
+                        stroke-width="4"
+                        d="M19.5 14.5c-.654 2.534-.46 4.314.583 5.339c1.042 1.024 2.818 1.695 5.328 2.01c-.57 3.269.125 4.802 2.083 4.6c1.958-.201 3.135-1.015 3.53-2.44c3.06.86 4.719.14 4.976-2.16c.385-3.45-1.475-6.201-2.238-6.201c-.762 0-2.738-.093-2.738-1.148s-2.308-1.65-4.391-1.65s-.83-1.405-3.69-.85c-1.907.37-3.055 1.203-3.443 2.5Z"
+                        clip-rule="evenodd"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-width="4"
+                        d="M30.5 25.5c-1.017.631-2.412 1.68-3 2.5c-1.469 2.05-2.66 3.298-2.92 4.608"
+                      />
                     </g>
                   </svg>
                   <div className="space-y-2">
-                    <h3 className="font-bold">Edit uploaded transactions</h3>
+                    <h3 className="font-bold">AI</h3>
                     <p className="text-sm text-muted-foreground">
-                      You can also kick off the ones you don&apos;t want to.
+                      Automatic transaction categorization and file cleaning.
                     </p>
                   </div>
                 </div>
@@ -207,6 +220,12 @@ export default async function Home() {
                 <b className="hover:underline">
                   <a href="https://supabase.com" target="_blank">
                     Supabase
+                  </a>
+                </b>{" "}
+                ,{" "}
+                <b className="hover:underline">
+                  <a href="https://openai.com/" target="_blank">
+                    OpenAI
                   </a>
                 </b>{" "}
                 and{" "}

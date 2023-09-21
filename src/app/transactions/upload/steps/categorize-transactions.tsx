@@ -230,7 +230,7 @@ export function CategorizeTransactions() {
           <Button
             variant="outline"
             onClick={cleanCategories}
-            className="mb-5 bg-emerald-200"
+            className="mb-5"
             disabled={!categoriesSelected.some((item) => item !== "")}
           >
             Clean categories
@@ -238,7 +238,7 @@ export function CategorizeTransactions() {
           <Button
             variant="outline"
             onClick={restoreTransactionsMatrix}
-            className="mb-5 bg-emerald-200"
+            className="mb-5"
             disabled={transactionsCopy.length === transactions.length}
           >
             Restore transactions
@@ -246,9 +246,8 @@ export function CategorizeTransactions() {
         </div>
 
         <Button
-          variant="outline"
           onClick={handleNextStep}
-          className="mb-5 bg-emerald-200"
+          className="mb-5 bg-emerald-700 hover:bg-emerald-600"
           disabled={categoriesSelected.includes("")}
         >
           Next step
