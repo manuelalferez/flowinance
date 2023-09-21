@@ -1,7 +1,7 @@
 import { INCOMES_CATEGORIES } from "@/lib/categories";
 import { PIE_CHART_COLORS } from "@/lib/constants";
 import { AppContext } from "@/lib/context";
-import { roundToTwoDecimal } from "@/lib/utils";
+import { getDimensionsPieCharts, roundToTwoDecimal } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import { DashboardCard } from "../ui/dashboard-card";
@@ -15,6 +15,8 @@ interface ChartData {
 export function IncomesPieChart() {
   const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   useEffect(() => {
     const incomes = filteredTransactions!.filter((transaction) => {
@@ -41,7 +43,17 @@ export function IncomesPieChart() {
     }).filter((item): item is ChartData => item !== null);
 
     setData(dataArray);
+    updateDimensions();
   }, [filteredTransactions]);
+
+  function updateDimensions() {
+    const screenWidth = window.innerWidth;
+    const { newWidth, newHeight } = getDimensionsPieCharts(screenWidth);
+    setWidth(newWidth);
+    setHeight(newHeight);
+  }
+
+  window.addEventListener("resize", updateDimensions);
 
   return data.length !== 0 ? (
     <DashboardCard
@@ -50,7 +62,7 @@ export function IncomesPieChart() {
     provide an intuitive representation, making it easy to see how your
     incomes are distributed among the different categories."
     >
-      <PieChart width={400} height={300}>
+      <PieChart width={width} height={height}>
         <Pie
           dataKey="value"
           isAnimationActive={false}

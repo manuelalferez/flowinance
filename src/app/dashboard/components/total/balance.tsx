@@ -6,7 +6,12 @@ import {
 import { AppContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
-import { Card, CardDescription, CardHeader, CardTitle } from "../../ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
 
 export function Balance() {
   const { transactions, currency } = useContext(AppContext);

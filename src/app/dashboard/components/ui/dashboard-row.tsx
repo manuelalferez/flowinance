@@ -7,9 +7,5 @@ export function DashboardRow({
   children: React.ReactNode;
   className?: string;
 }) {
-  return (
-    <div className={`flex gap-2 flex-wrap lg:flex-nowrap ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`flex gap-2 ${className}`}>{children}</div>;
 }

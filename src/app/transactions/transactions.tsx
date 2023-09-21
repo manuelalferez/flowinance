@@ -88,7 +88,7 @@ export default function Transactions() {
           <HoverCard>
             <HoverCardTrigger>
               <Button className="bg-emerald-700 hover:bg-emerald-600">
-                <Link href="/transactions/upload-ai" legacyBehavior passHref>
+                <Link href="/transactions/upload" legacyBehavior passHref>
                   <div className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +117,7 @@ export default function Transactions() {
           <HoverCard>
             <HoverCardTrigger>
               <Button className="bg-emerald-700 hover:bg-emerald-600">
-                <Link href="/transactions/upload-ai" legacyBehavior passHref>
+                <Link href="/transactions/add" legacyBehavior passHref>
                   <div className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
