@@ -97,7 +97,7 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
       </div>
       <div
         {...getRootProps()}
-        className="border-black border-2 border-dashed rounded-sm p-28 hover:cursor-pointer"
+        className="border-black border-2 border-dashed rounded-sm p-10 md:p-20 lg:p-28 hover:cursor-pointer"
       >
         <input {...getInputProps()} />
         <p>

@@ -91,3 +91,8 @@ tr:hover .hoverable-cell {
   justify-content: end;
   width: 20px;
 }
+
+.fill-available {
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+}

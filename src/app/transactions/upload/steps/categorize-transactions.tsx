@@ -220,7 +220,7 @@ export function CategorizeTransactions() {
             </span>
           </p>
         ) : (
-          <p className="flex justify-center mb-4 text-lg">
+          <p className="flex justify-center mb-4 text-base md:text-lg">
             All the transactions have been categorized 🎉
           </p>
         )}
@@ -254,9 +254,7 @@ export function CategorizeTransactions() {
         </Button>
       </div>
 
-      <div>
-        <TransactionsTable headers={headers} contents={contents} />
-      </div>
+      <TransactionsTable headers={headers} contents={contents} />
     </>
   );
 }

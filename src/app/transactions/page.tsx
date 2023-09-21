@@ -9,7 +9,7 @@ export default async function Page() {
   }
   return (
     <div>
-      <main className="flex flex-col items-center p-24">
+      <main className="flex flex-col items-center p-2 md:p-24">
         <Transactions />
       </main>
     </div>

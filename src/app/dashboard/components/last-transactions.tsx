@@ -29,7 +29,7 @@ export function LastTransactions() {
         moves!
       </CardDescription>
 
-      <Table key="expenses-table" className="text-xs md:text-md">
+      <Table key="expenses-table" className="text-xs md:text-base">
         <TableHeader>
           <TableRow>
             {TABLE_HEADERS.map((header, index) => (
