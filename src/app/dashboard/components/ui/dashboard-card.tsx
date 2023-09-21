@@ -1,10 +1,10 @@
 import React from "react";
-import { Card, CardTitle } from "../../ui/card";
+import { Card, CardTitle } from "../../../components/ui/card";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "../../ui/hover-card";
+} from "../../../components/ui/hover-card";
 
 export function DashboardCard({
   children,
@@ -18,7 +18,9 @@ export function DashboardCard({
   className?: string;
 }) {
   return (
-    <Card className={`flex flex-col items-center p-8 h-fit ${className}`}>
+    <Card
+      className={`w-full flex flex-col items-center p-8 h-fit ${className}`}
+    >
       <div className="flex items-center gap-2 pb-6 justify-between">
         {title && <CardTitle>{title}</CardTitle>}
         {description && (

@@ -1,6 +1,10 @@
-import { EXPENSES_CATEGORIES } from "@/lib/categories";
+import { INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
-import { roundToTwoDecimal, sortTransactions } from "@/lib/utils";
+import {
+  getDimensionsCharts,
+  roundToTwoDecimal,
+  sortTransactions,
+} from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
   XAxis,
@@ -15,15 +19,18 @@ import { DashboardCard } from "../ui/dashboard-card";
 
 interface ChartData {
   name: string;
-  spent: number;
+  income: number;
 }
 
-export default function ExpensesEvolutionChart() {
+export default function IncomesEvolutionChart() {
   const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
   useEffect(() => {
     const expenses = filteredTransactions!.filter((transaction) => {
-      return EXPENSES_CATEGORIES.some(
+      return INCOMES_CATEGORIES.some(
         (category) => category === transaction.category
       );
     });
@@ -36,22 +43,33 @@ export default function ExpensesEvolutionChart() {
     const dataArray = shortedExpenses.map((transaction, index) => {
       return {
         name: transaction.date,
-        spent: accumulatedExpenses[index],
+        income: accumulatedExpenses[index],
       };
     });
     setData(dataArray);
+    updateDimensions();
   }, [filteredTransactions]);
+
+  function updateDimensions() {
+    const screenWidth = window.innerWidth;
+    const { newWidth, newHeight } = getDimensionsCharts(screenWidth);
+    setWidth(newWidth);
+    setHeight(newHeight);
+  }
+
+  window.addEventListener("resize", updateDimensions);
+
   return (
     <div>
       {data.length !== 0 ? (
         <DashboardCard
-          title="Expenses Evolution"
-          description="Visualize the trend of your expenses, how they have grown over the
+          title="Incomes Evolution"
+          description="Visualize the trend of your incomes, how they have grown over the
         days."
         >
           <AreaChart
-            width={600}
-            height={300}
+            width={width}
+            height={height}
             data={data}
             margin={{
               top: 10,
@@ -66,7 +84,7 @@ export default function ExpensesEvolutionChart() {
             <Tooltip />
             <Area
               type="monotone"
-              dataKey="spent"
+              dataKey="income"
               stroke="#8884d8"
               fill="#8884d8"
             />
@@ -74,8 +92,8 @@ export default function ExpensesEvolutionChart() {
         </DashboardCard>
       ) : (
         <DashboardNoDataCard
-          title="Expenses"
-          description=" You have not generated any expense so far."
+          title="Incomes Evolution"
+          description=" You have not generated any income so far."
         />
       )}
     </div>

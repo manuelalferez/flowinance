@@ -68,7 +68,7 @@ export function TransactionsTable() {
         All transactions
       </CardTitle>
       <Card className="p-2">
-        <Table key="expenses-table">
+        <Table key="expenses-table" className="text-xs md:text-base">
           <TableHeader>
             <TableRow>
               {TABLE_HEADERS.map((header, index) => (

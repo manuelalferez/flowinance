@@ -16,7 +16,7 @@ export default function BugForm() {
   }
   return !isSent ? (
     <div className="w-full">
-      <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-24">
+      <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-16 lg:py-24">
         <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
           <h1 className="font-heading text-3xl lg:text-4xl">
             Your contributions are very important to us
@@ -32,7 +32,7 @@ export default function BugForm() {
       </section>
       <div className="flex flex-col justify-center items-center gap-2 w-full">
         <textarea
-          className="h-56 w-1/2 rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-56 w-5/6 md:w-1/2 rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />

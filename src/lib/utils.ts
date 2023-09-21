@@ -29,6 +29,12 @@ export enum headersOrderIndexs {
   category = 3,
 }
 
+const breakpoints = {
+  xs: 400,
+  sm: 640,
+  md: 840,
+};
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -687,4 +693,36 @@ export async function updateDelimiterInSupabase(
     return;
   }
   revalidateSettings();
+}
+
+export function getDimensionsPieCharts(screenWidth: number) {
+  let newWidth, newHeight;
+
+  if (screenWidth < breakpoints.sm) {
+    newWidth = 300;
+    newHeight = 250;
+  } else if (screenWidth < breakpoints.md) {
+    newWidth = 320;
+    newHeight = 270;
+  } else {
+    newWidth = 400;
+    newHeight = 300;
+  }
+  return { newWidth, newHeight };
+}
+
+export function getDimensionsCharts(screenWidth: number) {
+  let newWidth, newHeight;
+
+  if (screenWidth < breakpoints.sm) {
+    newWidth = 300;
+    newHeight = 250;
+  } else if (screenWidth < breakpoints.md) {
+    newWidth = 600;
+    newHeight = 400;
+  } else {
+    newWidth = 900;
+    newHeight = 400;
+  }
+  return { newWidth, newHeight };
 }

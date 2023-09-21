@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardTitle } from "../../ui/card";
+import { Card, CardDescription, CardTitle } from "../../../components/ui/card";
 
 export function DashboardNoDataCard({
   title,
@@ -8,7 +8,7 @@ export function DashboardNoDataCard({
   description: string;
 }) {
   return (
-    <Card className="p-8">
+    <Card className="p-8 w-full">
       <CardTitle className="mb-6">{title}</CardTitle>
       <CardDescription className="mb-6">{description}</CardDescription>
     </Card>

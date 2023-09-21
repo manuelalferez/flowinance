@@ -172,7 +172,7 @@ export function FinalStep() {
   const contents = getTableContents();
   const headers = getTableHeaders();
   return (
-    <div>
+    <>
       <div>
         <Alert className="mb-10 text-2xl border-none">
           <AlertTitle>Upload the transactions</AlertTitle>
@@ -218,6 +218,6 @@ export function FinalStep() {
         </div>
       </div>
       <TransactionsTable headers={headers} contents={contents} />
-    </div>
+    </>
   );
 }

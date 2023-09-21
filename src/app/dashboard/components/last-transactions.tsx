@@ -10,9 +10,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "../../components/ui/table";
 import { DashboardCard } from "./ui/dashboard-card";
-import { CardDescription } from "../ui/card";
+import { CardDescription } from "../../components/ui/card";
 
 export function LastTransactions() {
   const { transactions, currency } = useContext(AppContext);
@@ -23,13 +23,13 @@ export function LastTransactions() {
   );
 
   return (
-    <DashboardCard title="Last transactions">
+    <DashboardCard title="Last transactions" className="p-2 md:p-8">
       <CardDescription className="mb-4">
         Here&apos;s the latest gossip from your wallet: Your 10 most recent
         moves!
       </CardDescription>
 
-      <Table key="expenses-table">
+      <Table key="expenses-table" className="text-xs md:text-base">
         <TableHeader>
           <TableRow>
             {TABLE_HEADERS.map((header, index) => (

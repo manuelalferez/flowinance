@@ -1,4 +1,4 @@
-import { EXPENSES_CATEGORIES } from "@/lib/categories";
+import { INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
@@ -9,19 +9,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../ui/table";
+} from "../../../components/ui/table";
 import { DashboardCard } from "../ui/dashboard-card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 
-type ExpenseCategory = {
+type IncomeCategory = {
   name: string;
   value: number;
 };
 
-export function ExpensesTable() {
+export function IncomesTable() {
   const { filteredTransactions, currency } = useContext(AppContext);
 
-  const categoriesWithTotalExpenses = EXPENSES_CATEGORIES.map((category) => {
+  const categoriesWithTotalExpenses = INCOMES_CATEGORIES.map((category) => {
     const totalForCategory = filteredTransactions!
       .filter((transaction) => transaction.category === category)
       .reduce((acc, curr) => acc + curr.amount, 0);
@@ -32,17 +32,16 @@ export function ExpensesTable() {
       ? { name: category, value: totalForCategoryRounded }
       : null;
   })
-    .filter((item): item is ExpenseCategory => item !== null)
+    .filter((item): item is IncomeCategory => item !== null)
     .sort((a, b) => b.value - a.value);
 
   return categoriesWithTotalExpenses.length !== 0 ? (
     <DashboardCard
-      title="Expenses by categories"
-      description="Explore a detailed breakdown of your expenses in the table
-    below, conveniently organized for easy reference and
-    understanding."
+      title="Incomes by categories"
+      description="Explore a detailed breakdown of your incomes in the table below,
+    conveniently organized for easy reference and understanding."
     >
-      <Table key="expenses-table">
+      <Table key="incomes-table">
         <TableHeader>
           <TableRow>
             <TableHead className="p-2">Category</TableHead>
@@ -50,12 +49,10 @@ export function ExpensesTable() {
           </TableRow>
         </TableHeader>
         {categoriesWithTotalExpenses.map(
-          (item: ExpenseCategory, index: number) => (
+          (item: IncomeCategory, index: number) => (
             <TableBody key={index}>
               <TableRow key={index}>
-                <TableCell className="p-2" key={index}>
-                  {item.name}
-                </TableCell>
+                <TableCell className="p-2">{item.name}</TableCell>
                 <TableCell className="p-2 pl-8">
                   {item.value}
                   {currency}
@@ -68,8 +65,8 @@ export function ExpensesTable() {
     </DashboardCard>
   ) : (
     <DashboardNoDataCard
-      title="Expenses by categories"
-      description="You have not generated any expense so far."
+      title="Incomes by categories"
+      description="You have not generated any income so far."
     />
   );
 }

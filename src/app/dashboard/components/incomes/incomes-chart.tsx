@@ -1,76 +1,86 @@
 import { INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
-import { roundToTwoDecimal, sortTransactions } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Area,
-  AreaChart,
+  Legend,
 } from "recharts";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 import { DashboardCard } from "../ui/dashboard-card";
+import { getDimensionsCharts } from "@/lib/utils";
 
 interface ChartData {
   name: string;
   income: number;
 }
 
-export default function IncomesEvolutionChart() {
+export default function IncomesChart() {
   const { filteredTransactions } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
   useEffect(() => {
-    const expenses = filteredTransactions!.filter((transaction) => {
+    const incomes = filteredTransactions!.filter((transaction) => {
       return INCOMES_CATEGORIES.some(
         (category) => category === transaction.category
       );
     });
-    const shortedExpenses = sortTransactions(expenses);
-    let accumulatedAmount = 0;
-    const accumulatedExpenses = shortedExpenses.map((expense) => {
-      accumulatedAmount += expense.amount;
-      return roundToTwoDecimal(accumulatedAmount);
-    });
-    const dataArray = shortedExpenses.map((transaction, index) => {
+    const dataArray = incomes.map((transaction) => {
       return {
         name: transaction.date,
-        income: accumulatedExpenses[index],
+        income: transaction.amount,
       };
     });
     setData(dataArray);
+    updateDimensions();
   }, [filteredTransactions]);
+
+  function updateDimensions() {
+    const screenWidth = window.innerWidth;
+    const { newWidth, newHeight } = getDimensionsCharts(screenWidth);
+    setWidth(newWidth);
+    setHeight(newHeight);
+  }
+
+  window.addEventListener("resize", updateDimensions);
+
   return (
     <div>
       {data.length !== 0 ? (
         <DashboardCard
-          title="Incomes Evolution"
-          description="Visualize the trend of your incomes, how they have grown over the
-        days."
+          title="Incomes"
+          description="See your daily incomes at a glance. Effortlessly understand your
+        daily incomes trends."
         >
-          <AreaChart
-            width={600}
-            height={300}
+          <LineChart
+            width={width}
+            height={height}
             data={data}
             margin={{
-              top: 10,
+              top: 20,
               right: 30,
-              left: 30,
-              bottom: 0,
+              left: 20,
+              bottom: 5,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Area
+            <Legend />
+            <Line
               type="monotone"
               dataKey="income"
-              stroke="#8884d8"
-              fill="#8884d8"
+              stroke="#4eb87d"
+              activeDot={{ r: 8 }}
             />
-          </AreaChart>
+          </LineChart>
         </DashboardCard>
       ) : (
         <DashboardNoDataCard

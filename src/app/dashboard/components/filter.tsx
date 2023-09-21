@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Toggle } from "../ui/toggle";
+import { Toggle } from "../../components/ui/toggle";
 import { AppContext } from "@/lib/context";
 
 export function Filter() {

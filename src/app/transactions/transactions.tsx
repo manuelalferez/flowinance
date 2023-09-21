@@ -47,8 +47,8 @@ export default function Transactions() {
   }, []);
 
   return (
-    <div className="min-h-screen mb-2 w-3/4">
-      <div>
+    <div className="min-h-screen mb-2 w-5/6 md:w-3/4">
+      <div className="flex justify-center md:justify-start w-full">
         <h1 className="text-4xl font-semibold text-gray-800 mb-6">
           Transactions
         </h1>
@@ -57,8 +57,8 @@ export default function Transactions() {
         <div className="flex items-start mb-10 gap-2 ">
           <HoverCard>
             <HoverCardTrigger>
-              <Button className="bg-emerald-700 hover:bg-emerald-600">
-                <Link href="/transactions/upload-ai" legacyBehavior passHref>
+              <Link href="/transactions/upload-ai" legacyBehavior passHref>
+                <Button className="bg-emerald-700 hover:bg-emerald-600">
                   <div className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -74,8 +74,8 @@ export default function Transactions() {
                     </svg>
                     <span>Smart Upload</span>
                   </div>
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </HoverCardTrigger>
             <HoverCardContent>
               Upload your files and watch the magic happen! Our Artificial
@@ -87,8 +87,8 @@ export default function Transactions() {
 
           <HoverCard>
             <HoverCardTrigger>
-              <Button className="bg-emerald-700 hover:bg-emerald-600">
-                <Link href="/transactions/upload-ai" legacyBehavior passHref>
+              <Link href="/transactions/upload" legacyBehavior passHref>
+                <Button className="bg-emerald-700 hover:bg-emerald-600">
                   <div className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -104,8 +104,8 @@ export default function Transactions() {
                     </svg>
                     Upload
                   </div>
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </HoverCardTrigger>
             <HoverCardContent>
               Upload the file with your transactions. Gain flexibility when
@@ -116,8 +116,13 @@ export default function Transactions() {
 
           <HoverCard>
             <HoverCardTrigger>
-              <Button className="bg-emerald-700 hover:bg-emerald-600">
-                <Link href="/transactions/upload-ai" legacyBehavior passHref>
+              <Link
+                href="/transactions/add"
+                legacyBehavior
+                passHref
+                className="w-full h-full"
+              >
+                <Button className="bg-emerald-700 hover:bg-emerald-600">
                   <div className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -133,8 +138,8 @@ export default function Transactions() {
                     </svg>
                     Add
                   </div>
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </HoverCardTrigger>
             <HoverCardContent>
               Add transactions one by one. It can be useful in certain
