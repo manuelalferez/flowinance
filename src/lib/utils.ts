@@ -172,6 +172,31 @@ export function extractFields(lines: string[]): string[][] {
   return fields;
 }
 
+export async function getNewTransactions(
+  supabase: SupabaseClient<any, "public", any>,
+  transactions: string[][]
+) {
+  const copy = transactions.map((row) => [...row]);
+  const userId = await getUserId(supabase);
+  if (!userId) return transactions;
+  const data = await getTransactions(supabase);
+  if (!data) return transactions;
+  const desencryptedTransactions = decryptTransactions(data, userId);
+  const newTransactions = copy.filter((row) => {
+    return !desencryptedTransactions.some(
+      ({ date, amount, concept }) =>
+        date === row[headersOrderIndexs.date] &&
+        amount ===
+          Math.abs(
+            roundToTwoDecimal(parseFloat(row[headersOrderIndexs.amount]))
+          ) &&
+        concept === row[headersOrderIndexs.concept]
+    );
+  });
+
+  return newTransactions;
+}
+
 function stringToNestedArray(inputString: string): string[][] {
   const lines = inputString.split("\n");
   const result = lines
