@@ -7,6 +7,7 @@ import { UploadTransactionsContext } from "@/lib/context";
 import {
   encryptData,
   formatDateStringToDdMmYyyy,
+  getNewTransactions,
   getUserId,
   headersOrderIndexs,
   roundToTwoDecimal,
@@ -16,11 +17,26 @@ import { useContext, useEffect, useState } from "react";
 import { TransactionsTable } from "../../components/transactions-table";
 import { ALL_CATEGORIES } from "@/lib/categories";
 import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/components/ui/dialog";
+import Loading from "@/app/loading";
 
 export function FinalStep() {
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
   const { transactions } = useContext(UploadTransactionsContext);
   const [uploading, setUploading] = useState<boolean>(false);
+  const [isDuplicatedTransactions, setIsDuplicatedTransactions] =
+    useState<boolean>(false);
+  const [nonDuplicatedTransactions, setNonDuplicatedTransactions] = useState<
+    string[][]
+  >([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
   const { supabase } = useSupabase();
 
@@ -34,6 +50,14 @@ export function FinalStep() {
     return copy;
   }
   useEffect(() => {
+    const getTransactions = async () => {
+      const newTransactions = await getNewTransactions(supabase, transactions);
+      setNonDuplicatedTransactions(newTransactions);
+      setIsDuplicatedTransactions(
+        newTransactions.length !== transactions.length
+      );
+    };
+    getTransactions();
     const transactionsWithDateFormated = getTransactionsWithDateFormated();
     setTransactionsCopy(transactionsWithDateFormated);
   }, [transactions]);
@@ -171,8 +195,27 @@ export function FinalStep() {
 
   const contents = getTableContents();
   const headers = getTableHeaders();
-  return (
-    <>
+
+  function isAllDuplicateTransactions() {
+    return nonDuplicatedTransactions.length === 1;
+  }
+
+  function handleYes() {
+    if (isAllDuplicateTransactions()) {
+      setLoading(true);
+      window.location.href = "/transactions";
+    }
+    setTransactionsCopy(nonDuplicatedTransactions);
+    setIsDuplicatedTransactions(false);
+  }
+
+  function handleNo() {
+    setIsDuplicatedTransactions(false);
+  }
+  return loading ? (
+    <Loading />
+  ) : (
+    <Dialog open={isDuplicatedTransactions}>
       <div>
         <Alert className="mb-10 text-2xl border-none">
           <AlertTitle>Upload the transactions</AlertTitle>
@@ -218,6 +261,29 @@ export function FinalStep() {
         </div>
       </div>
       <TransactionsTable headers={headers} contents={contents} />
-    </>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            {isAllDuplicateTransactions()
+              ? "All the transactions already exist in your account."
+              : `There is ${
+                  transactions.length - nonDuplicatedTransactions.length
+                } repeated transactions`}
+          </DialogTitle>
+          <DialogDescription>
+            Do you want to skip uploading all the transactions since they
+            already exist in your account? We recommend doing so.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="flex justify-center">
+          <Button variant={"default"} onClick={handleYes}>
+            Yes
+          </Button>
+          <Button variant={"outline"} onClick={handleNo}>
+            No
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

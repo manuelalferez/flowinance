@@ -16,7 +16,7 @@ export function TransactionsTable({
   contents,
 }: TransactionTableProps) {
   return (
-    <Card className="p-2 text-xs md:text-md fill-available">
+    <Card className="p-2 text-xs md:text-md fill-available md:w-fit">
       <Table>
         <TableHeader>
           <TableRow>{headers}</TableRow>
