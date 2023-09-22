@@ -28,6 +28,9 @@ export default async function RootLayout({
       await supabase.auth.signOut();
       return (
         <html lang="en">
+          <head>
+            <link rel="manifest" href="/site.webmanifest" />
+          </head>
           <SupabaseProvider>
             <body>
               <div>
