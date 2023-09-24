@@ -8,11 +8,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
+  ResponsiveContainer,
 } from "recharts";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 import { DashboardCard } from "../ui/dashboard-card";
-import { getDimensionsCharts } from "@/lib/utils";
+import { formatDateToChartDate, parseDateToISO } from "@/lib/utils";
+import { CustomTooltip } from "../ui/graph-utils";
 
 interface ChartData {
   name: string;
@@ -20,10 +21,8 @@ interface ChartData {
 }
 
 export default function IncomesChart() {
-  const { filteredTransactions } = useContext(AppContext);
+  const { filteredTransactions, currency } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
 
   useEffect(() => {
     const incomes = filteredTransactions!.filter((transaction) => {
@@ -38,49 +37,57 @@ export default function IncomesChart() {
       };
     });
     setData(dataArray);
-    updateDimensions();
   }, [filteredTransactions]);
 
-  function updateDimensions() {
-    const screenWidth = window.innerWidth;
-    const { newWidth, newHeight } = getDimensionsCharts(screenWidth);
-    setWidth(newWidth);
-    setHeight(newHeight);
-  }
-
-  window.addEventListener("resize", updateDimensions);
-
   return (
-    <div>
+    <div className="w-full">
       {data.length !== 0 ? (
         <DashboardCard
           title="Incomes"
           description="See your daily incomes at a glance. Effortlessly understand your
         daily incomes trends."
         >
-          <LineChart
-            width={width}
-            height={height}
-            data={data}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="income"
-              stroke="#4eb87d"
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart
+              data={data}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+              className="font-mono tabular-nums text-sm"
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                opacity={0.3}
+              />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(str) => {
+                  const date = parseDateToISO(str);
+                  if (date.getDate() % 7 === 0) {
+                    return formatDateToChartDate(date);
+                  }
+                  return "";
+                }}
+              />
+              <YAxis
+                tickFormatter={(number) => `${number}${currency}`}
+                tickCount={6}
+              />
+              <Tooltip content={<CustomTooltip currency={currency} />} />
+              <Line
+                type="monotone"
+                dataKey="income"
+                stroke="#047857"
+                activeDot={{ r: 8 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </DashboardCard>
       ) : (
         <DashboardNoDataCard

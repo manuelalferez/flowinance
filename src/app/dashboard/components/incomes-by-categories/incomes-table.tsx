@@ -1,6 +1,6 @@
 import { INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
-import { roundToTwoDecimal } from "@/lib/utils";
+import { formatNumberWithTwoDecimals, roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
 import {
   Table,
@@ -12,6 +12,7 @@ import {
 } from "../../../components/ui/table";
 import { DashboardCard } from "../ui/dashboard-card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
+import { getTotalIncomes } from "@/lib/calculations";
 
 type IncomeCategory = {
   name: string;
@@ -35,6 +36,12 @@ export function IncomesTable() {
     .filter((item): item is IncomeCategory => item !== null)
     .sort((a, b) => b.value - a.value);
 
+  function getIncomes() {
+    const incomes = getTotalIncomes(filteredTransactions!);
+    return roundToTwoDecimal(incomes);
+  }
+  const totalIncomes = getIncomes();
+
   return categoriesWithTotalExpenses.length !== 0 ? (
     <DashboardCard
       title="Incomes by categories"
@@ -45,22 +52,29 @@ export function IncomesTable() {
         <TableHeader>
           <TableRow>
             <TableHead className="p-2">Category</TableHead>
-            <TableHead className="p-2 pl-8">Amount</TableHead>
+            <TableHead className="p-2 pl-8 text-right">
+              Amount({currency})
+            </TableHead>
           </TableRow>
         </TableHeader>
-        {categoriesWithTotalExpenses.map(
-          (item: IncomeCategory, index: number) => (
-            <TableBody key={index}>
-              <TableRow key={index}>
+        <TableBody key="body-incomes">
+          {categoriesWithTotalExpenses.map(
+            (item: IncomeCategory, index: number) => (
+              <TableRow key={index} className="border-none">
                 <TableCell className="p-2">{item.name}</TableCell>
-                <TableCell className="p-2 pl-8">
-                  {item.value}
-                  {currency}
+                <TableCell className="p-2 pl-8 text-right font-mono tabular-nums text-gray-700">
+                  {formatNumberWithTwoDecimals(item.value)}
                 </TableCell>
               </TableRow>
-            </TableBody>
-          )
-        )}
+            )
+          )}
+          <TableRow key="total-incomes" className="bg-gray-50">
+            <TableCell className="p-2 font-bold border-t-2">Total</TableCell>
+            <TableCell className="p-2 pl-8 text-right border-t-2 font-mono tabular-nums text-gray-700 font-bold">
+              {formatNumberWithTwoDecimals(totalIncomes)}
+            </TableCell>
+          </TableRow>
+        </TableBody>
       </Table>
     </DashboardCard>
   ) : (

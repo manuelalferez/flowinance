@@ -1,11 +1,12 @@
 import { EXPENSES_CATEGORIES } from "@/lib/categories";
 import { PIE_CHART_COLORS } from "@/lib/constants";
 import { AppContext } from "@/lib/context";
-import { getDimensionsPieCharts, roundToTwoDecimal } from "@/lib/utils";
+import { roundToTwoDecimal } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
-import { PieChart, Pie, Tooltip, Cell } from "recharts";
+import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from "recharts";
 import { DashboardCard } from "../ui/dashboard-card";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
+import { PieChartTooltip } from "../ui/graph-utils";
 
 interface ChartData {
   name: string;
@@ -13,10 +14,8 @@ interface ChartData {
 }
 
 export function ExpensesPieChart() {
-  const { filteredTransactions } = useContext(AppContext);
+  const { filteredTransactions, currency } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
 
   useEffect(() => {
     const expenses = filteredTransactions!.filter((transaction) => {
@@ -40,48 +39,44 @@ export function ExpensesPieChart() {
         name: category,
         value: totalForCategoryRounded,
       };
-    }).filter((item): item is ChartData => item !== null);
+    })
+      .filter((item): item is ChartData => item !== null)
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5);
 
     setData(dataArray);
-    updateDimensions();
   }, [filteredTransactions]);
-
-  function updateDimensions() {
-    const screenWidth = window.innerWidth;
-    const { newWidth, newHeight } = getDimensionsPieCharts(screenWidth);
-    setWidth(newWidth);
-    setHeight(newHeight);
-  }
-
-  window.addEventListener("resize", updateDimensions);
 
   return data.length !== 0 ? (
     <DashboardCard
-      title="Expenses by category"
+      title="Your top 5 expenses"
       description="Explore a visual breakdown of your expenses using a pie chart. Pie
     charts provide an intuitive representation, making it easy to see how
     your expenses are distributed among the different categories."
+      className="w-full md:w-1/2"
     >
-      <PieChart width={width} height={height}>
-        <Pie
-          dataKey="value"
-          isAnimationActive={false}
-          data={data}
-          cx="50%"
-          cy="50%"
-          outerRadius={80}
-          fill="#4eb87d"
-          label
-        >
-          {data.map((_, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={PIE_CHART_COLORS[index % PIE_CHART_COLORS.length]}
-            />
-          ))}
-        </Pie>
-        <Tooltip />
-      </PieChart>
+      <ResponsiveContainer width="100%" height={400}>
+        <PieChart className="font-mono tabular-nums">
+          <Pie
+            dataKey="value"
+            isAnimationActive={false}
+            data={data}
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            fill="#4eb87d"
+            label
+          >
+            {data.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={PIE_CHART_COLORS[index % PIE_CHART_COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip content={<PieChartTooltip currency={currency} />} />
+        </PieChart>
+      </ResponsiveContainer>
     </DashboardCard>
   ) : (
     <DashboardNoDataCard

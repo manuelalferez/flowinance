@@ -7,6 +7,10 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      sans: ["Inter"],
+      mono: ["Fira Mono", "monospace"],
+    },
     container: {
       center: true,
       padding: "2rem",

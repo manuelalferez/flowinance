@@ -73,10 +73,14 @@ export function TransactionsTable() {
             <TableRow>
               {TABLE_HEADERS.map((header, index) => (
                 <TableHead
-                  className="p-2 lg:pr-44 md:pr-28"
+                  className={
+                    header === "amount"
+                      ? "text-right p-2 font-bold"
+                      : "p-2 font-bold"
+                  }
                   key={`${index}-header`}
                 >
-                  {header}
+                  {header.charAt(0).toUpperCase() + header.slice(1)}
                 </TableHead>
               ))}
               <TableHead
@@ -88,13 +92,19 @@ export function TransactionsTable() {
           <TableBody>
             {paginatedTransactions.map((item: Transaction, index: number) => (
               <TableRow key={`${index}-row`}>
-                <TableCell className="p-2" key={`${index}-date`}>
+                <TableCell
+                  className="p-2 font-mono tabular-nums text-gray-700"
+                  key={`${index}-date`}
+                >
                   {item.date}
                 </TableCell>
                 <TableCell className="p-2" key={`${index}-concept`}>
                   {item.concept}
                 </TableCell>
-                <TableCell className="p-2" key={`${index}-amount`}>
+                <TableCell
+                  className="p-2 text-right font-mono tabular-nums text-gray-700"
+                  key={`${index}-amount`}
+                >
                   {item.amount}
                 </TableCell>
                 <TableCell className="p-2" key={`${index}-category`}>
