@@ -134,7 +134,7 @@ export default function Dashboard() {
             <Filter />
             <DashboardRow className="justify-between flex-wrap md:flex-nowrap mt-4">
               <Balance />
-              <div className="flex gap-2 w-1/2">
+              <div className="flex gap-2 w-full md:w-1/2">
                 <Expenses />
                 <Incomes />
               </div>

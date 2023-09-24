@@ -53,7 +53,7 @@ export function IncomesPieChart() {
       description="Explore a visual breakdown of your incomes using a pie chart. Pie charts
     provide an intuitive representation, making it easy to see how your
     incomes are distributed among the different categories."
-      className="w-1/2"
+      className="w-full md:w-1/2"
     >
       <ResponsiveContainer width="100%" height={400}>
         <PieChart className="font-mono tabular-nums">
