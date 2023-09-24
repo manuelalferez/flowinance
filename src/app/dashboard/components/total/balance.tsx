@@ -4,7 +4,7 @@ import {
   getTotalIncomes,
 } from "@/lib/calculations";
 import { AppContext } from "@/lib/context";
-import { roundToTwoDecimal } from "@/lib/utils";
+import { formatNumberWithTwoDecimals, roundToTwoDecimal } from "@/lib/utils";
 import { useContext } from "react";
 import {
   Card,
@@ -26,11 +26,11 @@ export function Balance() {
   }
 
   return (
-    <Card className="pr-14">
+    <Card className="pr-14 w-1/2">
       <CardHeader>
-        <CardDescription>Balance</CardDescription>
-        <CardTitle>
-          {getBalance()}
+        <CardDescription>Current balance</CardDescription>
+        <CardTitle className="font-mono tabular-nums text-3xl">
+          {formatNumberWithTwoDecimals(getBalance())}
           {currency}
         </CardTitle>
       </CardHeader>

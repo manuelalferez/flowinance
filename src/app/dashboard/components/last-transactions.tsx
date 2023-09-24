@@ -1,7 +1,7 @@
 import { Transaction } from "@/app/types/global";
 import { TABLE_HEADERS } from "@/lib/constants";
 import { AppContext } from "@/lib/context";
-import { sortTransactions } from "@/lib/utils";
+import { formatNumberWithTwoDecimals, sortTransactions } from "@/lib/utils";
 import { useContext } from "react";
 import {
   Table,
@@ -33,8 +33,14 @@ export function LastTransactions() {
         <TableHeader>
           <TableRow>
             {TABLE_HEADERS.map((header, index) => (
-              <TableHead className="p-2 lg:pr-44 md:pr-28" key={index}>
-                {header}
+              <TableHead
+                className={
+                  header === "amount" ? "text-right font-bold" : "p-2 font-bold"
+                }
+                key={index}
+              >
+                {header.charAt(0).toUpperCase() + header.slice(1)}
+                {currency && ""}
               </TableHead>
             ))}
           </TableRow>
@@ -42,15 +48,20 @@ export function LastTransactions() {
         {lastTransactions.map((item: Transaction, index: number) => (
           <TableBody key={index}>
             <TableRow key={index}>
-              <TableCell className="p-2" key={`${index}-date`}>
+              <TableCell
+                className="p-2 font-mono tabular-nums text-gray-700"
+                key={`${index}-date`}
+              >
                 {item.date}
               </TableCell>
-              <TableCell className="p-2" key={`${index}-concept`}>
+              <TableCell className="p-2 " key={`${index}-concept`}>
                 {item.concept}
               </TableCell>
-              <TableCell className="p-2" key={`${index}-amount`}>
-                {item.amount}
-                {currency}
+              <TableCell
+                className="p-2 text-right font-mono tabular-nums text-gray-700"
+                key={`${index}-amount`}
+              >
+                {formatNumberWithTwoDecimals(item.amount)}
               </TableCell>
               <TableCell className="p-2" key={`${index}-category`}>
                 {item.category}

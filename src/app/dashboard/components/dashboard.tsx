@@ -29,6 +29,7 @@ import Loading from "@/app/loading";
 import { Filter } from "./filter";
 import { useToast } from "../../components/ui/use-toast";
 import NoTransactions from "./ui/no-transactions";
+import SummaryChart from "./total/summary";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -111,7 +112,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col w-full md:5/6 lg:w-3/4 gap-10">
+    <div className="flex flex-col w-full md:5/6 lg:w-4/6 gap-2">
       <AppContext.Provider
         value={{
           filteredTransactions,
@@ -131,30 +132,34 @@ export default function Dashboard() {
         ) : transactions.length !== 0 ? (
           <>
             <Filter />
-            <DashboardRow className="justify-evenly mb-10 flex-wrap md:flex-nowrap">
+            <DashboardRow className="justify-between flex-wrap md:flex-nowrap mt-4">
               <Balance />
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-1/2">
                 <Expenses />
                 <Incomes />
               </div>
             </DashboardRow>
 
-            <DashboardRow className="justify-center flex-wrap md:flex-nowrap">
+            <DashboardRow className="justify-center flex-wrap">
+              <SummaryChart />
+            </DashboardRow>
+
+            <DashboardRow className="justify-center flex-wrap">
               <ExpensesTable />
               <IncomesTable />
             </DashboardRow>
 
-            <DashboardRow className="justify-center flex-wrap md:flex-nowrap">
+            <DashboardRow className="justify-between flex-wrap md:flex-nowrap">
               <ExpensesPieChart />
               <IncomesPieChart />
             </DashboardRow>
 
-            <DashboardRow className="justify-center flex-wrap">
+            <DashboardRow className="justify-between flex-wrap">
               <ExpensesChart />
               <IncomesChart />
             </DashboardRow>
 
-            <DashboardRow className="justify-center flex-wrap">
+            <DashboardRow className="justify-between flex-wrap">
               <ExpensesEvolutionChart />
               <IncomesEvolutionChart />
             </DashboardRow>

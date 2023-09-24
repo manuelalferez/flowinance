@@ -1,6 +1,6 @@
 import { getTotalExpenses } from "@/lib/calculations";
 import { AppContext } from "@/lib/context";
-import { roundToTwoDecimal } from "@/lib/utils";
+import { formatNumberWithTwoDecimals, roundToTwoDecimal } from "@/lib/utils";
 import * as React from "react";
 import { useContext } from "react";
 import {
@@ -14,19 +14,19 @@ export function Expenses() {
   const { filteredTransactions, currency } = useContext(AppContext);
 
   function getExpenses() {
-    const incomes = getTotalExpenses(filteredTransactions!);
-    return roundToTwoDecimal(incomes);
+    const expenses = getTotalExpenses(filteredTransactions!);
+    return roundToTwoDecimal(expenses);
   }
 
   const expenses = getExpenses();
 
   return (
-    <Card className="pr-6">
+    <Card className="pr-6 w-1/2">
       <CardHeader>
         <CardDescription>Expenses</CardDescription>
-        <CardTitle className="text-red-500 text-xl">
+        <CardTitle className="text-red-500 text-2xl font-mono tabular-nums">
           {expenses !== 0 && "-"}
-          {expenses}
+          {formatNumberWithTwoDecimals(expenses)}
           {currency}
         </CardTitle>
       </CardHeader>

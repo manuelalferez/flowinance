@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 import * as CryptoJS from "crypto-js";
 import OpenAI from "openai";
 import dayjs from "dayjs";
+import { format, parseISO } from "date-fns";
 
 const DEFAULT_DELIMITER = ";";
 const DEFAULT_CURRENCY = "eur";
@@ -57,6 +58,11 @@ function hasEmptyStringExceptFirst(arr: string[]): boolean {
 
 export function roundToTwoDecimal(num: number) {
   return Math.round(num * 100) / 100;
+}
+
+export function formatNumberWithTwoDecimals(num: number) {
+  const formattedNumber = num.toFixed(2);
+  return formattedNumber;
 }
 
 export function deleteEmptyRowsAndColumns(matrix: string[][]): string[][] {
@@ -467,7 +473,7 @@ export function sortTransactions(transactions: Transaction[]): Transaction[] {
   });
 }
 
-function parseDate(dateString: string): Date | null {
+export function parseDate(dateString: string): Date | null {
   const [day, month, year] = dateString.split("/").map(Number);
 
   if (isNaN(day) || isNaN(month) || isNaN(year)) {
@@ -720,34 +726,19 @@ export async function updateDelimiterInSupabase(
   revalidateSettings();
 }
 
-export function getDimensionsPieCharts(screenWidth: number) {
-  let newWidth, newHeight;
-
-  if (screenWidth < breakpoints.sm) {
-    newWidth = 300;
-    newHeight = 250;
-  } else if (screenWidth < breakpoints.md) {
-    newWidth = 320;
-    newHeight = 270;
-  } else {
-    newWidth = 400;
-    newHeight = 300;
+export function formatDateToReadable(dateString: string) {
+  const date = parseDate(dateString);
+  if (!date) {
+    return "";
   }
-  return { newWidth, newHeight };
+  return format(parseISO(date.toISOString()), "eeee, d MMM, yyyy");
 }
 
-export function getDimensionsCharts(screenWidth: number) {
-  let newWidth, newHeight;
+export function parseDateToISO(dateString: string) {
+  const date = parseDate(dateString);
+  return parseISO(date!.toISOString());
+}
 
-  if (screenWidth < breakpoints.sm) {
-    newWidth = 300;
-    newHeight = 250;
-  } else if (screenWidth < breakpoints.md) {
-    newWidth = 600;
-    newHeight = 400;
-  } else {
-    newWidth = 900;
-    newHeight = 400;
-  }
-  return { newWidth, newHeight };
+export function formatDateToChartDate(date: Date) {
+  return format(date, "MMM d");
 }
