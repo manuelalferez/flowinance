@@ -7,6 +7,7 @@ import { Toaster } from "./components/ui/toaster";
 import { userHasBeenDeleted } from "@/lib/utils";
 import AccountDeleted from "./account/deleted/page";
 import { Footer } from "./components/footer";
+import Head from "next/head";
 
 export const dynamic = "force-dynamic";
 
@@ -28,9 +29,44 @@ export default async function RootLayout({
       await supabase.auth.signOut();
       return (
         <html lang="en">
-          <head>
+          <Head>
+            <link rel="icon" href="/images/favicon.ico" />
+            <link
+              rel="apple-touch-icon"
+              sizes="180x180"
+              href="/images/apple-touch-icon.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="/images/favicon-32x32.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="/images/favicon-16x16.png"
+            />
+            <meta name="author" content="Manuel Alférez" />
+            <meta
+              name="description"
+              content="Managing your money is now easier than ever. Visualize your
+              budget in a quick and easy way."
+            />
+
+            <meta property="og:title" content="Flowinance" />
+            <meta property="og:type" content="app" />
+            <meta property="og:url" content="https://flowinance.vercel.app/" />
             <link rel="manifest" href="/site.webmanifest" />
-          </head>
+            <link
+              rel="mask-icon"
+              href="/images/safari-pinned-tab.svg"
+              color="#047857"
+            />
+            <meta name="msapplication-TileColor" content="#da532c" />
+            <meta name="theme-color" content="#ffffff"></meta>
+          </Head>
           <SupabaseProvider>
             <body>
               <div>

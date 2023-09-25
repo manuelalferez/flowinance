@@ -81,7 +81,7 @@ export default function Transactions() {
               Upload your files and watch the magic happen! Our Artificial
               Intelligence removes unnecessary columns, categorizes your
               transactions, and formats the data for you. Sit back and relax -
-              we&apos;ve got everything covered 😎.
+              we&apos;ve got everything covered.
             </HoverCardContent>
           </HoverCard>
 
