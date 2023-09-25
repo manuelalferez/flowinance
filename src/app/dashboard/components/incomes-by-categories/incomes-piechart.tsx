@@ -1,5 +1,5 @@
 import { INCOMES_CATEGORIES } from "@/lib/categories";
-import { PIE_CHART_COLORS } from "@/lib/constants";
+import { COLORS } from "@/lib/constants";
 import { AppContext } from "@/lib/context";
 import { roundToTwoDecimal } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
@@ -70,7 +70,7 @@ export function IncomesPieChart() {
             {data.map((_, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={PIE_CHART_COLORS[index % PIE_CHART_COLORS.length]}
+                fill={COLORS[index % COLORS.length]}
               />
             ))}
           </Pie>

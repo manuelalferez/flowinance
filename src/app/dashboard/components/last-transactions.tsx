@@ -13,6 +13,7 @@ import {
 } from "../../components/ui/table";
 import { DashboardCard } from "./ui/dashboard-card";
 import { CardDescription } from "../../components/ui/card";
+import { categorySVGs } from "@/lib/categories";
 
 export function LastTransactions() {
   const { transactions, currency } = useContext(AppContext);
@@ -64,7 +65,18 @@ export function LastTransactions() {
                 {formatNumberWithTwoDecimals(item.amount)}
               </TableCell>
               <TableCell className="p-2" key={`${index}-category`}>
-                {item.category}
+                <div className="flex gap-1 items-center">
+                  <div
+                    className="w-6 h-6 text-gray-500 bg-emerald-50 rounded-md p-1"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        categorySVGs[
+                          item.category as keyof typeof categorySVGs
+                        ],
+                    }}
+                  />
+                  {item.category}
+                </div>
               </TableCell>
             </TableRow>
           </TableBody>
