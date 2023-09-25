@@ -12,7 +12,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Flowinance",
-  description: "Track your finances, focus on what is important",
+  description:
+    "Managing your money is now easier than ever. Visualize your budget in a quick and easy way.",
 };
 
 export default async function RootLayout({
