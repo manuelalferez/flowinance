@@ -7,8 +7,8 @@ import {
 
 export default function AccountDeleted() {
   return (
-    <div className="flex items-center justify-center mt-40">
-      <Card className="p-4">
+    <div className="min-h-screen flex justify-center mt-40">
+      <Card className="p-4 h-full">
         <CardHeader>
           <CardTitle>Your account has been deleted. </CardTitle>
         </CardHeader>
