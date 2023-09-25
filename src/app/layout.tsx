@@ -7,7 +7,6 @@ import { Toaster } from "./components/ui/toaster";
 import { userHasBeenDeleted } from "@/lib/utils";
 import AccountDeleted from "./account/deleted/page";
 import { Footer } from "./components/footer";
-import Head from "next/head";
 
 export const dynamic = "force-dynamic";
 
@@ -29,24 +28,24 @@ export default async function RootLayout({
       await supabase.auth.signOut();
       return (
         <html lang="en">
-          <Head>
-            <link rel="icon" href="/images/favicon.ico" />
+          <head>
+            <link rel="icon" type="image/x-icon" href="/image/favicon.ico" />
             <link
               rel="apple-touch-icon"
               sizes="180x180"
-              href="/images/apple-touch-icon.png"
+              href="/image/apple-touch-icon.png"
             />
             <link
               rel="icon"
               type="image/png"
               sizes="32x32"
-              href="/images/favicon-32x32.png"
+              href="/image/favicon-32x32.png"
             />
             <link
               rel="icon"
               type="image/png"
               sizes="16x16"
-              href="/images/favicon-16x16.png"
+              href="/image/favicon-16x16.png"
             />
             <meta name="author" content="Manuel Alférez" />
             <meta
@@ -61,12 +60,12 @@ export default async function RootLayout({
             <link rel="manifest" href="/site.webmanifest" />
             <link
               rel="mask-icon"
-              href="/images/safari-pinned-tab.svg"
+              href="/image/safari-pinned-tab.svg"
               color="#047857"
             />
             <meta name="msapplication-TileColor" content="#da532c" />
             <meta name="theme-color" content="#ffffff"></meta>
-          </Head>
+          </head>
           <SupabaseProvider>
             <body>
               <div>
