@@ -83,6 +83,9 @@ export default function Dashboard() {
     if (isYearSelected()) {
       return 365;
     }
+    if (isLastThreeMonthsSelected()) {
+      return 90;
+    }
     if (isMonthSelected()) {
       return 30;
     }
@@ -93,8 +96,12 @@ export default function Dashboard() {
     return selected === 0;
   }
 
-  function isMonthSelected() {
+  function isLastThreeMonthsSelected() {
     return selected === 1;
+  }
+
+  function isMonthSelected() {
+    return selected === 2;
   }
 
   return (

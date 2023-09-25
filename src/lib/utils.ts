@@ -778,17 +778,22 @@ export function getDatesAxisX(selec: number) {
     return getDates(7);
   } else if (isMonthSelected(selec)) {
     return getDates(30);
-  } else {
-    return getDates(365);
+  } else if (isLastThreeMonthsSelected(selec)) {
+    return getDates(90);
   }
+  return getDates(365);
 }
 
 function isWeekSelected(selec: number) {
-  return selec === 2;
+  return selec === 3;
+}
+
+function isLastThreeMonthsSelected(selec: number) {
+  return selec === 1;
 }
 
 function isMonthSelected(selec: number) {
-  return selec === 1;
+  return selec === 2;
 }
 
 export function getRangeAxisX(selec: number) {
@@ -796,6 +801,8 @@ export function getRangeAxisX(selec: number) {
     return 2;
   } else if (isMonthSelected(selec)) {
     return 7;
+  } else if (isLastThreeMonthsSelected(selec)) {
+    return 15;
   } else {
     return 30;
   }

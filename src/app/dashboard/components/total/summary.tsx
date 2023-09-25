@@ -2,6 +2,7 @@ import { EXPENSES_CATEGORIES, INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
 import {
   formatDateToChartDate,
+  getDatesAxisX,
   getRangeAxisX,
   parseDate,
   parseDateToISO,
@@ -70,7 +71,25 @@ export default function SummaryChart() {
         expense: 0,
       };
     });
-    let combinedData = [...expensesData, ...incomesData].sort(
+
+    let combinedExpensesAndIncomes = [...expensesData, ...incomesData].sort(
+      (a, b) => parseDate(a.name)!.getTime() - parseDate(b.name)!.getTime()
+    );
+    let addedData: ChartData[] = [];
+    const datesAxisX = getDatesAxisX(selected!);
+    datesAxisX.forEach((date) => {
+      const found = combinedExpensesAndIncomes.find((data) => {
+        return data.name === date;
+      });
+      if (!found) {
+        addedData.push({
+          name: date,
+          expense: 0,
+          income: 0,
+        });
+      }
+    });
+    const combinedData = [...combinedExpensesAndIncomes, ...addedData].sort(
       (a, b) => parseDate(a.name)!.getTime() - parseDate(b.name)!.getTime()
     );
     let lastAccumulatedExpense = 0;

@@ -3,7 +3,7 @@ import { Toggle } from "../../components/ui/toggle";
 import { AppContext } from "@/lib/context";
 
 export function Filter() {
-  const options = ["This year", "Last 30 days", "Last 7 days"];
+  const options = ["This year", "Last 3 months", "Last 30 days", "Last 7 days"];
   const { selected, setSelected } = useContext(AppContext);
 
   return (
