@@ -6,6 +6,7 @@ import * as CryptoJS from "crypto-js";
 import OpenAI from "openai";
 import dayjs from "dayjs";
 import { format, parseISO } from "date-fns";
+import moment from "moment";
 
 const DEFAULT_DELIMITER = ";";
 const DEFAULT_CURRENCY = "eur";
@@ -492,10 +493,7 @@ export function formatDateToString(date: Date): string {
 }
 
 export function getWeek(date: Date) {
-  const onejan = new Date(date.getFullYear(), 0, 1);
-  const week = Math.ceil(
-    ((date.getTime() - onejan.getTime()) / 86400000 + onejan.getDay() + 1) / 7
-  );
+  const week = moment(date).format("W");
   return week;
 }
 
@@ -739,6 +737,66 @@ export function parseDateToISO(dateString: string) {
   return parseISO(date!.toISOString());
 }
 
+export function getDay(dateString: string) {
+  const date = parseDate(dateString);
+  return date!.getDate();
+}
+
 export function formatDateToChartDate(date: Date) {
   return format(date, "MMM d");
+}
+
+export function getDates(period: number): string[] {
+  const datesArray = [];
+
+  for (let i = 0; i < period; i++) {
+    const date = new Date();
+    const nextDate = new Date(date.setDate(date.getDate() - i));
+    datesArray.push(nextDate);
+  }
+  return datesArray.map((date) => formatDateToString(date));
+}
+
+export function sumTransactionsByDate(data: any[]): any[] {
+  let result: any[] = [];
+  data.forEach((entry) => {
+    const existingEntry = result.find((item) => {
+      return item.name === entry.name;
+    });
+    if (existingEntry) {
+      existingEntry.spent += entry.spent;
+    } else {
+      result.push(entry);
+    }
+  });
+
+  return result;
+}
+
+export function getDatesAxisX(selec: number) {
+  if (isWeekSelected(selec)) {
+    return getDates(7);
+  } else if (isMonthSelected(selec)) {
+    return getDates(30);
+  } else {
+    return getDates(365);
+  }
+}
+
+function isWeekSelected(selec: number) {
+  return selec === 2;
+}
+
+function isMonthSelected(selec: number) {
+  return selec === 1;
+}
+
+export function getRangeAxisX(selec: number) {
+  if (isWeekSelected(selec)) {
+    return 2;
+  } else if (isMonthSelected(selec)) {
+    return 7;
+  } else {
+    return 30;
+  }
 }

@@ -12,7 +12,13 @@ import {
 } from "recharts";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 import { DashboardCard } from "../ui/dashboard-card";
-import { formatDateToChartDate, parseDateToISO } from "@/lib/utils";
+import {
+  formatDateToChartDate,
+  getDatesAxisX,
+  getRangeAxisX,
+  parseDateToISO,
+  sumTransactionsByDate,
+} from "@/lib/utils";
 import { CustomTooltip } from "../ui/graph-utils";
 
 interface ChartData {
@@ -21,7 +27,7 @@ interface ChartData {
 }
 
 export default function ExpensesChart() {
-  const { filteredTransactions, currency } = useContext(AppContext);
+  const { filteredTransactions, currency, selected } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
 
   useEffect(() => {
@@ -36,8 +42,31 @@ export default function ExpensesChart() {
         spent: transaction.amount,
       };
     });
-    setData(dataArray);
+    let addedData: ChartData[] = [];
+    const datesAxisX = getDatesAxisX(selected!);
+    datesAxisX.forEach((date) => {
+      const found = dataArray.find((data) => {
+        return data.name === date;
+      });
+      if (!found) {
+        addedData.push({
+          name: date,
+          spent: 0,
+        });
+      }
+    });
+
+    const combinedData = [...dataArray, ...addedData].sort((a, b) => {
+      return (
+        parseDateToISO(a.name).getTime() - parseDateToISO(b.name).getTime()
+      );
+    });
+
+    const sumData = sumTransactionsByDate(combinedData);
+    setData(sumData);
   }, [filteredTransactions]);
+
+  const range = getRangeAxisX(selected!);
 
   return (
     <div className="w-full">
@@ -67,14 +96,15 @@ export default function ExpensesChart() {
                 dataKey="name"
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(str) => {
-                  const date = parseDateToISO(str);
-                  if (date.getDate() % 7 === 0) {
+                tickFormatter={(str, index) => {
+                  if (index % range === 0 && index !== 0) {
+                    const date = parseDateToISO(str);
                     return formatDateToChartDate(date);
                   }
                   return "";
                 }}
               />
+
               <YAxis
                 tickFormatter={(number) => `${number}${currency}`}
                 tickCount={6}
@@ -83,8 +113,10 @@ export default function ExpensesChart() {
               <Line
                 type="monotone"
                 dataKey="spent"
+                strokeWidth={2}
                 stroke="#047857"
-                activeDot={{ r: 8 }}
+                activeDot={{ r: 6 }}
+                dot={false}
               />
             </LineChart>
           </ResponsiveContainer>

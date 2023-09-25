@@ -4,12 +4,11 @@ import { useSupabase } from "@/app/supabase-provider";
 import { Transaction } from "@/app/types/global";
 import { AppContext } from "@/lib/context";
 import {
-  createDate,
   decryptTransactions,
   getCurrency,
+  getDates,
   getTransactions,
   getUserId,
-  getWeek,
 } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Balance } from "./total/balance";
@@ -38,7 +37,7 @@ export default function Dashboard() {
   >([]);
   const [loading, setLoading] = useState(true);
   const { supabase } = useSupabase();
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState(2);
   const [currency, setCurrency] = useState("€");
   const { toast } = useToast();
 
@@ -72,35 +71,22 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const today = new Date();
-    const thisYear = today.getFullYear();
-    const thisMonth = today.getMonth();
-
-    if (isYearSelected()) {
-      const filtered = transactions.filter((transaction) => {
-        const date = createDate(transaction.date);
-        return date.getFullYear() === thisYear;
-      });
-      setFilteredTransactions(filtered);
-    } else if (isMonthSelected()) {
-      const filtered = transactions.filter((transaction) => {
-        const date = createDate(transaction.date);
-        return date.getFullYear() === thisYear && date.getMonth() === thisMonth;
-      });
-      setFilteredTransactions(filtered);
-    } else if (isWeekSelected()) {
-      const filtered = transactions.filter((transaction) => {
-        const date = createDate(transaction.date);
-        const transactionWeek = getWeek(date);
-        const thisWeek = getWeek(today);
-        return date.getFullYear() === thisYear && transactionWeek === thisWeek;
-      });
-      setFilteredTransactions(filtered);
-    }
+    const days = getNumDays();
+    const dates = getDates(days);
+    const filtered = transactions.filter((transaction) => {
+      return dates.includes(transaction.date);
+    });
+    setFilteredTransactions(filtered);
   }, [selected, transactions]);
 
-  function isWeekSelected() {
-    return selected === 2;
+  function getNumDays() {
+    if (isYearSelected()) {
+      return 365;
+    }
+    if (isMonthSelected()) {
+      return 30;
+    }
+    return 7;
   }
 
   function isYearSelected() {

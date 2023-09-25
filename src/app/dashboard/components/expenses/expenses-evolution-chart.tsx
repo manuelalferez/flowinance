@@ -2,9 +2,12 @@ import { EXPENSES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
 import {
   formatDateToChartDate,
+  getDatesAxisX,
+  getRangeAxisX,
   parseDateToISO,
   roundToTwoDecimal,
   sortTransactions,
+  sumTransactionsByDate,
 } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -22,11 +25,11 @@ import { CustomTooltip } from "../ui/graph-utils";
 
 interface ChartData {
   name: string;
-  spent: number;
+  expense: number;
 }
 
 export default function ExpensesEvolutionChart() {
-  const { filteredTransactions, currency } = useContext(AppContext);
+  const { filteredTransactions, currency, selected } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
 
   useEffect(() => {
@@ -44,11 +47,44 @@ export default function ExpensesEvolutionChart() {
     const dataArray = shortedExpenses.map((transaction, index) => {
       return {
         name: transaction.date,
-        spent: accumulatedExpenses[index],
+        expense: accumulatedExpenses[index],
       };
     });
-    setData(dataArray);
+    let addedData: ChartData[] = [];
+    const datesAxisX = getDatesAxisX(selected!);
+    datesAxisX.forEach((date) => {
+      const found = dataArray.find((data) => {
+        return data.name === date;
+      });
+      if (!found) {
+        addedData.push({
+          name: date,
+          expense: 0,
+        });
+      }
+    });
+
+    const combinedData = [...dataArray, ...addedData].sort((a, b) => {
+      return (
+        parseDateToISO(a.name).getTime() - parseDateToISO(b.name).getTime()
+      );
+    });
+
+    const sumData = sumTransactionsByDate(combinedData);
+    let lastAccumulatedExpense = 0;
+    sumData.forEach((item) => {
+      if (item.expense === 0) {
+        item.expense = lastAccumulatedExpense;
+      }
+      if (item.expense !== 0) {
+        lastAccumulatedExpense = item.expense;
+      }
+    });
+
+    setData(sumData);
   }, [filteredTransactions]);
+
+  const range = getRangeAxisX(selected!);
 
   return (
     <div className="w-full">
@@ -74,9 +110,9 @@ export default function ExpensesEvolutionChart() {
                 dataKey="name"
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(str) => {
-                  const date = parseDateToISO(str);
-                  if (date.getDate() % 7 === 0) {
+                tickFormatter={(str, index) => {
+                  if (index % range === 0 && index !== 0) {
+                    const date = parseDateToISO(str);
                     return formatDateToChartDate(date);
                   }
                   return "";
@@ -89,7 +125,8 @@ export default function ExpensesEvolutionChart() {
               <Tooltip content={<CustomTooltip currency={currency} />} />
               <Area
                 type="monotone"
-                dataKey="spent"
+                dataKey="expense"
+                strokeWidth={2}
                 stroke="#047857"
                 fill="#069668"
               />
