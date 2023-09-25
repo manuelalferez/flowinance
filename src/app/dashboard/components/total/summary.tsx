@@ -2,6 +2,8 @@ import { EXPENSES_CATEGORIES, INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
 import {
   formatDateToChartDate,
+  getDatesAxisX,
+  getRangeAxisX,
   parseDate,
   parseDateToISO,
   roundToTwoDecimal,
@@ -14,15 +16,13 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
   LineChart,
   Line,
-  Legend,
-  AreaChart,
-  Area,
 } from "recharts";
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 import { DashboardCard } from "../ui/dashboard-card";
-import { CustomTooltip, SummaryTooltip } from "../ui/graph-utils";
+import { SummaryTooltip } from "../ui/graph-utils";
 
 interface ChartData {
   name: string;
@@ -31,7 +31,7 @@ interface ChartData {
 }
 
 export default function SummaryChart() {
-  const { filteredTransactions, currency } = useContext(AppContext);
+  const { filteredTransactions, currency, selected } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
 
   useEffect(() => {
@@ -71,12 +71,30 @@ export default function SummaryChart() {
         expense: 0,
       };
     });
-    let combinedData = [...expensesData, ...incomesData].sort(
+
+    let combinedExpensesAndIncomes = [...expensesData, ...incomesData].sort(
+      (a, b) => parseDate(a.name)!.getTime() - parseDate(b.name)!.getTime()
+    );
+    let addedData: ChartData[] = [];
+    const datesAxisX = getDatesAxisX(selected!);
+    datesAxisX.forEach((date) => {
+      const found = combinedExpensesAndIncomes.find((data) => {
+        return data.name === date;
+      });
+      if (!found) {
+        addedData.push({
+          name: date,
+          expense: 0,
+          income: 0,
+        });
+      }
+    });
+    const combinedData = [...combinedExpensesAndIncomes, ...addedData].sort(
       (a, b) => parseDate(a.name)!.getTime() - parseDate(b.name)!.getTime()
     );
     let lastAccumulatedExpense = 0;
     let lastAccumulatedIncome = 0;
-    combinedData.forEach((item, index) => {
+    combinedData.forEach((item) => {
       if (item.expense === 0) {
         item.expense = lastAccumulatedExpense;
       }
@@ -94,6 +112,8 @@ export default function SummaryChart() {
     setData(combinedData);
   }, [filteredTransactions]);
 
+  const range = getRangeAxisX(selected!);
+
   return (
     <div className="w-full">
       {data.length !== 0 ? (
@@ -102,7 +122,7 @@ export default function SummaryChart() {
           description="Visualize the trend of your expenses and incomes."
         >
           <ResponsiveContainer width="100%" height={400}>
-            <AreaChart
+            <LineChart
               data={data}
               margin={{
                 top: 10,
@@ -117,9 +137,9 @@ export default function SummaryChart() {
                 dataKey="name"
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(str) => {
-                  const date = parseDateToISO(str);
-                  if (date.getDate() % 7 === 0) {
+                tickFormatter={(str, index) => {
+                  if (index % range === 0 && index !== 0) {
+                    const date = parseDateToISO(str);
                     return formatDateToChartDate(date);
                   }
                   return "";
@@ -131,19 +151,21 @@ export default function SummaryChart() {
               />
               <Legend />
               <Tooltip content={<SummaryTooltip currency={currency} />} />
-              <Area
+              <Line
                 type="monotone"
                 dataKey="expense"
+                strokeWidth={2}
                 stroke="#3066BE"
-                fill="#B7D3F2"
+                dot={false}
               />
-              <Area
+              <Line
                 type="monotone"
                 dataKey="income"
+                strokeWidth={2}
                 stroke="#047857"
-                fill="#06C690"
+                dot={false}
               />
-            </AreaChart>
+            </LineChart>
           </ResponsiveContainer>
         </DashboardCard>
       ) : (

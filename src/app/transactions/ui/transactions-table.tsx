@@ -23,6 +23,7 @@ import {
   DialogTrigger,
 } from "@/app/components/ui/dialog";
 import { useSupabase } from "@/app/supabase-provider";
+import { categorySVGs } from "@/lib/categories";
 
 export function TransactionsTable() {
   const { transactions } = useContext(AppContext);
@@ -108,7 +109,18 @@ export function TransactionsTable() {
                   {item.amount}
                 </TableCell>
                 <TableCell className="p-2" key={`${index}-category`}>
-                  {item.category}
+                  <div className="flex gap-1 items-center">
+                    <div
+                      className="w-6 h-6 text-gray-500 bg-emerald-50 rounded-md p-1"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          categorySVGs[
+                            item.category as keyof typeof categorySVGs
+                          ],
+                      }}
+                    />
+                    {item.category}
+                  </div>
                 </TableCell>
                 <TableCell
                   className="p-2 w-2 cursor-pointer hidden hoverable-cell"

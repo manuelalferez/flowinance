@@ -2,9 +2,12 @@ import { INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
 import {
   formatDateToChartDate,
+  getDatesAxisX,
+  getRangeAxisX,
   parseDateToISO,
   roundToTwoDecimal,
   sortTransactions,
+  sumTransactionsByDate,
 } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -26,7 +29,7 @@ interface ChartData {
 }
 
 export default function IncomesEvolutionChart() {
-  const { filteredTransactions, currency } = useContext(AppContext);
+  const { filteredTransactions, currency, selected } = useContext(AppContext);
   const [data, setData] = useState<ChartData[]>([]);
 
   useEffect(() => {
@@ -47,8 +50,41 @@ export default function IncomesEvolutionChart() {
         income: accumulatedIncomes[index],
       };
     });
-    setData(dataArray);
+    let addedData: ChartData[] = [];
+    const datesAxisX = getDatesAxisX(selected!);
+    datesAxisX.forEach((date) => {
+      const found = dataArray.find((data) => {
+        return data.name === date;
+      });
+      if (!found) {
+        addedData.push({
+          name: date,
+          income: 0,
+        });
+      }
+    });
+
+    const combinedData = [...dataArray, ...addedData].sort((a, b) => {
+      return (
+        parseDateToISO(a.name).getTime() - parseDateToISO(b.name).getTime()
+      );
+    });
+
+    const sumData = sumTransactionsByDate(combinedData);
+    let lastAccumulatedIncome = 0;
+    sumData.forEach((item) => {
+      if (item.income === 0) {
+        item.income = lastAccumulatedIncome;
+      }
+      if (item.income !== 0) {
+        lastAccumulatedIncome = item.income;
+      }
+    });
+
+    setData(sumData);
   }, [filteredTransactions]);
+
+  const range = getRangeAxisX(selected!);
 
   return (
     <div className="w-full">
@@ -74,9 +110,9 @@ export default function IncomesEvolutionChart() {
                 dataKey="name"
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(str) => {
-                  const date = parseDateToISO(str);
-                  if (date.getDate() % 7 === 0) {
+                tickFormatter={(str, index) => {
+                  if (index % range === 0 && index !== 0) {
+                    const date = parseDateToISO(str);
                     return formatDateToChartDate(date);
                   }
                   return "";
@@ -90,6 +126,7 @@ export default function IncomesEvolutionChart() {
               <Area
                 type="monotone"
                 dataKey="income"
+                strokeWidth={2}
                 stroke="#047857"
                 fill="#069668"
               />
