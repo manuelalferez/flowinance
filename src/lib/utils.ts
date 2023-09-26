@@ -447,6 +447,14 @@ export function sortTransactions(transactions: Transaction[]): Transaction[] {
   });
 }
 
+export function sortTransactionsTable(
+  transactions: Transaction[]
+): Transaction[] {
+  return transactions.sort((a, b) => {
+    return parseDateToISO(b.date).getTime() - parseDateToISO(a.date).getTime();
+  });
+}
+
 export function parseDate(dateString: string): Date | null {
   const [day, month, year] = dateString.split("/").map(Number);
 

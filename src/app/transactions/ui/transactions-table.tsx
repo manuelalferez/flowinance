@@ -9,7 +9,10 @@ import {
 } from "@/app/components/ui/table";
 import { Transaction } from "@/app/types/global";
 import { TABLE_HEADERS } from "@/lib/constants";
-import { deleteTransactionFromSupabase, sortTransactions } from "@/lib/utils";
+import {
+  deleteTransactionFromSupabase,
+  sortTransactionsTable,
+} from "@/lib/utils";
 import { Button } from "@/app/components/ui/button";
 import { AppContext } from "@/lib/context";
 import { Card, CardTitle } from "@/app/components/ui/card";
@@ -29,8 +32,9 @@ export function TransactionsTable() {
   const { transactions } = useContext(AppContext);
   const { supabase } = useSupabase();
   const [currentPage, setCurrentPage] = useState(1);
-  const [transactionsCopy, setTransactionsCopy] =
-    useState<Transaction[]>(transactions);
+  const [transactionsCopy, setTransactionsCopy] = useState<Transaction[]>(
+    sortTransactionsTable(transactions)
+  );
   const [open, setOpen] = useState(false);
   const [transactionToDeleteId, setTransactionToDeleteId] =
     useState<string>("");
@@ -46,10 +50,7 @@ export function TransactionsTable() {
   const startIndex = (currentPage - 1) * transactionsPerPage;
   const endIndex = startIndex + transactionsPerPage;
 
-  const paginatedTransactions = sortTransactions(transactionsCopy).slice(
-    startIndex,
-    endIndex
-  );
+  const paginatedTransactions = transactionsCopy.slice(startIndex, endIndex);
 
   function targetTransactionToDelete(id: string, index: number) {
     setOpen(true);
@@ -197,7 +198,7 @@ export function TransactionsTable() {
         <Button
           className="mx-2 px-4 py-2 rounded-md"
           onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={endIndex >= sortTransactions(transactions).length}
+          disabled={endIndex >= transactions.length}
         >
           Next
         </Button>
