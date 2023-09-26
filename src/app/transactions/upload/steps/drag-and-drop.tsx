@@ -4,14 +4,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 import { useToast } from "@/app/components/ui/use-toast";
 import { LIMIT_TRANSACTIONS_TO_UPLOAD } from "@/lib/constants";
 import { UploadTransactionsContext } from "@/lib/context";
-import { extractFields, extractFieldsUsingOpenAi } from "@/lib/utils";
+import { extractFields, stringToNestedArray } from "@/lib/utils";
 import React, { useCallback, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 
 export function DragAndDrop({ ai }: { ai?: boolean }) {
-  const { uploadTransactions, setLoading } = useContext(
-    UploadTransactionsContext
-  );
+  const { uploadTransactions, setLoading, extractFieldsUsingOpenAi } =
+    useContext(UploadTransactionsContext);
   const { toast } = useToast();
   const onDrop = useCallback(
     (acceptedFiles: any[]) => {
@@ -34,7 +33,14 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
                 return;
               }
               setLoading!(true);
-              const transactions = await extractFieldsUsingOpenAi(lines);
+              const content = await extractFieldsUsingOpenAi!(lines);
+              if (!content) {
+                toast({
+                  description: `❎ There was an error with the AI. Please, try again later.`,
+                });
+                return;
+              }
+              const transactions = stringToNestedArray(content);
               setLoading!(false);
               if (transactions) {
                 uploadTransactions(transactions);
