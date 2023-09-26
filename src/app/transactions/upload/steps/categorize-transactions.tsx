@@ -62,8 +62,8 @@ export function CategorizeTransactions() {
   function targetTransactionToDelete(index: number) {
     const copy = [...transactionsCopy];
     const categoriesCopy = [...categoriesSelected];
-    copy.splice(index, 1);
-    categoriesCopy.splice(index, 1);
+    copy.splice(index - 1, 1);
+    categoriesCopy.splice(index - 1, 1);
     setTransactionsCopy(copy);
     setCategoriesSelected(categoriesCopy);
     setNumTransactionsDeleted(numTransactionsDeleted + 1);
@@ -89,6 +89,8 @@ export function CategorizeTransactions() {
 
   function restoreTransactionsMatrix() {
     setTransactionsCopy(transactions);
+    const numRows = getNumRows(transactions) - 1;
+    setCategoriesSelected(new Array(numRows).fill(""));
     setNumTransactionsDeleted(0);
   }
 
@@ -144,11 +146,9 @@ export function CategorizeTransactions() {
           <TableCell
             className="cursor-pointer p-0 "
             key={`${rowIndex}-options`}
+            onClick={() => targetTransactionToDelete(rowIndex)}
           >
-            <span
-              className="p-0 w-4 h-4 hidden hoverable-cell"
-              onClick={() => targetTransactionToDelete(rowIndex)}
-            >
+            <span className="p-0 w-4 h-4 hidden hoverable-cell">
               <svg
                 width="20"
                 height="20"
