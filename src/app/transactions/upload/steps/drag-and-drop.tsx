@@ -61,6 +61,7 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
     accept: {
       "text/csv": [".csv"],
     },
+    multiple: false,
   });
 
   return (
