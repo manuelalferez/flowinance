@@ -207,6 +207,7 @@ export function FinalStep() {
     }
     setTransactionsCopy(nonDuplicatedTransactions);
     setIsDuplicatedTransactions(false);
+    setLoading(false);
   }
 
   function handleNo() {

@@ -143,6 +143,7 @@ export function CleanRows() {
   }
 
   function isAllDuplicateTransactions() {
+    console.log("nonDuplicatedTransactions", nonDuplicatedTransactions);
     return nonDuplicatedTransactions.length === 1;
   }
 
@@ -150,9 +151,11 @@ export function CleanRows() {
     setLoading(true);
     if (isAllDuplicateTransactions()) {
       window.location.href = "/transactions";
+      return;
     }
     setTransactionsCopy(nonDuplicatedTransactions);
     setIsDuplicatedTransactions(false);
+    setLoading(false);
   }
 
   function handleNo() {
