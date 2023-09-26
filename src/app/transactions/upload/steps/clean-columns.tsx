@@ -81,9 +81,9 @@ export function CleanColumns() {
   const headers = getTableHeadersWithButtons();
 
   return (
-    <>
+    <div className="w-full md:5/6 lg:w-4/6">
       <div>
-        <Alert className="mb-10 text-2xl border-none">
+        <Alert className="mb-10 text-2xl border-none px-0">
           <AlertTitle>Cleaning columns</AlertTitle>
           <AlertDescription>
             Keep only three columns: one for <b>date</b>, one for <b>concept</b>
@@ -91,25 +91,27 @@ export function CleanColumns() {
           </AlertDescription>
         </Alert>
       </div>
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          onClick={restoreTransactionsMatrix}
-          className="mb-5"
-          disabled={transactionsCopy === transactions}
-        >
-          Restore columns
-        </Button>
-        <Button
-          onClick={handleNextStep}
-          className="mb-5 bg-emerald-700 hover:bg-emerald-600"
-          disabled={!hasDeletedMaxColumns()}
-        >
-          Next step
-        </Button>
-      </div>
+      <div className="flex flex-col items-center">
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={restoreTransactionsMatrix}
+            className="mb-5"
+            disabled={transactionsCopy === transactions}
+          >
+            Restore columns
+          </Button>
+          <Button
+            onClick={handleNextStep}
+            className="mb-5 bg-emerald-700 hover:bg-emerald-600"
+            disabled={!hasDeletedMaxColumns()}
+          >
+            Next step
+          </Button>
+        </div>
 
-      <TransactionsTable headers={headers} contents={contents} />
-    </>
+        <TransactionsTable headers={headers} contents={contents} />
+      </div>
+    </div>
   );
 }

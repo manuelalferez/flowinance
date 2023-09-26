@@ -58,11 +58,13 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
   });
 
   return (
-    <div>
+    <div className="w-full md:5/6 lg:w-4/6">
       <div>
         <Alert
           className={
-            ai ? "mb-2 text-2xl border-none" : "mb-10 text-2xl border-none"
+            ai
+              ? "mb-2 text-2xl border-none px-0"
+              : "mb-10 text-2xl border-none px-0"
           }
         >
           <AlertTitle>Upload your file</AlertTitle>
@@ -71,7 +73,7 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
           </AlertDescription>
         </Alert>
         {ai && (
-          <Alert className="mb-10 bg-emerald-50">
+          <Alert className="mb-10 bg-emerald-50 w-full md:w-1/2 mx-auto">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -97,7 +99,7 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
       </div>
       <div
         {...getRootProps()}
-        className="border-black border-2 border-dashed rounded-sm p-10 md:p-20 lg:p-28 hover:cursor-pointer"
+        className="border-black border-2 border-dashed rounded-sm text-center w-full md:w-1/2 mx-auto p-10 md:p-12 lg:p-20 hover:cursor-pointer"
       >
         <input {...getInputProps()} />
         <p>

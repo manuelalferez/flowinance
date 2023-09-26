@@ -47,7 +47,7 @@ export default function Transactions() {
   }, []);
 
   return (
-    <div className="min-h-screen mb-2 w-5/6 md:w-3/4">
+    <div className="min-h-screen mb-2 w-full md:5/6 lg:w-4/6">
       <div className="flex justify-center md:justify-start w-full">
         <h1 className="text-4xl font-semibold text-gray-800 mb-6">
           Transactions

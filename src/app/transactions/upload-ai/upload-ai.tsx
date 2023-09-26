@@ -15,9 +15,7 @@ export default function UploadAi() {
   function nextStep() {
     setStep(step + 1);
   }
-  function prevStep() {
-    setStep(step - 1);
-  }
+
   function uploadTransactions(matrix: string[][]) {
     setTransactions(matrix);
     nextStep();

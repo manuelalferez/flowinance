@@ -143,6 +143,7 @@ export function CleanRows() {
   }
 
   function isAllDuplicateTransactions() {
+    console.log(nonDuplicatedTransactions.length);
     return nonDuplicatedTransactions.length === 1;
   }
 
@@ -165,58 +166,62 @@ export function CleanRows() {
     <Loading />
   ) : (
     <Dialog open={isDuplicatedTransactions}>
-      <div>
-        <Alert className="mb-10 text-2xl border-none">
-          <AlertTitle>Cleaning transactions</AlertTitle>
-          <AlertDescription>
-            Remove those rows that you don&apos;t want or that aren&apos;t valid
-            transactions. For a transaction to be considered valid, every date
-            must be a date, and every amount must be a number.
-          </AlertDescription>
-        </Alert>
-      </div>
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          onClick={() => restoreTransactionsMatrix(false)}
-          className="mb-5"
-          disabled={transactionsCopy === transactions}
-        >
-          Restore rows
-        </Button>
-        <Button
-          onClick={handleNextStep}
-          className="mb-5 bg-emerald-700 hover:bg-emerald-600"
-          disabled={hasDeletedMaxRows()}
-        >
-          Next step
-        </Button>
-      </div>
+      <div className="w-full md:5/6 lg:w-4/6">
+        <div>
+          <Alert className="mb-10 text-2xl border-none px-0">
+            <AlertTitle>Cleaning transactions</AlertTitle>
+            <AlertDescription>
+              Remove those rows that you don&apos;t want or that aren&apos;t
+              valid transactions. For a transaction to be considered valid,
+              every date must be a date, and every amount must be a number.
+            </AlertDescription>
+          </Alert>
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => restoreTransactionsMatrix(false)}
+              className="mb-5"
+              disabled={transactionsCopy === transactions}
+            >
+              Restore rows
+            </Button>
+            <Button
+              onClick={handleNextStep}
+              className="mb-5 bg-emerald-700 hover:bg-emerald-600"
+              disabled={hasDeletedMaxRows()}
+            >
+              Next step
+            </Button>
+          </div>
 
-      <TransactionsTable headers={headers} contents={contents} />
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            {isAllDuplicateTransactions()
-              ? "All the transactions already exist in your account."
-              : `There is ${
-                  transactions.length - nonDuplicatedTransactions.length
-                } repeated transactions`}
-          </DialogTitle>
-          <DialogDescription>
-            Do you want to skip uploading all the transactions since they
-            already exist in your account? We recommend doing so.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex justify-center">
-          <Button variant={"default"} onClick={handleYes}>
-            Yes
-          </Button>
-          <Button variant={"outline"} onClick={handleNo}>
-            No
-          </Button>
-        </DialogFooter>
-      </DialogContent>
+          <TransactionsTable headers={headers} contents={contents} />
+        </div>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {isAllDuplicateTransactions()
+                ? "All the transactions already exist in your account."
+                : `There is ${
+                    transactions.length - nonDuplicatedTransactions.length
+                  } repeated transactions`}
+            </DialogTitle>
+            <DialogDescription>
+              Do you want to skip uploading all the transactions since they
+              already exist in your account? We recommend doing so.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex justify-center">
+            <Button variant={"default"} onClick={handleYes}>
+              Yes
+            </Button>
+            <Button variant={"outline"} onClick={handleNo}>
+              No
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </div>
     </Dialog>
   );
 }

@@ -17,9 +17,7 @@ export default function Upload() {
   function nextStep() {
     setStep(step + 1);
   }
-  function prevStep() {
-    setStep(step - 1);
-  }
+
   function uploadTransactions(matrix: string[][]) {
     setTransactions(deleteEmptyRowsAndColumns(matrix));
     nextStep();

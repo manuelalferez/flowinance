@@ -9,7 +9,7 @@ export default async function Page() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-24">
+    <main className="flex min-h-screen flex-col items-center p-2 md:p-24">
       <UploadAi />
     </main>
   );

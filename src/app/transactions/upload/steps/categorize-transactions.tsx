@@ -184,16 +184,16 @@ export function CategorizeTransactions() {
   const headers = getTableHeaders();
   const transactionsToBeCategorized = getNumTransactionsToBeCategorized();
   return (
-    <>
+    <div className="w-full md:5/6 lg:w-4/6">
       <div>
-        <Alert className="mb-2 text-2xl border-none">
+        <Alert className="mb-2 text-2xl border-none px-0">
           <AlertTitle>Categorizing transactions</AlertTitle>
           <AlertDescription>
             Classify each transaction according to the category you consider
             most appropriate. It is completely personal.
           </AlertDescription>
         </Alert>
-        <Alert className="mb-10 bg-emerald-50">
+        <Alert className="mb-10 bg-emerald-50 w-1/2 mx-auto">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -212,49 +212,51 @@ export function CategorizeTransactions() {
             row will turn gray, indicating that the category has been assigned.
           </AlertDescription>
         </Alert>
+      </div>
+      <div className="flex flex-col items-center">
+        <div className="flex gap-4">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={cleanCategories}
+              className="mb-5"
+              disabled={!categoriesSelected.some((item) => item !== "")}
+            >
+              Clean categories
+            </Button>
+            <Button
+              variant="outline"
+              onClick={restoreTransactionsMatrix}
+              className="mb-5"
+              disabled={transactionsCopy.length === transactions.length}
+            >
+              Restore transactions
+            </Button>
+          </div>
+
+          <Button
+            onClick={handleNextStep}
+            className="mb-5 bg-emerald-700 hover:bg-emerald-600"
+            disabled={categoriesSelected.includes("")}
+          >
+            Next step
+          </Button>
+        </div>
         {transactionsToBeCategorized > 0 ? (
-          <p className="flex justify-center mb-4 text-lg">
+          <p className="flex justify-center mb-4 text-lg bg-blue-50 p-2 rounded-md">
             Transactions to be categorized:
-            <span className="px-1 bg-black text-white ml-1 rounded-md">
+            <span className="px-2 bg-blue-700 text-white ml-1 rounded-md">
               {transactionsToBeCategorized}
             </span>
           </p>
         ) : (
-          <p className="flex justify-center mb-4 text-base md:text-lg">
+          <p className="flex justify-center mb-4 text-base md:text-lg bg-blue-50 p-2 rounded-md">
             All the transactions have been categorized 🎉
           </p>
         )}
-      </div>
-      <div className="flex gap-4">
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={cleanCategories}
-            className="mb-5"
-            disabled={!categoriesSelected.some((item) => item !== "")}
-          >
-            Clean categories
-          </Button>
-          <Button
-            variant="outline"
-            onClick={restoreTransactionsMatrix}
-            className="mb-5"
-            disabled={transactionsCopy.length === transactions.length}
-          >
-            Restore transactions
-          </Button>
-        </div>
 
-        <Button
-          onClick={handleNextStep}
-          className="mb-5 bg-emerald-700 hover:bg-emerald-600"
-          disabled={categoriesSelected.includes("")}
-        >
-          Next step
-        </Button>
+        <TransactionsTable headers={headers} contents={contents} />
       </div>
-
-      <TransactionsTable headers={headers} contents={contents} />
-    </>
+    </div>
   );
 }
