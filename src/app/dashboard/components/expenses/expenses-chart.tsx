@@ -69,12 +69,13 @@ export default function ExpensesChart() {
   const range = getRangeAxisX(selected!);
 
   return (
-    <div className="w-full">
+    <div className="w-full md:w-1/2">
       {data.length !== 0 ? (
         <DashboardCard
           title="Expenses"
           description="See your daily expenses at a glance. Effortlessly understand your
         daily spending trends."
+          className="p2"
         >
           <ResponsiveContainer width="100%" height={400}>
             <LineChart

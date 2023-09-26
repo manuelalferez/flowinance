@@ -33,7 +33,7 @@ export function Incomes() {
           </svg>{" "}
           Incomes
         </CardDescription>
-        <CardTitle className="text-green-500 text-lg md:text-2xl font-mono tabular-nums">
+        <CardTitle className="text-green-500 text-lg md:text-xl font-mono tabular-nums">
           {incomes !== 0 && "+"}
           {formatNumberWithTwoDecimals(incomes)}
           {currency}

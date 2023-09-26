@@ -147,12 +147,12 @@ export default function Dashboard() {
               <IncomesPieChart />
             </DashboardRow>
 
-            <DashboardRow className="justify-between flex-wrap">
+            <DashboardRow className="justify-between flex-wrap lg:flex-nowrap">
               <ExpensesChart />
               <IncomesChart />
             </DashboardRow>
 
-            <DashboardRow className="justify-between flex-wrap">
+            <DashboardRow className="justify-between flex-wrap lg:flex-nowrap">
               <ExpensesEvolutionChart />
               <IncomesEvolutionChart />
             </DashboardRow>

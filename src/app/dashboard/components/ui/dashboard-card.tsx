@@ -19,7 +19,7 @@ export function DashboardCard({
 }) {
   return (
     <Card
-      className={`w-full flex flex-col items-center p-8 h-fit ${className}`}
+      className={`w-full flex flex-col items-center px-2 py-8 h-fit ${className}`}
     >
       <div className="flex items-center gap-2 pb-6 justify-between">
         {title && <CardTitle>{title}</CardTitle>}

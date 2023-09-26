@@ -1,7 +1,10 @@
 import { Transaction } from "@/app/types/global";
 import { TABLE_HEADERS } from "@/lib/constants";
 import { AppContext } from "@/lib/context";
-import { formatNumberWithTwoDecimals, sortTransactions } from "@/lib/utils";
+import {
+  formatNumberWithTwoDecimals,
+  sortTransactionsTable,
+} from "@/lib/utils";
 import { useContext } from "react";
 import {
   Table,
@@ -18,10 +21,8 @@ import { categorySVGs } from "@/lib/categories";
 export function LastTransactions() {
   const { transactions, currency } = useContext(AppContext);
 
-  const shortedTransactions = sortTransactions(transactions);
-  const lastTransactions = shortedTransactions.slice(
-    sortTransactions.length - 11
-  );
+  const shortedTransactions = sortTransactionsTable(transactions);
+  const lastTransactions = shortedTransactions.slice(0, 10);
 
   return (
     <DashboardCard title="Last transactions" className="p-2 md:p-8">
