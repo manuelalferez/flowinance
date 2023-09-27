@@ -1,6 +1,11 @@
 "use client";
 import { TableCell, TableHead, TableRow } from "@/app/components/ui/table";
-import { getNumColumns } from "@/lib/utils";
+import {
+  calculatePercentageWithCondition,
+  getNumColumns,
+  isNumberCondition,
+  isValidDate,
+} from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { useToast } from "@/app/components/ui/use-toast";
 import { removeColumn } from "../../components/operators";
@@ -73,8 +78,41 @@ export function CleanColumns() {
   }
 
   function handleNextStep() {
+    const dateIndex = findColumnWithDate();
+    const amountIndex = findColumnWithAmount();
+
+    if (dateIndex === -1 || amountIndex === -1) {
+      toast({
+        description:
+          "❎ Keep only three columns: one for date, one for concept, and one for the amount.",
+      });
+      restoreTransactionsMatrix();
+      return;
+    }
     setTransactions(transactionsCopy);
     nextStep();
+  }
+
+  function findColumnWithDate(): number {
+    return transactionsCopy[0].findIndex((_, index) => {
+      const percentage = calculatePercentageWithCondition(
+        transactionsCopy,
+        index,
+        isValidDate
+      );
+      return percentage > 50;
+    });
+  }
+
+  function findColumnWithAmount(): number {
+    return transactionsCopy[0].findIndex((_, index) => {
+      const percentage = calculatePercentageWithCondition(
+        transactionsCopy,
+        index,
+        isNumberCondition
+      );
+      return percentage > 50;
+    });
   }
 
   const contents = getTableContents();

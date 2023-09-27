@@ -102,6 +102,7 @@ export function formatDateStringToDdMmYyyy(dateString: string): string {
 }
 
 export function isValidDate(dateString: string): boolean {
+  if (isNumberCondition(dateString)) return false;
   const parsedDate = dayjs(dateString);
   if (parsedDate.isValid()) {
     return true;
