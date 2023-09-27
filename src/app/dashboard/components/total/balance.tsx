@@ -1,4 +1,6 @@
 import {
+  getInvested,
+  getSavings,
   getSpecialCategories,
   getTotalExpenses,
   getTotalIncomes,
@@ -19,8 +21,9 @@ export function Balance() {
   function getBalance() {
     const expenses = getTotalExpenses(transactions);
     const incomes = getTotalIncomes(transactions);
-    const special = getSpecialCategories(transactions);
-    const balance = incomes - expenses + special;
+    const special = getInvested(transactions) + getSavings(transactions);
+    const uncategorized = getSpecialCategories(transactions) - special;
+    const balance = incomes - expenses - special + uncategorized;
 
     return roundToTwoDecimal(balance);
   }
@@ -45,6 +48,22 @@ export function Balance() {
           {formatNumberWithTwoDecimals(getBalance())}
           {currency}
         </CardTitle>
+        <div className="flex flex-col w-fit bg-gray-50 p-2 rounded-md">
+          <CardDescription className="flex gap-1">
+            Savings:
+            <span className="font-mono tabular-nums text-sm flex gap-1">
+              {formatNumberWithTwoDecimals(getSavings(transactions))}
+              {currency}
+            </span>
+          </CardDescription>
+          <CardDescription className="flex gap-1">
+            Invested:
+            <span className="font-mono tabular-nums text-sm flex gap-1">
+              {formatNumberWithTwoDecimals(getInvested(transactions))}
+              {currency}
+            </span>
+          </CardDescription>
+        </div>
       </CardHeader>
     </Card>
   );
