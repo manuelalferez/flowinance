@@ -81,6 +81,7 @@ export function IncomesTable() {
     <DashboardNoDataCard
       title="Incomes by categories"
       description="You have not generated any income so far."
+      className="w-full"
     />
   );
 }
