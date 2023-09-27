@@ -240,9 +240,9 @@ export function CategorizeColumns() {
   const headers = getTableHeadersWithDropDown();
 
   return (
-    <>
+    <div className="w-full md:5/6 lg:w-4/6">
       <div>
-        <Alert className="mb-2 text-2xl border-none">
+        <Alert className="mb-2 text-2xl border-none px-0">
           <AlertTitle>Classify columns</AlertTitle>
           <AlertDescription>
             Classify every column according to its respective category: date,
@@ -266,6 +266,6 @@ export function CategorizeColumns() {
         Next step
       </Button>
       <TransactionsTable headers={headers} contents={contents} />
-    </>
+    </div>
   );
 }

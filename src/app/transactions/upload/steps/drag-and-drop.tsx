@@ -4,14 +4,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 import { useToast } from "@/app/components/ui/use-toast";
 import { LIMIT_TRANSACTIONS_TO_UPLOAD } from "@/lib/constants";
 import { UploadTransactionsContext } from "@/lib/context";
-import { extractFields, extractFieldsUsingOpenAi } from "@/lib/utils";
+import { extractFields, stringToNestedArray } from "@/lib/utils";
 import React, { useCallback, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 
 export function DragAndDrop({ ai }: { ai?: boolean }) {
-  const { uploadTransactions, setLoading } = useContext(
-    UploadTransactionsContext
-  );
+  const { uploadTransactions, setLoading, extractFieldsUsingOpenAi } =
+    useContext(UploadTransactionsContext);
   const { toast } = useToast();
   const onDrop = useCallback(
     (acceptedFiles: any[]) => {
@@ -34,7 +33,14 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
                 return;
               }
               setLoading!(true);
-              const transactions = await extractFieldsUsingOpenAi(lines);
+              const content = await extractFieldsUsingOpenAi!(lines);
+              if (!content) {
+                toast({
+                  description: `❎ There was an error with the AI. Please, try again later.`,
+                });
+                return;
+              }
+              const transactions = stringToNestedArray(content);
               setLoading!(false);
               if (transactions) {
                 uploadTransactions(transactions);
@@ -55,14 +61,17 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
     accept: {
       "text/csv": [".csv"],
     },
+    multiple: false,
   });
 
   return (
-    <div>
+    <div className="w-full md:5/6 lg:w-4/6">
       <div>
         <Alert
           className={
-            ai ? "mb-2 text-2xl border-none" : "mb-10 text-2xl border-none"
+            ai
+              ? "mb-2 text-2xl border-none px-0"
+              : "mb-10 text-2xl border-none px-0"
           }
         >
           <AlertTitle>Upload your file</AlertTitle>
@@ -71,7 +80,7 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
           </AlertDescription>
         </Alert>
         {ai && (
-          <Alert className="mb-10 bg-emerald-50">
+          <Alert className="mb-10 bg-emerald-50 w-full md:w-1/2 mx-auto">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -97,7 +106,7 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
       </div>
       <div
         {...getRootProps()}
-        className="border-black border-2 border-dashed rounded-sm p-10 md:p-20 lg:p-28 hover:cursor-pointer"
+        className="border-black border-2 border-dashed rounded-sm text-center w-full md:w-1/2 mx-auto p-10 md:p-12 lg:p-20 hover:cursor-pointer"
       >
         <input {...getInputProps()} />
         <p>

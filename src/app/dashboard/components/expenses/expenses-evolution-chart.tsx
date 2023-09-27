@@ -87,7 +87,7 @@ export default function ExpensesEvolutionChart() {
   const range = getRangeAxisX(selected!);
 
   return (
-    <div className="w-full">
+    <div className="w-full md:w-1/2">
       {data.length !== 0 ? (
         <DashboardCard
           title="Expenses Evolution"

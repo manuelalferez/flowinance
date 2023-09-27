@@ -6,6 +6,7 @@ interface TransactionsContext {
   setTransactions: (transactions: string[][]) => void;
   nextStep: () => void;
   uploadTransactions: (matrix: string[][]) => void;
+  extractFieldsUsingOpenAi?: (lines: string[]) => Promise<string | undefined>;
   setLoading?: (loading: boolean) => void;
 }
 

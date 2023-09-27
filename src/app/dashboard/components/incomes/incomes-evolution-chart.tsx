@@ -87,7 +87,7 @@ export default function IncomesEvolutionChart() {
   const range = getRangeAxisX(selected!);
 
   return (
-    <div className="w-full">
+    <div className="w-full md:w-1/2">
       {data.length !== 0 ? (
         <DashboardCard
           title="Incomes Evolution"

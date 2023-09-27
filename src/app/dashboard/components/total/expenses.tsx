@@ -21,7 +21,7 @@ export function Expenses() {
   const expenses = getExpenses();
 
   return (
-    <Card className="pr-6 w-1/2">
+    <Card className="w-1/2">
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg
@@ -36,7 +36,7 @@ export function Expenses() {
           </svg>
           Expenses
         </CardDescription>
-        <CardTitle className="text-red-500 text-lg md:text-2xl font-mono tabular-nums">
+        <CardTitle className="text-red-500 text-lg md:text-xl font-mono tabular-nums">
           {expenses !== 0 && "-"}
           {formatNumberWithTwoDecimals(expenses)}
           {currency}

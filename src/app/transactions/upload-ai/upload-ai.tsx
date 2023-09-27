@@ -7,7 +7,11 @@ import { FinalStep } from "../upload/steps/final-step";
 import Loading from "@/app/loading";
 import { CardTitle } from "@/app/components/ui/card";
 
-export default function UploadAi() {
+interface UploadAiProps {
+  extractFieldsUsingOpenAi: (lines: string[]) => Promise<string | undefined>;
+}
+
+export default function UploadAi({ extractFieldsUsingOpenAi }: UploadAiProps) {
   const [transactions, setTransactions] = useState<string[][]>([]);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);
@@ -15,9 +19,7 @@ export default function UploadAi() {
   function nextStep() {
     setStep(step + 1);
   }
-  function prevStep() {
-    setStep(step - 1);
-  }
+
   function uploadTransactions(matrix: string[][]) {
     setTransactions(matrix);
     nextStep();
@@ -37,6 +39,7 @@ export default function UploadAi() {
         nextStep,
         uploadTransactions,
         setLoading,
+        extractFieldsUsingOpenAi,
       }}
     >
       {isFirstStep(step) && <DragAndDrop ai={true} />}
