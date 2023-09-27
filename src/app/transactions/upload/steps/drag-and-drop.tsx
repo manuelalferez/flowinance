@@ -2,16 +2,34 @@
 
 import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 import { useToast } from "@/app/components/ui/use-toast";
-import { LIMIT_TRANSACTIONS_TO_UPLOAD } from "@/lib/constants";
+import {
+  LIMIT_TRANSACTIONS_TO_UPLOAD,
+  LOTS_SIZE,
+  TIME_PER_TRANSACTION,
+} from "@/lib/constants";
 import { UploadTransactionsContext } from "@/lib/context";
 import { extractFields, stringToNestedArray } from "@/lib/utils";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
+function shuffleArray(array: string[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 export function DragAndDrop({ ai }: { ai?: boolean }) {
-  const { uploadTransactions, setLoading, extractFieldsUsingOpenAi } =
-    useContext(UploadTransactionsContext);
+  const {
+    uploadTransactions,
+    setLoading,
+    extractFieldsUsingOpenAi,
+    setCountDown,
+    setError,
+  } = useContext(UploadTransactionsContext);
   const { toast } = useToast();
+  const [send, setSend] = useState(true);
+
   const onDrop = useCallback(
     (acceptedFiles: any[]) => {
       acceptedFiles.forEach((file) => {
@@ -25,6 +43,12 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
           if (result) {
             const binaryStr = new TextDecoder().decode(result as ArrayBuffer);
             const lines = binaryStr.split("\n");
+            const subarrays = [];
+
+            for (let i = 0; i < lines.length; i += LOTS_SIZE) {
+              subarrays.push(lines.slice(i, i + LOTS_SIZE));
+            }
+
             if (ai) {
               if (lines.length > LIMIT_TRANSACTIONS_TO_UPLOAD) {
                 toast({
@@ -32,17 +56,35 @@ export function DragAndDrop({ ai }: { ai?: boolean }) {
                 });
                 return;
               }
+              setCountDown!(TIME_PER_TRANSACTION * lines.length);
               setLoading!(true);
-              const content = await extractFieldsUsingOpenAi!(lines);
-              if (!content) {
-                toast({
-                  description: `❎ There was an error with the AI. Please, try again later.`,
-                });
-                return;
+              const transactions = [];
+
+              for (const subarray of subarrays) {
+                const content = await extractFieldsUsingOpenAi!(subarray);
+                if (!content) {
+                  toast({
+                    description: `❎ There was an error with the AI. Please, try again later.`,
+                  });
+                  setError!();
+                  setSend(false);
+                  break;
+                }
+                const subArrayTransactions = stringToNestedArray(content);
+                let subarrayTransactions = subArrayTransactions;
+                if (subarray != subarrays[0]) {
+                  subarrayTransactions = subArrayTransactions.slice(1);
+                }
+
+                if (subarrayTransactions.length === 0) {
+                  toast({
+                    description: `ℹ️ Some transactions could not be extracted. Check them later.`,
+                  });
+                }
+                transactions.push(...subarrayTransactions);
               }
-              const transactions = stringToNestedArray(content);
               setLoading!(false);
-              if (transactions) {
+              if (transactions && send) {
                 uploadTransactions(transactions);
               }
             } else {

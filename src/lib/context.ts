@@ -8,6 +8,8 @@ interface TransactionsContext {
   uploadTransactions: (matrix: string[][]) => void;
   extractFieldsUsingOpenAi?: (lines: string[]) => Promise<string | undefined>;
   setLoading?: (loading: boolean) => void;
+  setCountDown?: (countDown: number) => void;
+  setError?: () => void;
 }
 
 const defaultContext: TransactionsContext = {
