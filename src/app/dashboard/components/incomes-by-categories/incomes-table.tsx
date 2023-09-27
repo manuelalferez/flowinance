@@ -50,7 +50,7 @@ export function IncomesTable() {
     >
       <Table key="incomes-table">
         <TableHeader>
-          <TableRow>
+          <TableRow className="font-bold">
             <TableHead className="p-2">Category</TableHead>
             <TableHead className="p-2 pl-8 text-right">
               Amount({currency})
@@ -81,6 +81,7 @@ export function IncomesTable() {
     <DashboardNoDataCard
       title="Incomes by categories"
       description="You have not generated any income so far."
+      className="w-full"
     />
   );
 }

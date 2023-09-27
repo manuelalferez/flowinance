@@ -88,57 +88,50 @@ export default function ExpensesEvolutionChart() {
 
   return (
     <div className="w-full md:w-1/2">
-      {data.length !== 0 ? (
-        <DashboardCard
-          title="Expenses Evolution"
-          description="Visualize the trend of your expenses, how they have grown over the
+      <DashboardCard
+        title="Expenses Evolution"
+        description="Visualize the trend of your expenses, how they have grown over the
         days."
-        >
-          <ResponsiveContainer width="100%" height={400}>
-            <AreaChart
-              data={data}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 30,
-                bottom: 0,
+      >
+        <ResponsiveContainer width="100%" height={400}>
+          <AreaChart
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 30,
+              bottom: 0,
+            }}
+            className="font-mono tabular-nums text-sm"
+          >
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(str, index) => {
+                if (index % range === 0 && index !== 0) {
+                  const date = parseDateToISO(str);
+                  return formatDateToChartDate(date);
+                }
+                return "";
               }}
-              className="font-mono tabular-nums text-sm"
-            >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tickFormatter={(str, index) => {
-                  if (index % range === 0 && index !== 0) {
-                    const date = parseDateToISO(str);
-                    return formatDateToChartDate(date);
-                  }
-                  return "";
-                }}
-              />
-              <YAxis
-                tickFormatter={(number) => `${number}${currency}`}
-                tickCount={6}
-              />
-              <Tooltip content={<CustomTooltip currency={currency} />} />
-              <Area
-                type="monotone"
-                dataKey="expense"
-                strokeWidth={2}
-                stroke="#047857"
-                fill="#069668"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </DashboardCard>
-      ) : (
-        <DashboardNoDataCard
-          title="Expenses Evolution"
-          description=" You have not generated any expense so far."
-        />
-      )}
+            />
+            <YAxis
+              tickFormatter={(number) => `${number}${currency}`}
+              tickCount={6}
+            />
+            <Tooltip content={<CustomTooltip currency={currency} />} />
+            <Area
+              type="monotone"
+              dataKey="expense"
+              strokeWidth={2}
+              stroke="#047857"
+              fill="#069668"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </DashboardCard>
     </div>
   );
 }

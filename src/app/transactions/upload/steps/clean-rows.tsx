@@ -143,7 +143,6 @@ export function CleanRows() {
   }
 
   function isAllDuplicateTransactions() {
-    console.log("nonDuplicatedTransactions", nonDuplicatedTransactions);
     return nonDuplicatedTransactions.length === 1;
   }
 

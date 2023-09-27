@@ -70,64 +70,57 @@ export default function ExpensesChart() {
 
   return (
     <div className="w-full md:w-1/2">
-      {data.length !== 0 ? (
-        <DashboardCard
-          title="Expenses"
-          description="See your daily expenses at a glance. Effortlessly understand your
+      <DashboardCard
+        title="Expenses"
+        description="See your daily expenses at a glance. Effortlessly understand your
         daily spending trends."
-          className="p2"
-        >
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart
-              data={data}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
+        className="p2"
+      >
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart
+            data={data}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+            className="font-mono tabular-nums text-sm"
+          >
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+              opacity={0.3}
+            />
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(str, index) => {
+                if (index % range === 0 && index !== 0) {
+                  const date = parseDateToISO(str);
+                  return formatDateToChartDate(date);
+                }
+                return "";
               }}
-              className="font-mono tabular-nums text-sm"
-            >
-              <CartesianGrid
-                strokeDasharray="3 3"
-                vertical={false}
-                opacity={0.3}
-              />
-              <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tickFormatter={(str, index) => {
-                  if (index % range === 0 && index !== 0) {
-                    const date = parseDateToISO(str);
-                    return formatDateToChartDate(date);
-                  }
-                  return "";
-                }}
-              />
+            />
 
-              <YAxis
-                tickFormatter={(number) => `${number}${currency}`}
-                tickCount={6}
-              />
-              <Tooltip content={<CustomTooltip currency={currency} />} />
-              <Line
-                type="monotone"
-                dataKey="spent"
-                strokeWidth={2}
-                stroke="#047857"
-                activeDot={{ r: 6 }}
-                dot={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </DashboardCard>
-      ) : (
-        <DashboardNoDataCard
-          title="Expenses"
-          description=" You have not generated any expense so far."
-        />
-      )}
+            <YAxis
+              tickFormatter={(number) => `${number}${currency}`}
+              tickCount={6}
+            />
+            <Tooltip content={<CustomTooltip currency={currency} />} />
+            <Line
+              type="monotone"
+              dataKey="spent"
+              strokeWidth={2}
+              stroke="#047857"
+              activeDot={{ r: 6 }}
+              dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </DashboardCard>
     </div>
   );
 }

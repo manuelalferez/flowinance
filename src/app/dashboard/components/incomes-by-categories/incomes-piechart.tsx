@@ -80,8 +80,9 @@ export function IncomesPieChart() {
     </DashboardCard>
   ) : (
     <DashboardNoDataCard
-      title="Incomes by category"
-      description=" You have not generated any income so far."
+      title="Your top 5 expenses"
+      description="You have not generated any income so far."
+      className="w-full md:w-1/2"
     />
   );
 }

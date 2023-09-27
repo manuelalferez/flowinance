@@ -6,6 +6,7 @@ import * as CryptoJS from "crypto-js";
 import dayjs from "dayjs";
 import { format, parseISO } from "date-fns";
 import moment from "moment";
+import { EXPENSES_CATEGORIES } from "./categories";
 
 const DEFAULT_DELIMITER = ";";
 const DEFAULT_CURRENCY = "eur";
@@ -101,6 +102,7 @@ export function formatDateStringToDdMmYyyy(dateString: string): string {
 }
 
 export function isValidDate(dateString: string): boolean {
+  if (isNumberCondition(dateString)) return false;
   const parsedDate = dayjs(dateString);
   if (parsedDate.isValid()) {
     return true;
@@ -787,4 +789,8 @@ export function getRangeAxisX(selec: number) {
   } else {
     return 30;
   }
+}
+
+export function isExpense(category: string) {
+  return EXPENSES_CATEGORIES.some((expense) => expense === category);
 }

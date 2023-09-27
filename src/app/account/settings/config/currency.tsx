@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { useSupabase } from "@/app/supabase-provider";
+import { currencies } from "@/lib/constants";
 import {
   getCurrency,
   saveCurrencyInLocalStorage,
@@ -18,7 +19,7 @@ import { useEffect, useState } from "react";
 
 export function CurrencyConfig() {
   const { supabase } = useSupabase();
-  const [currency, setCurrency] = useState<string>("eur");
+  const [currency, setCurrency] = useState<string>("EUR");
   async function handleCurrencyChange(value: string) {
     setCurrency(value);
     await updateCurrencyInSupabase(supabase, value);
@@ -27,7 +28,7 @@ export function CurrencyConfig() {
   useEffect(() => {
     async function fetchData() {
       const data = await getCurrency(supabase);
-      setCurrency(data);
+      setCurrency(currencies.find((currency) => currency.name === data)!.name);
     }
     fetchData();
   }, []);
@@ -46,8 +47,11 @@ export function CurrencyConfig() {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="eur">EUR</SelectItem>
-            <SelectItem value="usd">USD</SelectItem>
+            {currencies.map((currency) => (
+              <SelectItem key={currency.name} value={currency.name}>
+                {currency.name}
+              </SelectItem>
+            ))}
           </SelectGroup>
         </SelectContent>
       </Select>

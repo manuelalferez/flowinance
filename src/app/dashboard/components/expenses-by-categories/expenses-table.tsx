@@ -52,7 +52,7 @@ export function ExpensesTable() {
     >
       <Table key="expenses-table">
         <TableHeader>
-          <TableRow>
+          <TableRow className="font-bold">
             <TableHead className="p-2">Category</TableHead>
             <TableHead className="p-2 pl-8 text-right">
               Amount({currency})
