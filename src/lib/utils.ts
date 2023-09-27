@@ -10,7 +10,7 @@ import { EXPENSES_CATEGORIES } from "./categories";
 import { currencies } from "./constants";
 
 const DEFAULT_DELIMITER = ";";
-const DEFAULT_CURRENCY = currencies.at(0)?.name;
+const DEFAULT_CURRENCY = currencies.at(0)!.name;
 const TRANSACTIONS_TABLE = "transactions";
 const DELETED_USERS_TABLE = "deleted_users";
 const SETTINGS_TABLE = "settings";
