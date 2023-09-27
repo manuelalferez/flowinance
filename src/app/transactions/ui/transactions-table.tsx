@@ -11,6 +11,7 @@ import { Transaction } from "@/app/types/global";
 import { TABLE_HEADERS } from "@/lib/constants";
 import {
   deleteTransactionFromSupabase,
+  isExpense,
   sortTransactionsTable,
 } from "@/lib/utils";
 import { Button } from "@/app/components/ui/button";
@@ -26,7 +27,7 @@ import {
   DialogTrigger,
 } from "@/app/components/ui/dialog";
 import { useSupabase } from "@/app/supabase-provider";
-import { EXPENSES_CATEGORIES, categorySVGs } from "@/lib/categories";
+import { categorySVGs } from "@/lib/categories";
 
 export function TransactionsTable() {
   const { transactions } = useContext(AppContext);
@@ -62,10 +63,6 @@ export function TransactionsTable() {
     await deleteTransactionFromSupabase(supabase, transactionToDeleteId);
     setOpen(false);
     deleteTransactionFromTable();
-  }
-
-  function isExpense(category: string) {
-    return EXPENSES_CATEGORIES.some((expense) => expense === category);
   }
 
   return (
@@ -111,7 +108,7 @@ export function TransactionsTable() {
                   className="p-2 text-right font-mono tabular-nums text-gray-700"
                   key={`${index}-amount`}
                 >
-                  <span className="flex items-center">
+                  <span className="flex items-center justify-end">
                     {isExpense(item.category) ? (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

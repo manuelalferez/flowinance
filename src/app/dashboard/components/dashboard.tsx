@@ -29,6 +29,7 @@ import { Filter } from "./filter";
 import { useToast } from "../../components/ui/use-toast";
 import NoTransactions from "./ui/no-transactions";
 import SummaryChart from "./total/summary";
+import { currencies } from "@/lib/constants";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -60,7 +61,7 @@ export default function Dashboard() {
         }
 
         const currency = await getCurrency(supabase);
-        setCurrency(currency === "eur" ? "€" : "$");
+        setCurrency(currencies.find((c) => c.name === currency)!.symbol);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
