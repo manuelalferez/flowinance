@@ -1,5 +1,5 @@
 # Flowinance
-<img width="1573" alt="image" src="[https://github.com/manuelalferez/flowinance/assets/38152841/7428fd01-6856-4cf6-9657-fe49b1e6bbb7](https://ik.imagekit.io/manuelalferez/flowinance/Group%204_jblZjJ0I-.png?updatedAt=1697888155172)">
+![](https://ik.imagekit.io/manuelalferez/flowinance/Group%204_jblZjJ0I-.png?updatedAt=1697888155172)
 
 ## Getting Started
 
