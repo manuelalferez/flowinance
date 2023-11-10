@@ -38,6 +38,16 @@ export default function AuthUI() {
         }}
         theme="light"
       />
+      <div className="text-sm flex flex-col text-muted-foreground">
+        Would you like to give it a try? Feel free to use our demo account 😉
+        <p>
+          email:{" "}
+          <code className="text-sm ">manuelalferezruiz+test@gmail.com</code>
+        </p>
+        <p>
+          password: <code className="text-sm ">qwerty</code>
+        </p>
+      </div>
     </Card>
   );
 }
