@@ -99,3 +99,22 @@ tr:hover .hoverable-cell {
   width: -webkit-fill-available;
   height: -webkit-fill-available;
 }
+
+.animated-text {
+  background: radial-gradient(#05543f 50%, #28c28b 75%, #28c28b 75%);
+  font-weight: 600;
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animatedTextGradient 5s linear infinite;
+}
+
+@keyframes animatedTextGradient {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
