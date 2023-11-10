@@ -9,7 +9,7 @@ export default async function Home() {
         <>
           <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
             <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
-              <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-r from-emerald-900 via-emerald-600 to-emerald-400 text-transparent bg-clip-text">
+              <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-r from-emerald-900 via-emerald-600 to-emerald-400 text-transparent bg-clip-text font-bold">
                 Track your finances, focus on what is important
               </h1>
 
@@ -27,12 +27,56 @@ export default async function Home() {
               </div>
             </div>
           </section>
+          <section className="container space-y-6 pb-8 pt-12 md:pb-12 md:pt-10 lg:py-32 flex flex-col gap-12 md:gap-48">
+            <div className="animated-text flex flex-col gap-4 md:flex-row-reverse items-center justify-around">
+              <h1 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold  text-center">
+                Everything you need to manage your finances
+              </h1>
+              <img
+                src="https://ik.imagekit.io/manuelalferez/flowinance/Group%207_QWIwA4HdR.png?updatedAt=1699611329205"
+                width={10}
+                className="w-2/3"
+              />
+            </div>
+            <div className="animated-text flex flex-col gap-4 md:flex-row items-center justify-around">
+              <h1 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold  text-center">
+                Upload and categorize your transactions in a few clicks using AI
+                ✨
+              </h1>
+              <img
+                src="https://ik.imagekit.io/manuelalferez/flowinance/Group%208_Xna5E6_TA.png?updatedAt=1699611329296"
+                width={10}
+                className="w-2/3"
+              />
+            </div>
+            <div className="animated-text flex flex-col gap-4 md:flex-row-reverse items-center justify-around">
+              <h1 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold  text-center">
+                Visualize all your transactions in one place
+              </h1>
+              <img
+                src="https://ik.imagekit.io/manuelalferez/flowinance/Group%2010_Vk1VcIZ_A.png?updatedAt=1699611329310"
+                width={10}
+                className="w-2/3"
+              />
+            </div>
+            <div className="animated-text flex flex-col gap-4 md:flex-row items-center justify-around">
+              <h1 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold  text-center">
+                Multi-currency support facilitates working with various global
+                currencies
+              </h1>
+              <img
+                src="https://ik.imagekit.io/manuelalferez/flowinance/Group%209_-UJANJ6Ik.png?updatedAt=1699611329268"
+                width={10}
+                className="w-3/6"
+              />
+            </div>
+          </section>
           <section
             id="features"
             className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
           >
             <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-              <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+              <h2 className="animated-text font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
                 Features
               </h2>
               <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
@@ -206,7 +250,7 @@ export default async function Home() {
             className="container py-8 md:py-12 lg:py-24"
           >
             <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
-              <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+              <h2 className="animated-text font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
                 Powered by
               </h2>
               <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
