@@ -28,10 +28,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 We would be really happy if you decide to contribute. Please read our [`CONTRIBUTING.md`](https://github.com/manuelalferez/chatcus/blob/master/doc/CONTRIBUTING.md) guide before 😊
 
-## Documentation 
-
-You can learn more from the project in the [wiki](https://github.com/manuelalferez/chatcus/wiki). 
-
 ## Ask me 🤙
 
 You can always contact me via [Telegram](https://t.me/manuelalferez) if you want to talk more about the project 😊
