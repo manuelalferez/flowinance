@@ -7,6 +7,7 @@ import { Toaster } from "./components/ui/toaster";
 import { userHasBeenDeleted } from "@/lib/utils";
 import AccountDeleted from "./account/deleted/page";
 import { Footer } from "./components/footer";
+import { Analytics } from "@vercel/analytics/react";
 
 export const dynamic = "force-dynamic";
 
@@ -75,6 +76,7 @@ export default async function RootLayout({
                 <Toaster />
               </div>
               <Footer />
+              <Analytics />
             </body>
           </SupabaseProvider>
         </html>
