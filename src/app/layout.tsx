@@ -94,6 +94,7 @@ export default async function RootLayout({
             <Toaster />
           </div>
           <Footer className="w-screen border-t-2" />
+          <Analytics />
         </body>
       </SupabaseProvider>
     </html>
