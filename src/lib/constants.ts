@@ -11,12 +11,8 @@ export const currencies = [
   { name: "Emirati Dirham", symbol: "AED" },
   { name: "Yen", symbol: "¥" },
   { name: "Yuan", symbol: "¥" },
-  { name: "Krona", symbol: "kr" },
   { name: "Won", symbol: "₩" },
   { name: "Peso", symbol: "$" },
-  { name: "Real", symbol: "R$" },
   { name: "Ruble", symbol: "₽" },
   { name: "Rupee", symbol: "₹" },
-  { name: "Franc", symbol: "Fr" },
-  { name: "Lira", symbol: "₺" },
 ];
