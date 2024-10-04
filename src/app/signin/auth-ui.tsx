@@ -41,8 +41,7 @@ export default function AuthUI() {
       <div className="text-sm flex flex-col text-muted-foreground">
         Would you like to give it a try? Feel free to use our demo account 😉
         <p>
-          email:{" "}
-          <code className="text-sm ">manuelalferezruiz+test@gmail.com</code>
+          email: <code className="text-sm ">tiffs_purview0r@icloud.com</code>
         </p>
         <p>
           password: <code className="text-sm ">qwerty</code>
