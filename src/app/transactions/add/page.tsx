@@ -9,7 +9,7 @@ export default async function Page() {
   }
   return (
     <div className="flex justify-center">
-      <main className="min-h-screen flex flex-col p-24 w-3/4">
+      <main className="min-h-screen flex flex-col p-2 md:p-24 w-3/4">
         <div className="p-8 text-center">
           <h1 className="text-3xl font-bold mb-4">Add a Transaction</h1>
           <p className="text-gray-600">
