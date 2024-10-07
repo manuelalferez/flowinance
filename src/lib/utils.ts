@@ -252,6 +252,20 @@ export async function getTransactionsFromSupabase(
   return data;
 }
 
+export async function getTransactionsFromId(
+  supabase: SupabaseClient<any, "public", any>, id:string
+): Promise<TransactionSupabase[] | undefined> {
+  const { data, error } = await supabase
+    .from(TRANSACTIONS_TABLE)
+    .select()
+    .eq("id", id);
+  if (error) {
+    console.log(`Error getting transactions for the id ${id}: `, error);
+    return;
+  }
+  return data;
+}
+
 export async function uploadTransactionsToSupabase(
   supabase: SupabaseClient<any, "public", any>,
   transactions: TransactionSupabase[]
@@ -292,6 +306,26 @@ export async function addTransactionToSupabase(
     .insert(transactionEncrypted);
   if (error) {
     console.log("Error uploading transaction: ", error);
+  } else {
+    revalidateTransactions();
+  }
+}
+
+export async function updateTransactionToSupabase(
+  supabase: SupabaseClient<any, "public", any>,
+  transaction: TransactionSupabase,
+  id: string
+) {
+  const transactionEncrypted = encryptTransactions(
+    transaction,
+    transaction.user_id
+  );
+  const { error } = await supabase
+    .from(TRANSACTIONS_TABLE)
+    .update(transactionEncrypted)
+    .eq("id",id)
+  if (error) {
+    console.log("Error updating transaction: ", error);
   } else {
     revalidateTransactions();
   }
