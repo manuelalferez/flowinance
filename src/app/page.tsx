@@ -20,7 +20,10 @@ export default async function Home() {
               <div className="space-x-4">
                 <Link
                   href="/signin"
-                  className={cn(buttonVariants({ size: "lg" }))}
+                  className={cn(
+                    buttonVariants({ size: "lg" }),
+                    "transition-transform duration-300 ease-in-out hover:text-white hover:shadow-lg transform hover:scale-105"
+                  )}
                 >
                   Get Started
                 </Link>
@@ -85,7 +88,7 @@ export default async function Home() {
               </p>
             </div>
             <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
-              <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+              <div className="relative overflow-hidden rounded-lg border bg-background p-2 hover:shadow-lg hover:bg-white transition-transform duration-300 ease-in-out transform hover:scale-105">
                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +108,7 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+              <div className="relative overflow-hidden rounded-lg border bg-background p-2 hover:shadow-lg hover:bg-white transition-transform duration-300 ease-in-out transform hover:scale-105">
                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +129,7 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+              <div className="relative overflow-hidden rounded-lg border bg-background p-2 hover:shadow-lg hover:bg-white transition-transform duration-300 ease-in-out transform hover:scale-105">
                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +165,7 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+              <div className="relative overflow-hidden rounded-lg border bg-background p-2 hover:shadow-lg hover:bg-white transition-transform duration-300 ease-in-out transform hover:scale-105">
                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +194,7 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+              <div className="relative overflow-hidden rounded-lg border bg-background p-2 hover:shadow-lg hover:bg-white transition-transform duration-300 ease-in-out transform hover:scale-105">
                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -222,7 +225,7 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+              <div className="relative overflow-hidden rounded-lg border bg-background p-2 hover:shadow-lg hover:bg-white transition-transform duration-300 ease-in-out transform hover:scale-105">
                 <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
