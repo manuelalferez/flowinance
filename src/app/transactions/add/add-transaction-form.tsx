@@ -84,7 +84,10 @@ export default function AddTransactionForm() {
           </TableHeader>
           <TableBody>
             <TableRow className="md:table-row flex flex-col md:flex-row">
-              <TableCell className="p-2 flex md:table-cell md:flex-none items-center gap-2" key="form-date">
+              <TableCell
+                className="p-2 flex md:table-cell md:flex-none items-center gap-2"
+                key="form-date"
+              >
                 <span className="font-bold md:hidden">Date:</span>
                 {date}
               </TableCell>
