@@ -3,10 +3,6 @@ description: Have a new idea/feature? Let us know...
 title: "[FEATURE] <description>"
 labels: ["enhancement", "feature", "hacktoberfest", "status: awaiting triage"]
 body:
-- type: markdown
-    attributes:
-      value: |
-        Before you get started, please take a moment to read the contributing guidelines: [Contributing Guide](https://github.com/manuelalferez/flowinance/blob/main/CONTRIBUTING.md).
   - type: textarea
     attributes:
       label: What?
@@ -26,3 +22,4 @@ body:
     validations:
       required: true
 
+Before you get started, please take a moment to read the contributing guidelines: [Contributing Guide](https://github.com/manuelalferez/flowinance/blob/main/CONTRIBUTING.md).
