@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Loading from "../loading";
 import { useSupabase } from "../supabase-provider";
 import { Card } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 
 export default function AuthUI() {
   const { supabase } = useSupabase();
@@ -17,6 +18,15 @@ export default function AuthUI() {
   }, []);
 
   if (loading) return <Loading />;
+
+  function setDemoEmailandPassword() {
+    document
+      .getElementById("email")
+      ?.setAttribute("value", process.env.NEXT_PUBLIC_DEMO_EMAIL!);
+    document
+      .getElementById("password")
+      ?.setAttribute("value", process.env.NEXT_PUBLIC_DEMO_PASSWORD!);
+  }
 
   return (
     <Card className="flex flex-col space-y-4 w-80 md:w-96 h-full p-8">
@@ -40,13 +50,10 @@ export default function AuthUI() {
       />
       <div className="text-sm flex flex-col text-muted-foreground">
         Would you like to give it a try? Feel free to use our demo account 😉
-        <p>
-          email: <code className="text-sm ">tiffs_purview0r@icloud.com</code>
-        </p>
-        <p>
-          password: <code className="text-sm ">qwerty</code>
-        </p>
       </div>
+      <Button variant={"default"} onClick={setDemoEmailandPassword}>
+        Use Demo Creds
+      </Button>
     </Card>
   );
 }
