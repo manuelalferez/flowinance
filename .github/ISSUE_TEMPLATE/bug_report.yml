@@ -6,7 +6,6 @@ body:
   - type: checkboxes
     id: duplicates
     attributes:
-      label: Duplicate Check
       options:
         - label: I have checked "open" AND "closed" issues and this is not a duplicate
           required: true
@@ -14,19 +13,14 @@ body:
     id: description
     attributes:
       label: What
-      description: A clear description of the bug you have found. Please include relevant information and resources (for example, the steps to reproduce the bug).
+      description: A clear description of the bug you have found. 
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
       label: Steps to Reproduce
-      description: |
-        Include any relevant details like:
-        
-        - What page you were on...
-        - What you were trying to do...
-        - What went wrong...
+      description: Provide a brief list of steps to reproduce the bug.
     validations:
       required: true
   - type: textarea
