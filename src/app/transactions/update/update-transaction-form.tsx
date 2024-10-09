@@ -112,9 +112,10 @@ export default function UpdateTransactionForm() {
             {!transactionId ? (
               <div className="flex flex-col items-center">
                 <p className="text-red-600 p-4  bg-red-50 rounded-md">
-                  ❎ Oops! We couldn't find the Transaction ID you entered. It
-                  may have been removed or doesn't exist. Please head over to
-                  the transactions page to explore your current transactions.
+                  ❎ Oops! We couldn&apos;t find the Transaction ID you entered.
+                  It may have been removed or doesn&apos;t exist. Please head
+                  over to the transactions page to explore your current
+                  transactions.
                 </p>
 
                 <Button
