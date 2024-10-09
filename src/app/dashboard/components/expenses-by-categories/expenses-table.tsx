@@ -66,7 +66,7 @@ export function ExpensesTable() {
                 <TableCell className="p-2" key={index}>
                   {item.name}
                 </TableCell>
-                <TableCell className="p-2 pl-8 text-right font-mono tabular-nums text-gray-700">
+                <TableCell className="p-2 pl-8 text-right font-mono tabular-nums text-gray-700 dark:text-gray-200">
                   {formatNumberWithTwoDecimals(item.value)}
                 </TableCell>
               </TableRow>

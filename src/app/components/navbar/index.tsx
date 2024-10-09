@@ -9,6 +9,7 @@ import {
 } from "../ui/navigation-menu";
 import { SignInButton } from "./sign-in-button";
 import { AccountButton } from "./account-button";
+import ThemeToggleButton from "./theme-toggle-button";
 import Image from "next/image";
 import logo from "@/images/logo.svg";
 
@@ -79,7 +80,8 @@ export function Narbar({ session }: any) {
             </NavigationMenuItem>
           )}
         </div>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="flex justify-end items-center space-x-4 m-[10px]" >
+          <ThemeToggleButton />
           {session ? <AccountButton /> : <SignInButton />}
         </NavigationMenuItem>
       </NavigationMenuList>
