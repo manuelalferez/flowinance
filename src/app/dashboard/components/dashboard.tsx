@@ -117,7 +117,7 @@ export default function Dashboard() {
         }}
       >
         <div className="flex justify-center md:justify-start w-full">
-          <h1 className="text-4xl font-semibold text-gray-800 mb-4">
+          <h1 className="text-4xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
             Dashboard
           </h1>
         </div>

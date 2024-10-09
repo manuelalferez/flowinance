@@ -103,7 +103,7 @@ export default function AddTransactionForm() {
               </TableCell>
               <TableCell className="p-2" key="form-category">
                 <select
-                  className="w-[180px] p-2 border rounded"
+                  className="w-[180px] p-2 border rounded dark:text-gray-800"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >

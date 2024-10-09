@@ -52,7 +52,7 @@ export function LastTransactions() {
           <TableBody key={index}>
             <TableRow key={index}>
               <TableCell
-                className="p-2 font-mono tabular-nums text-gray-700"
+                className="p-2 font-mono tabular-nums text-gray-700 dark:text-gray-200"
                 key={`${index}-date`}
               >
                 {item.date}
@@ -61,7 +61,7 @@ export function LastTransactions() {
                 {item.concept}
               </TableCell>
               <TableCell
-                className="p-2 text-right font-mono tabular-nums text-gray-700"
+                className="p-2 text-right font-mono tabular-nums text-gray-700  dark:text-gray-200"
                 key={`${index}-amount`}
               >
                 <span className="flex items-center justify-end">
