@@ -43,6 +43,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 We would be really happy if you decide to contribute. Please read our [`CONTRIBUTING.md`](https://github.com/manuelalferez/chatcus/blob/master/doc/CONTRIBUTING.md) guide before 😊
 
+## 💬 Have feedback or questions? Join the conversation!
+
+We encourage you to visit our [Flowinance Discussions](https://github.com/manuelalferez/flowinance/discussions) for general questions, feature suggestions, or to engage with the community. It's the best place to share ideas and collaborate!
+
 ## Ask me 🤙
 
 You can always contact me via [Telegram](https://t.me/manuelalferez) if you want to talk more about the project 😊
