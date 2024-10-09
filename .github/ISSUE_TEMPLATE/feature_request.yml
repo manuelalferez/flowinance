@@ -1,7 +1,7 @@
 name: 💡 Feature
 description: Have a new idea/feature? Let us know...
 title: "[FEATURE] <description>"
-labels: ["enhancement", "feature", "status: awaiting triage"]
+labels: ["enhancement", "feature", "hacktoberfest", "status: awaiting triage"]
 body:
   - type: textarea
     attributes:
