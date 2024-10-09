@@ -21,8 +21,9 @@ body:
     id: steps
     attributes:
       label: Steps to Reproduce
-      description: Include any relevant details like:
-      value: |
+      description: |
+        Include any relevant details like:
+        
         - What page you were on...
         - What you were trying to do...
         - What went wrong...
