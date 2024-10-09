@@ -5,8 +5,8 @@ labels: ["bug", "status: awaiting triage"]
 body:
   - type: checkboxes
     id: duplicates
-    label: Verify this issue hasn't been reported before
     attributes:
+      label: Verify this issue hasn't been reported before
       options:
         - label: I have checked "open" AND "closed" issues and this is not a duplicate
           required: true
@@ -14,7 +14,7 @@ body:
     id: description
     attributes:
       label: What
-      description: A clear description of the bug you have found. 
+      description: A clear description of the bug you have found.
     validations:
       required: true
   - type: textarea
