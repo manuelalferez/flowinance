@@ -92,7 +92,7 @@
 tr:hover .hoverable-cell {
   display: inline-block;
   justify-content: end;
-  width: 30px;
+  width: 20px;
 }
 
 .hoverable-cell-flex {

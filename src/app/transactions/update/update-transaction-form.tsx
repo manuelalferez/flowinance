@@ -22,7 +22,7 @@ import {
   getUserId,
   updateTransactionToSupabase,
 } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UpdateTransactionForm() {
@@ -34,6 +34,7 @@ export default function UpdateTransactionForm() {
   const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     async function getData() {
@@ -41,8 +42,13 @@ export default function UpdateTransactionForm() {
       if (!userId) {
         return;
       }
+      if (!transactionId) {
+        setLoading(false);
+        return;
+      }
+
       try {
-        const details = await getTransactionsFromId(supabase, transactionId!);
+        const details = await getTransactionsFromId(supabase, transactionId);
         if (!details) {
           toast({
             description:
@@ -60,7 +66,7 @@ export default function UpdateTransactionForm() {
       setLoading(false);
     }
     getData();
-  }, []);
+  }, [supabase, transactionId, toast]);
 
   const date = formatDateToString(new Date());
 
@@ -93,6 +99,7 @@ export default function UpdateTransactionForm() {
     toast({
       description: "🎉 Transaction Updated",
     });
+    router.push("/transactions");
   }
 
   return (
@@ -102,64 +109,87 @@ export default function UpdateTransactionForm() {
       ) : (
         <>
           <Card className="p-2">
-            <Table key="form-table">
-              <TableHeader>
-                <TableRow>
-                  {TABLE_HEADERS.map((header, index) => (
-                    <TableHead className="p-2 lg:pr-44 md:pr-28" key={index}>
-                      {header}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="p-2" key="form-date">
-                    {date}
-                  </TableCell>
-                  <TableCell className="p-2" key="form-concept">
-                    <Input
-                      onChange={(e) => setConcept(e.target.value)}
-                      value={concept}
-                      placeholder="Concept"
-                    />
-                  </TableCell>
-                  <TableCell className="p-2" key="form-amount">
-                    <Input
-                      onChange={(e) => handleAmountChange(e.target.value)}
-                      value={amount}
-                      placeholder="Amount"
-                    />
-                  </TableCell>
-                  <TableCell className="p-2" key="form-category">
-                    <select
-                      className="w-[180px] p-2 border rounded"
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                    >
-                      <option value="" disabled selected>
-                        Select category
-                      </option>
-                      {ALL_CATEGORIES.map((item, index) => (
-                        <option value={item} key={index}>
-                          {item}
-                        </option>
+            {!transactionId ? (
+              <div className="flex flex-col items-center">
+                <p className="text-red-600 p-4  bg-red-50 rounded-md">
+                  ❎ Oops! We couldn&apos;t find the Transaction ID you entered.
+                  It may have been removed or doesn&apos;t exist. Please head
+                  over to the transactions page to explore your current
+                  transactions.
+                </p>
+
+                <Button
+                  className="mt-4"
+                  onClick={() => (window.location.href = "/transactions")}
+                >
+                  Go to Transactions
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Table key="form-table">
+                  <TableHeader>
+                    <TableRow>
+                      {TABLE_HEADERS.map((header, index) => (
+                        <TableHead
+                          className="p-2 lg:pr-44 md:pr-28"
+                          key={index}
+                        >
+                          {header}
+                        </TableHead>
                       ))}
-                    </select>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="p-2" key="form-date">
+                        {date}
+                      </TableCell>
+                      <TableCell className="p-2" key="form-concept">
+                        <Input
+                          onChange={(e) => setConcept(e.target.value)}
+                          value={concept}
+                          placeholder="Concept"
+                        />
+                      </TableCell>
+                      <TableCell className="p-2" key="form-amount">
+                        <Input
+                          onChange={(e) => handleAmountChange(e.target.value)}
+                          value={amount}
+                          placeholder="Amount"
+                        />
+                      </TableCell>
+                      <TableCell className="p-2" key="form-category">
+                        <select
+                          className="w-[180px] p-2 border rounded"
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                        >
+                          <option value="" disabled selected>
+                            Select category
+                          </option>
+                          {ALL_CATEGORIES.map((item, index) => (
+                            <option value={item} key={index}>
+                              {item}
+                            </option>
+                          ))}
+                        </select>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+                <div className="flex justify-center mt-10">
+                  <Button
+                    onClick={updateTransaction}
+                    className="bg-emerald-200 text-black hover:text-white"
+                    disabled={!concept || !amount || !category}
+                  >
+                    Update transaction
+                  </Button>
+                </div>
+              </>
+            )}
           </Card>
-          <div className="flex justify-center mt-10">
-            <Button
-              onClick={updateTransaction}
-              className="bg-emerald-200 text-black hover:text-white"
-              disabled={!concept || !amount || !category}
-            >
-              Update transaction
-            </Button>
-          </div>
         </>
       )}
     </>
