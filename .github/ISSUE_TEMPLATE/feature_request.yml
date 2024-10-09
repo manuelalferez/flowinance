@@ -21,5 +21,3 @@ body:
       description: Describe your proposed solution and include any relevant information or resources (like examples from other projects).
     validations:
       required: true
-
-Before you get started, please take a moment to read the contributing guidelines: [Contributing Guide](https://github.com/manuelalferez/flowinance/blob/main/CONTRIBUTING.md).
