@@ -5,6 +5,7 @@ labels: ["bug", "status: awaiting triage"]
 body:
   - type: checkboxes
     id: duplicates
+    label: Verify this issue hasn't been reported before
     attributes:
       options:
         - label: I have checked "open" AND "closed" issues and this is not a duplicate
