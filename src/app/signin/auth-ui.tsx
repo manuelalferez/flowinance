@@ -52,7 +52,7 @@ export default function AuthUI() {
         Would you like to give it a try? Feel free to use our demo account 😉
       </div>
       <Button variant={"default"} onClick={setDemoEmailandPassword}>
-        Use Demo Creds
+        Access Demo Account 
       </Button>
     </Card>
   );
