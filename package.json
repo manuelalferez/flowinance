@@ -35,6 +35,7 @@
     "encoding": "^0.1.13",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "framer-motion": "^11.11.6",
     "lucide-react": "^0.263.1",
     "moment": "^2.29.4",
     "next": "^13.4.19",
