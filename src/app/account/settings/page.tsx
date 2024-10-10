@@ -3,6 +3,7 @@ import { UserInfo } from "./user-info";
 import { Card } from "@/app/components/ui/card";
 import SettingsConfig from "./config";
 import { DeleteAccount } from "./delete-account";
+import {ExportTransactions} from "./ExportTransactions"
 
 export default function Settings() {
   return (
@@ -15,6 +16,8 @@ export default function Settings() {
           <SettingsConfig />
           <Separator />
           <DeleteAccount />
+          <Separator />
+          <ExportTransactions/>
         </Card>
       </main>
     </div>
