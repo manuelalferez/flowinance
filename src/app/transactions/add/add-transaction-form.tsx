@@ -73,7 +73,7 @@ export default function AddTransactionForm() {
     <>
       <Card className="p-2">
         <Table key="form-table">
-          <TableHeader>
+          <TableHeader className="hidden xl:table-header-group">
             <TableRow>
               {TABLE_HEADERS.map((header, index) => (
                 <TableHead className="p-2 lg:pr-44 md:pr-28" key={index}>
@@ -83,27 +83,43 @@ export default function AddTransactionForm() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="p-2" key="form-date">
+            <TableRow className="xl:table-row flex flex-col xl:flex-row">
+              <TableCell
+                className="p-2 flex xl:table-cell xl:flex-none items-center gap-2"
+                key="form-date"
+              >
+                <span className="font-bold xl:hidden mr-9">Date:</span>
                 {date}
               </TableCell>
-              <TableCell className="p-2" key="form-concept">
+              <TableCell
+                className="p-2 flex xl:table-cell xl:flex-none items-center gap-2"
+                key="form-concept"
+              >
+                <span className="font-bold xl:hidden mr-2">Concept:</span>
                 <Input
                   onChange={(e) => setConcept(e.target.value)}
                   value={concept}
                   placeholder="Concept"
                 />
               </TableCell>
-              <TableCell className="p-2" key="form-amount">
+              <TableCell
+                className="p-2 flex xl:table-cell xl:flex-none items-center gap-2"
+                key="form-amount"
+              >
+                <span className="font-bold xl:hidden mr-3">Amount:</span>
                 <Input
                   onChange={(e) => handleAmountChange(e.target.value)}
                   value={amount}
                   placeholder="Amount"
                 />
               </TableCell>
-              <TableCell className="p-2" key="form-category">
+              <TableCell
+                className="p-2 flex xl:table-cell xl:flex-none items-center gap-2"
+                key="form-category"
+              >
+                <span className="font-bold xl:hidden mr-1">Category:</span>
                 <select
-                  className="w-[180px] p-2 border rounded"
+                  className="w-full xl:w-[180px] p-2 border rounded"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >

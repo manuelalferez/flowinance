@@ -1,5 +1,5 @@
 import { getSession } from "@/app/supabase-server";
-import AddTransactionForm from "./add-transaction-form";
+import UpdateTransactionForm from "./update-transaction-form";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
@@ -9,16 +9,16 @@ export default async function Page() {
   }
   return (
     <div className="flex justify-center">
-      <main className="min-h-screen flex flex-col p-2 md:p-24 w-3/4 lg:w-auto">
+      <main className="min-h-screen flex flex-col p-24 w-3/4">
         <div className="p-8 text-center">
-          <h1 className="text-3xl font-bold mb-4">Add a Transaction</h1>
+          <h1 className="text-3xl font-bold mb-4">Update Transaction</h1>
           <p className="text-gray-600">
-            Please fill in the required fields below and click Upload when you
+            Please fill in the required fields below and click Update when you
             are ready to proceed
           </p>
         </div>
 
-        <AddTransactionForm />
+        <UpdateTransactionForm />
       </main>
     </div>
   );

@@ -90,9 +90,14 @@
 }
 
 tr:hover .hoverable-cell {
-  display: block;
+  display: inline-block;
   justify-content: end;
   width: 20px;
+}
+
+.hoverable-cell-flex {
+  display: flex;
+  align-items: center;
 }
 
 .fill-available {

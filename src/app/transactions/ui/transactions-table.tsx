@@ -28,6 +28,7 @@ import {
 } from "@/app/components/ui/dialog";
 import { useSupabase } from "@/app/supabase-provider";
 import { categorySVGs } from "@/lib/categories";
+import Link from "next/link";
 
 export function TransactionsTable() {
   const { transactions } = useContext(AppContext);
@@ -86,10 +87,9 @@ export function TransactionsTable() {
                   {header.charAt(0).toUpperCase() + header.slice(1)}
                 </TableHead>
               ))}
-              <TableHead
-                className="p-2 w-2 pr-8"
-                key={`options-header`}
-              ></TableHead>
+              <TableHead key={`options-header`}>
+                <span className="w-20 p-2 pr-4"></span>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -150,30 +150,61 @@ export function TransactionsTable() {
                     {item.category}
                   </div>
                 </TableCell>
-                <TableCell
-                  className="p-2 w-2 cursor-pointer hidden hoverable-cell"
-                  key={`${index}-options`}
-                >
-                  <DialogTrigger
-                    className="p-0 flex justify-center items-center"
-                    onClick={() => targetTransactionToDelete(item.id!, index)}
+                <div className="hidden hoverable-cell-flex gap-2 pr-1">
+                  <TableCell
+                    className="p-2 hidden hoverable-cell"
+                    key={`${index}-update`}
                   >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 15 15"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                    <Link
+                      href={{
+                        pathname: "/transactions/update",
+                        query: { id: item.id! },
+                      }}
+                      passHref
                     >
-                      <path
-                        d="M5.5 1C5.22386 1 5 1.22386 5 1.5C5 1.77614 5.22386 2 5.5 2H9.5C9.77614 2 10 1.77614 10 1.5C10 1.22386 9.77614 1 9.5 1H5.5ZM3 3.5C3 3.22386 3.22386 3 3.5 3H5H10H11.5C11.7761 3 12 3.22386 12 3.5C12 3.77614 11.7761 4 11.5 4H11V12C11 12.5523 10.5523 13 10 13H5C4.44772 13 4 12.5523 4 12V4L3.5 4C3.22386 4 3 3.77614 3 3.5ZM5 4H10V12H5V4Z"
-                        fill="currentColor"
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                  </DialogTrigger>
-                </TableCell>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        className="stroke-current text-current cursor-pointer hover:text-gray-500 transition-colors duration-200 w-4 md:w-8" // Pointer cursor and hover effect
+                      >
+                        <path
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16zm9.5-13.5l4 4"
+                        />
+                      </svg>
+                    </Link>
+                  </TableCell>
+                  <TableCell
+                    className="p-2 w-2 hidden hoverable-cell"
+                    key={`${index}-options`}
+                  >
+                    <DialogTrigger
+                      className="p-0 flex justify-center items-center"
+                      onClick={() => targetTransactionToDelete(item.id!, index)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        className="stroke-current text-current cursor-pointer hover:text-gray-500 transition-colors duration-200 w-4 md:w-8" // Pointer cursor and hover effect
+                      >
+                        <path
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"
+                        />
+                      </svg>
+                    </DialogTrigger>
+                  </TableCell>
+                </div>
               </TableRow>
             ))}
           </TableBody>
