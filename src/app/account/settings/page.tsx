@@ -3,7 +3,7 @@ import { UserInfo } from "./user-info";
 import { Card } from "@/app/components/ui/card";
 import SettingsConfig from "./config";
 import { DeleteAccount } from "./delete-account";
-import {ExportTransactions} from "./ExportTransactions"
+import {ExportTransactions} from "./export-transactions"
 
 export default function Settings() {
   return (
