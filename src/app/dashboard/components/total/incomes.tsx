@@ -18,7 +18,7 @@ export function Incomes() {
   }
   const incomes = getIncomes();
   return (
-    <Card className="pr-6 w-1/3">
+    <Card className="w-1/3">
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg

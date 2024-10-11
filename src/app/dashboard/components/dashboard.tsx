@@ -129,7 +129,7 @@ export default function Dashboard() {
             <Filter />
             <DashboardRow className="justify-between flex-wrap md:flex-nowrap mt-4">
               <Balance />
-              <div className="flex gap-2 w-full md:w-2/3">
+              <div className="flex gap-0 sm:gap-1  w-full md:w-2/3">
                 <Expenses />
                 <Incomes />
                 <Savings />
@@ -164,9 +164,9 @@ export default function Dashboard() {
               <LastTransactions />
             </DashboardRow>
           </>
-        ) : (
+         ) : (
           <NoTransactions />
-        )}
+        )} 
       </AppContext.Provider>
     </div>
   );

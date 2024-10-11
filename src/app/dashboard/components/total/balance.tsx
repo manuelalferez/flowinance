@@ -29,7 +29,7 @@ export function Balance() {
   }
 
   return (
-    <Card className="pr-14 w-full md:w-1/2">
+    <Card className="w-full md:w-1/3">
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg
