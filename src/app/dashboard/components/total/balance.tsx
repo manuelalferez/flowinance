@@ -29,7 +29,7 @@ export function Balance() {
   }
 
   return (
-    <Card className="pr-14 w-full md:w-1/2">
+    <Card className="w-full md:w-1/3">
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg
@@ -49,13 +49,6 @@ export function Balance() {
           {currency}
         </CardTitle>
         <div className="flex flex-col w-fit bg-gray-50 p-2 rounded-md">
-          <CardDescription className="flex gap-1">
-            Savings:
-            <span className="font-mono tabular-nums text-sm flex gap-1">
-              {formatNumberWithTwoDecimals(getSavings(transactions))}
-              {currency}
-            </span>
-          </CardDescription>
           <CardDescription className="flex gap-1">
             Invested:
             <span className="font-mono tabular-nums text-sm flex gap-1">
