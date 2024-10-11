@@ -25,12 +25,12 @@ import ExpensesEvolutionChart from "./expenses/expenses-evolution-chart";
 import IncomesEvolutionChart from "./incomes/incomes-evolution-chart";
 import { DashboardRow } from "./ui/dashboard-row";
 import { LastTransactions } from "./last-transactions";
-import Loading from "@/app/loading";
 import { Filter } from "./filter";
 import { useToast } from "../../components/ui/use-toast";
 import NoTransactions from "./ui/no-transactions";
 import SummaryChart from "./total/summary";
 import { currencies } from "@/lib/constants";
+import { DashboardSkeleton } from "./ui/dashboard-loading";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -123,7 +123,7 @@ export default function Dashboard() {
           </h1>
         </div>
         {loading ? (
-          <Loading />
+           <DashboardSkeleton/>
         ) : transactions.length !== 0 ? (
           <>
             <Filter />
