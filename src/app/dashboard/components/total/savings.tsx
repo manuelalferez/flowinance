@@ -56,8 +56,8 @@ export function Savings() {
         </CardDescription>
         <CardTitle className="text-green-500 text-lg md:text-xl font-mono tabular-nums">
           {savings !== 0 && "+"}
-          {formatNumberWithTwoDecimals(savings)}
           {currency}
+          {formatNumberWithTwoDecimals(savings)}
         </CardTitle>
       </CardHeader>
     </Card>
