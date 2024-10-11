@@ -38,8 +38,8 @@ export function Expenses() {
         </CardDescription>
         <CardTitle className="text-red-500 text-lg md:text-xl font-mono tabular-nums">
           {expenses !== 0 && "-"}
-          {formatNumberWithTwoDecimals(expenses)}
           {currency}
+          {formatNumberWithTwoDecimals(expenses)}
         </CardTitle>
       </CardHeader>
     </Card>
