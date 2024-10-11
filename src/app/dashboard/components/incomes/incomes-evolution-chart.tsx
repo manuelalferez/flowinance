@@ -118,7 +118,7 @@ export default function IncomesEvolutionChart() {
               }}
             />
             <YAxis
-              tickFormatter={(number) => `${number}${currency}`}
+              tickFormatter={(number) => `${currency}${number}`}
               tickCount={6}
             />
             <Tooltip content={<CustomTooltip currency={currency} />} />
