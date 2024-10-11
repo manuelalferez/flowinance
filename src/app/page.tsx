@@ -5,7 +5,6 @@ import { buttonVariants } from "./components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from 'framer-motion'
 import { BarChart3, Brain, Cloud, Upload, UserCircle2, Shield } from 'lucide-react';
-import { useState } from "react";
 
 export default async function Home() {
   
