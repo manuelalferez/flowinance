@@ -3,9 +3,17 @@ import { UserInfo } from "./user-info";
 import { Card } from "@/app/components/ui/card";
 import SettingsConfig from "./config";
 import { DeleteAccount } from "./delete-account";
-import {ExportTransactions} from "./export-transactions"
+import { getSession } from "@/app/supabase-server";
+import { redirect } from "next/navigation";
+import {ExportTransactions} from "./export-transactions"  
 
-export default function Settings() {
+export default async function Settings() {
+  const session = await getSession();
+  if (!session) {
+    redirect("/signin");
+  }
+  const user = session.user;
+
   return (
     <div>
       <main className="min-h-screen flex flex-col p-2 md:p-24 items-center">
@@ -14,8 +22,12 @@ export default function Settings() {
           <UserInfo />
           <Separator />
           <SettingsConfig />
-          <Separator />
-          <DeleteAccount />
+          {user.email !== process.env.NEXT_PUBLIC_DEMO_EMAIL && (
+            <>
+              <Separator />
+              <DeleteAccount />
+            </>
+          )}
           <Separator />
           <ExportTransactions/>
         </Card>
