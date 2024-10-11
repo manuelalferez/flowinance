@@ -774,6 +774,22 @@ export function getDates(period: number): string[] {
   }
   return datesArray.map((date) => formatDateToString(date));
 }
+export function getFutureDates(period: number): string[] {
+  const datesArray = [];
+
+  // Startdatum auf heute setzen
+  const today = new Date();
+
+  // Schleife für die Anzahl der gewünschten Tage im Voraus
+  for (let i = 0; i < period; i++) {
+    // Neues Datum basierend auf dem aktuellen Datum und dem Schleifenindex
+    const nextDate = new Date(today);
+    nextDate.setDate(today.getDate() + i); // Zukünftige Daten
+    datesArray.push(nextDate);
+  }
+
+  return datesArray.map((date) => formatDateToString(date));
+}
 
 export function sumTransactionsByDate(data: any[]): any[] {
   let result: any[] = [];
@@ -801,6 +817,18 @@ export function getDatesAxisX(selec: number) {
   }
   return getDates(365);
 }
+
+export function getFutureDatesAxisX(selec: number) {
+  if (isWeekSelected(selec)) {
+    return getFutureDates(7); // Zukünftige Daten für eine Woche
+  } else if (isMonthSelected(selec)) {
+    return getFutureDates(30); // Zukünftige Daten für einen Monat
+  } else if (isLastThreeMonthsSelected(selec)) {
+    return getFutureDates(90); // Zukünftige Daten für drei Monate
+  }
+  return getFutureDates(365); // Zukünftige Daten für ein Jahr
+}
+
 
 function isWeekSelected(selec: number) {
   return selec === 3;

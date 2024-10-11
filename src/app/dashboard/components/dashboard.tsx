@@ -31,6 +31,7 @@ import { useToast } from "../../components/ui/use-toast";
 import NoTransactions from "./ui/no-transactions";
 import SummaryChart from "./total/summary";
 import { currencies } from "@/lib/constants";
+import ForecastChart from "@/app/dashboard/components/total/forecast";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -138,6 +139,7 @@ export default function Dashboard() {
 
             <DashboardRow className="justify-center flex-wrap">
               <SummaryChart />
+              <ForecastChart />
             </DashboardRow>
 
             <DashboardRow className="justify-center flex-wrap">
