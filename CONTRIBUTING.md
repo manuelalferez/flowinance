@@ -11,7 +11,7 @@ Please first discuss the change you wish to make [**creating an issue**](https:/
 - Install all necessary dependencies and confirm the app runs as expected.
 
 3. Commit Messages
-- Use concise and clear commit messages that describe the change:
+- Use concise and clear commit messages that describe the change.
 - Limit your subject line to 50 characters max and succinctly describe what changes the commit introduces.
 
 
