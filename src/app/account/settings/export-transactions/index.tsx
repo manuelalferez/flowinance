@@ -15,7 +15,7 @@ import { Transaction } from "@/app/types/global";
 function objectArrayToCsvString(
   array: any[],
   delimiter: string = ",",
-  headers: any[],
+  headers: any[]
 ) {
   const rows = array.map((obj) => [
     obj.date,
@@ -71,7 +71,7 @@ export function ExportTransactions() {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-
+    await new Promise((resolve) => setTimeout(resolve, 500));
     setIsLoading(false);
   }
   return (
@@ -81,15 +81,32 @@ export function ExportTransactions() {
         Export all your transactions into a .csv file
       </p>
       <br />
-      <Button variant={"success"} onClick={getAllTransactions}>
+      <Button
+        className="bg-emerald-700 hover:bg-emerald-600"
+        onClick={getAllTransactions}
+      >
         {!isLoading ? (
-          "Export all transactions"
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              className="mr-1"
+            >
+              <path
+                fill="currentColor"
+                d="M13 13.15V10q0-.425-.288-.712T12 9t-.712.288T11 10v3.15l-.9-.875Q9.825 12 9.413 12t-.713.3q-.275.275-.275.7t.275.7l2.6 2.6q.3.3.7.3t.7-.3l2.6-2.6q.275-.275.287-.687T15.3 12.3q-.275-.275-.687-.288t-.713.263zM6 22q-.825 0-1.412-.587T4 20V8.825q0-.4.15-.762t.425-.638l4.85-4.85q.275-.275.638-.425t.762-.15H18q.825 0 1.413.588T20 4v16q0 .825-.587 1.413T18 22zm0-2h12V4h-7.15L6 8.85zm0 0h12z"
+              />
+            </svg>
+            <span>Export all transactions</span>
+          </>
         ) : (
           <>
             <span className="mr-2">Downloading...</span>
             <svg
               aria-hidden="true"
-              className="inline w-full h-full mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-emerald-400"
+              className="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-emerald-400"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
