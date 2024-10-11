@@ -31,13 +31,56 @@
 
 ## Getting Started
 
-First, run the development server:
+Flowinance is running its database on Supabase. Supabase allows you to run a local instance, so you don’t have to worry about breaking the production database. First, we are going to configure Supabase locally, following the [documentation](https://supabase.com/docs/guides/local-development/cli/getting-started) that Supabase provides. In this example, we will do it using a Mac, but check their documentation for adapting it to your operating system.
 
-```bash
-npm run dev
-```
+1. Install the Supabase CLI: 
+    ```bash
+    brew install supabase/tap/supabase
+    ```
+2. The Supabase CLI uses Docker containers to manage the local development stack. [Install Docker](https://docs.docker.com/desktop/). 
+3. Run Docker. 
+4. Run Supabase locally:
+    ```bash
+    supabase start
+    ```
+5. Once all of the Supabase services are running, you'll see output containing your local Supabase credentials. Copy them into your `.env.local` file: 
+    ```bash
+    Started supabase local development setup.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+            API URL: http://localhost:54321
+            DB URL: postgresql://postgres:postgres@localhost:54322/postgres
+        Studio URL: http://localhost:54323
+        Inbucket URL: http://localhost:54324
+            anon key: eyJh......
+    service_role key: eyJh......
+    ```
+6. You can check Supabase studio at http://localhost:54323
+    <p align="center">
+    <img src="https://supabase.com/docs/img/guides/cli/local-studio.png" alt="Supabase Local Studio" width="500">
+    </p>
+
+    When you are finished working on your Supabase project, you can stop the stack:
+
+    ```bash
+    supabase stop
+    ```
+
+7. Install dependencies: 
+   ```bash
+   npm i
+   ```
+8. Flowinance uses [Prisma](https://www.prisma.io/) for handling the types and migrations of the database. If this is the first time you are setting up the project, generate the tables for your Supabase local instance: 
+    ```bash
+    npx prisma migrate dev --name init
+    ````
+   > You may get an error `Environment variable not found: DATABASE_URL`. To fix it, run:
+      ```bash
+      export DATABASE_URL="postgresql://postgres:postgres@localhost:54322/postgres"
+      ```
+9. That's it! 🎉 Run Flowinance's development server and open [http://localhost:3000](http://localhost:3000):
+    ```bash
+    npm run dev
+    ```
 
 ## Contributing
 

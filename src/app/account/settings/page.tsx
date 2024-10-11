@@ -5,6 +5,7 @@ import SettingsConfig from "./config";
 import { DeleteAccount } from "./delete-account";
 import { getSession } from "@/app/supabase-server";
 import { redirect } from "next/navigation";
+import {ExportTransactions} from "./export-transactions"  
 
 export default async function Settings() {
   const session = await getSession();
@@ -27,6 +28,8 @@ export default async function Settings() {
               <DeleteAccount />
             </>
           )}
+          <Separator />
+          <ExportTransactions/>
         </Card>
       </main>
     </div>
