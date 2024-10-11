@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { buttonVariants } from "./components/ui/button";
 import { cn } from "@/lib/utils";
+import DemoButton from "./signin/demo";
 
 export default async function Home() {
   return (
@@ -17,7 +18,7 @@ export default async function Home() {
                 Managing your money is now easier than ever. Visualize your
                 budget in a quick and easy way.
               </p>
-              <div className="space-x-4">
+              <div className="space-x-4 flex items-center">
                 <Link
                   href="/signin"
                   className={cn(
@@ -27,6 +28,7 @@ export default async function Home() {
                 >
                   Get Started
                 </Link>
+                <DemoButton />
               </div>
             </div>
           </section>
