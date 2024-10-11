@@ -1,15 +1,14 @@
 # 📊 Flowinance: Track Your Finances, Focus on What Matters
 
-**Flowinance** is a robust financial management web application designed to make managing your finances seamless and effortless. Whether you're tracking expenses, uploading transactions, or working with multiple currencies, Flowinance is your one-stop solution for managing your financial health.
+**Flowinance** is a robust financial management web application designed to make managing your finances seamless and effortless. 
+**Managing your money just got easier!** Visualize your budget quickly and easily with Flowinance.
 
 
 ## Table of Contents
 
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
 - [Contributing](#contributing)
-- [Community](#community)
 - [License](#license)
 
 <br>
@@ -27,20 +26,19 @@ Manage all your financial activities in one dashboard. Track expenses, categoriz
 ### 2. **AI-Powered Transaction Upload and Categorization**  
 <div align="center">
    <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%208_Xna5E6_TA.png?updatedAt=1699611329296" alt="Transaction Categorization" width="500"/>
-</div>
-Easily upload your financial transactions, and let Flowinance's AI categorize them for you, saving you time and reducing manual effort.
+</div>Easily upload your transactions and let AI handle the categorization with just a few clicks.
 
 ### 3. **Visual Transaction Insights**  
 <div align="center">
    <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%2010_Vk1VcIZ_A.png?updatedAt=1699611329310" alt="Transaction Visualization" width="500"/>
 </div>
-Visualize your spending patterns and financial data with intuitive charts, giving you a clear picture of your financial health.
+Keep track of all your transactions at a glance.
 
 ### 4. **Multi-Currency Support**  
 <div align="center">
    <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%209_-UJANJ6Ik.png?updatedAt=1699611329268" alt="Multi-Currency Support" width="500"/>
 </div>
-Track and manage expenses in multiple currencies, ideal for international users or frequent travelers.
+Work seamlessly with various global currencies.
 
 <br>
 
@@ -51,8 +49,10 @@ Track and manage expenses in multiple currencies, ideal for international users 
 Ensure you have the following tools installed before getting started:
 - **Node.js** (v14 or higher)
 - **NPM** (v6 or higher)
+- **Supabase CLI**
+- **Docker** (for Supabase local development)
 
-### Installation
+### Installation and Setup
 
 1. Clone the repository:
    ```bash
@@ -66,29 +66,58 @@ Ensure you have the following tools installed before getting started:
 npm install
 ```
 
-3. Run the development server:
+### Supabase setup
+Flowinance is running its database on Supabase. Supabase allows you to run a local instance, so you don’t have to worry about breaking the production database. First, we are going to configure Supabase locally, following the [documentation](https://supabase.com/docs/guides/local-development/cli/getting-started) that Supabase provides. In this example, we will do it using a Mac, but check their documentation for adapting it to your operating system.
 
-```bash
-npm run dev
-```
+1. Install the Supabase CLI: 
+    ```bash
+    brew install supabase/tap/supabase
+    ```
+2. The Supabase CLI uses Docker containers to manage the local development stack. [Install Docker](https://docs.docker.com/desktop/). 
+3. Run Docker. 
+4. Run Supabase locally:
+    ```bash
+    supabase start
+    ```
+5. Once all of the Supabase services are running, you'll see output containing your local Supabase credentials. Copy them into your `.env.local` file: 
+    ```bash
+    Started supabase local development setup.
 
-4. Open http://localhost:3000 to view the app in your browser.
+            API URL: http://localhost:54321
+            DB URL: postgresql://postgres:postgres@localhost:54322/postgres
+        Studio URL: http://localhost:54323
+        Inbucket URL: http://localhost:54324
+            anon key: eyJh......
+    service_role key: eyJh......
+    ```
+6. You can check Supabase studio at http://localhost:54323
+    <p align="center">
+    <img src="https://supabase.com/docs/img/guides/cli/local-studio.png" alt="Supabase Local Studio" width="500">
+    </p>
 
+    When you are finished working on your Supabase project, you can stop the stack:
+
+    ```bash
+    supabase stop
+    ```
 <br>
 
-## Project Structure
-The project follows a modular and scalable structure. Here’s a brief overview of the key directories:
+### Database setup
+Flowinance uses [Prisma](https://www.prisma.io/) for handling the types and migrations of the database. If this is the first time you are setting up the project, generate the tables for your Supabase local instance: 
+    ```bash
+    npx prisma migrate dev --name init
+    ````
 
-```bash
-flowinance/
-│
-├── /components      # Reusable UI components (buttons, forms, etc.)
-├── /pages           # Next.js pages (routes)
-├── /public          # Static assets like images and fonts
-├── /styles          # Global styles and Tailwind configuration
-├── /utils           # Utility functions for handling various tasks
-└── README.md        # Project documentation
-```
+   > You may get an error `Environment variable not found: DATABASE_URL`. To fix it, run:
+      ```bash
+      export DATABASE_URL="postgresql://postgres:postgres@localhost:54322/postgres"
+      ```
+
+That's it! 🎉 Run Flowinance's development server and open [http://localhost:3000](http://localhost:3000):
+    ```bash
+    npm run dev
+    ```
+
 
 ### Key Technologies
 - **Next.js**: For server-side rendering and creating a responsive UI.
@@ -97,42 +126,113 @@ flowinance/
 
 
 ## Contributing
-We would be really happy if you decide to contribute. Please read our [`CONTRIBUTING.md`](https://github.com/manuelalferez/flowinance/blob/main/CONTRIBUTING.md) guide before you get started😊. To help in contributing, you can follow this simple guidelines:
-
-### 1. Fork the repository.
-
-### 2. Clone your fork
-```bash
-git clone https://github.com/[your-github-username]/flowinance.git
-```
-
-### 3. Navigate to the directory
-``` bash
-cd flowinance
-```
-### 4. Create a new branch for your feature/bugfix:
-```bash
-git checkout -b your-branch-name
-```
-
-### 5. Stage and Commit your changes:
-```bash
-git add .
-```
-
-```bash
-git commit -m "Add your message here"
-```
-
-### 6. Push your changes to GitHub:
-```bash
-git push origin your-branch-name
-```
-
-### 7. Create a pull request and describe the changes.
- Please refer to the [pull request format](https://github.com/manuelalferez/flowinance/blob/main/README.md)
-
+We would be really happy if you decide to contribute. Please read our [`CONTRIBUTING.md`](https://github.com/manuelalferez/flowinance/blob/main/CONTRIBUTING.md) guide before to get you started 😊. 
 <br>
+
+## 💬 Have feedback or questions? Join the conversation!
+
+We encourage you to visit our [Flowinance Discussions](https://github.com/manuelalferez/flowinance/discussions) for general questions, feature suggestions, or to engage with the community. It's the best place to share ideas and collaborate!
+
+## Ask me 🤙
+
+You can always contact me via [Telegram](https://t.me/manuelalferez) if you want to talk more about the project 😊
+
+## License 
+
+[GNU General Public License v3.0](https://github.com/manuelalferez/flowinance/blob/master/LICENSE.md)
+
+
+
+
+
+
+# Flowinance: Track Your Finances, Focus on What Matters
+
+**Managing your money just got easier!** Visualize your budget quickly and easily with Flowinance.
+
+## Features
+
+### 1. **All-in-One Finance Management**  
+   <div align="center">
+       <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%207_QWIwA4HdR.png?updatedAt=1699611329205" alt="Dashboard Overview" width="500"/>
+       <p>Get everything you need to manage your finances in one place.</p>
+   </div>
+
+### 2. **AI-Powered Transaction Upload and Categorization ✨**  
+   <div align="center">
+       <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%208_Xna5E6_TA.png?updatedAt=1699611329296" alt="Transaction Categorization" width="500"/>
+       <p>Upload your transactions and let AI handle the categorization with just a few clicks!</p>
+   </div>
+
+### 3. **Visualize Your Transactions Effortlessly**  
+   <div align="center">
+       <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%2010_Vk1VcIZ_A.png?updatedAt=1699611329310" alt="Transaction Visualization" width="500"/>
+       <p>Keep track of all your transactions at a glance.</p>
+   </div>
+
+### 4. **Multi-Currency Support**  
+   <div align="center">
+       <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%209_-UJANJ6Ik.png?updatedAt=1699611329268" alt="Multi-Currency Support" width="500"/>
+       <p>Work seamlessly with various global currencies.</p>
+   </div>
+
+
+## Getting Started
+
+Flowinance is running its database on Supabase. Supabase allows you to run a local instance, so you don’t have to worry about breaking the production database. First, we are going to configure Supabase locally, following the [documentation](https://supabase.com/docs/guides/local-development/cli/getting-started) that Supabase provides. In this example, we will do it using a Mac, but check their documentation for adapting it to your operating system.
+
+1. Install the Supabase CLI: 
+    ```bash
+    brew install supabase/tap/supabase
+    ```
+2. The Supabase CLI uses Docker containers to manage the local development stack. [Install Docker](https://docs.docker.com/desktop/). 
+3. Run Docker. 
+4. Run Supabase locally:
+    ```bash
+    supabase start
+    ```
+5. Once all of the Supabase services are running, you'll see output containing your local Supabase credentials. Copy them into your `.env.local` file: 
+    ```bash
+    Started supabase local development setup.
+
+            API URL: http://localhost:54321
+            DB URL: postgresql://postgres:postgres@localhost:54322/postgres
+        Studio URL: http://localhost:54323
+        Inbucket URL: http://localhost:54324
+            anon key: eyJh......
+    service_role key: eyJh......
+    ```
+6. You can check Supabase studio at http://localhost:54323
+    <p align="center">
+    <img src="https://supabase.com/docs/img/guides/cli/local-studio.png" alt="Supabase Local Studio" width="500">
+    </p>
+
+    When you are finished working on your Supabase project, you can stop the stack:
+
+    ```bash
+    supabase stop
+    ```
+
+7. Install dependencies: 
+   ```bash
+   npm i
+   ```
+8. Flowinance uses [Prisma](https://www.prisma.io/) for handling the types and migrations of the database. If this is the first time you are setting up the project, generate the tables for your Supabase local instance: 
+    ```bash
+    npx prisma migrate dev --name init
+    ````
+   > You may get an error `Environment variable not found: DATABASE_URL`. To fix it, run:
+      ```bash
+      export DATABASE_URL="postgresql://postgres:postgres@localhost:54322/postgres"
+      ```
+9. That's it! 🎉 Run Flowinance's development server and open [http://localhost:3000](http://localhost:3000):
+    ```bash
+    npm run dev
+    ```
+
+## Contributing
+
+We would be really happy if you decide to contribute. Please read our [`CONTRIBUTING.md`](https://github.com/manuelalferez/flowinance/blob/main/CONTRIBUTING.md) guide before 😊
 
 ## 💬 Have feedback or questions? Join the conversation!
 
