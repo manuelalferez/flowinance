@@ -4,6 +4,7 @@ import { Card } from "@/app/components/ui/card";
 import SettingsConfig from "./config";
 import { DeleteAccount } from "./delete-account";
 import { getSession } from "@/app/supabase-server";
+import { redirect } from "next/navigation";
 
 export default async function Settings() {
   const session = await getSession();
