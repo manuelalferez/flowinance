@@ -17,7 +17,6 @@ export default async function Settings() {
           <UserInfo />
           <Separator />
           <SettingsConfig />
-          {/* if user email matches the env email then prevent it from delete */}
           {user.email !== process.env.NEXT_PUBLIC_DEMO_EMAIL && (
             <>
               <Separator />
