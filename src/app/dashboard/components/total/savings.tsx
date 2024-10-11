@@ -11,10 +11,10 @@ import {
 } from "../../../components/ui/card";
 
 export function Savings() {
-  const { filteredTransactions, currency } = useContext(AppContext);
+  const { transactions, currency } = useContext(AppContext);
 
   function getSavingsRounded() {
-    const savings = getSavings(filteredTransactions!);
+    const savings = getSavings(transactions);
     return roundToTwoDecimal(savings);
   }
 

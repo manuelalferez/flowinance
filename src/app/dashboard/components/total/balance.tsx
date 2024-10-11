@@ -50,13 +50,6 @@ export function Balance() {
         </CardTitle>
         <div className="flex flex-col w-fit bg-gray-50 p-2 rounded-md">
           <CardDescription className="flex gap-1">
-            Savings:
-            <span className="font-mono tabular-nums text-sm flex gap-1">
-              {formatNumberWithTwoDecimals(getSavings(transactions))}
-              {currency}
-            </span>
-          </CardDescription>
-          <CardDescription className="flex gap-1">
             Invested:
             <span className="font-mono tabular-nums text-sm flex gap-1">
               {formatNumberWithTwoDecimals(getInvested(transactions))}
