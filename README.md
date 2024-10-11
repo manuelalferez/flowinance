@@ -73,7 +73,10 @@ Flowinance is running its database on Supabase. Supabase allows you to run a loc
     ```bash
     npx prisma migrate dev --name init
     ````
-
+   > You may get an error `Environment variable not found: DATABASE_URL`. To fix it, run:
+      ```bash
+      export DATABASE_URL="postgresql://postgres:postgres@localhost:54322/postgres"
+      ```
 9. That's it! 🎉 Run Flowinance's development server and open [http://localhost:3000](http://localhost:3000):
     ```bash
     npm run dev
