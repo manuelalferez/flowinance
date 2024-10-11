@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Balance } from "./total/balance";
 import { Expenses } from "./total/expenses";
 import { Incomes } from "./total/incomes";
+import { Savings } from "./total/savings";
 import ExpensesChart from "./expenses/expenses-chart";
 import IncomesChart from "./incomes/incomes-chart";
 import { IncomesPieChart } from "./incomes-by-categories/incomes-piechart";
@@ -128,9 +129,10 @@ export default function Dashboard() {
             <Filter />
             <DashboardRow className="justify-between flex-wrap md:flex-nowrap mt-4">
               <Balance />
-              <div className="flex gap-2 w-full md:w-1/2">
+              <div className="flex gap-0 sm:gap-1  w-full md:w-2/3">
                 <Expenses />
                 <Incomes />
+                <Savings />
               </div>
             </DashboardRow>
 
@@ -162,9 +164,9 @@ export default function Dashboard() {
               <LastTransactions />
             </DashboardRow>
           </>
-        ) : (
+         ) : (
           <NoTransactions />
-        )}
+        )} 
       </AppContext.Provider>
     </div>
   );
