@@ -21,7 +21,7 @@ export function Expenses() {
   const expenses = getExpenses();
 
   return (
-    <Card className="w-1/2">
+    <Card className="w-1/3">
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg
