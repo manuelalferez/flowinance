@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import SupabaseProvider from "./supabase-provider";
-import { Narbar } from "./components/navbar";
+import { Navbar } from "./components/navbar";
 import { getSession, getSupabase } from "./supabase-server";
 import { Toaster } from "./components/ui/toaster";
 import { userHasBeenDeleted } from "@/lib/utils";
@@ -71,7 +71,7 @@ export default async function RootLayout({
           <SupabaseProvider>
             <body>
               <div>
-                <Narbar session={session} />
+                <Navbar session={session} />
                 <AccountDeleted />
                 <Toaster />
               </div>
@@ -89,7 +89,7 @@ export default async function RootLayout({
       <SupabaseProvider>
         <body className="overflow-x-hidden">
           <div>
-            <Narbar session={session} />
+            <Navbar session={session} />
             <div>{children}</div>
             <Toaster />
           </div>
