@@ -86,6 +86,11 @@ Flowinance is running its database on Supabase. Supabase allows you to run a loc
 
 We would be really happy if you decide to contribute. Please read our [`CONTRIBUTING.md`](https://github.com/manuelalferez/flowinance/blob/main/CONTRIBUTING.md) guide before 😊
 
+### Top Contributors
+<a href="https://github.com/manuelalferez/flowinance/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=manuelalferez/flowinance" />
+</a>
+
 ## 💬 Have feedback or questions? Join the conversation!
 
 We encourage you to visit our [Flowinance Discussions](https://github.com/manuelalferez/flowinance/discussions) for general questions, feature suggestions, or to engage with the community. It's the best place to share ideas and collaborate!
