@@ -7,10 +7,6 @@ import { getSession } from "@/app/supabase-server";
 
 export default async function Settings() {
   const session = await getSession();
-  if (!session) {
-    return <div>Not logged in</div>;
-  }
-  // get user details
   const user = session.user;
 
   return (
