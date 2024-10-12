@@ -829,6 +829,16 @@ export function getFutureDatesAxisX(selec: number) {
   return getFutureDates(365); // Zukünftige Daten für ein Jahr
 }
 
+export function getDateRange(selec: number) {
+  if (isWeekSelected(selec)) {
+    return 7; // one week
+  } else if (isMonthSelected(selec)) {
+    return 30; // one month
+  } else if (isLastThreeMonthsSelected(selec)) {
+    return 90; // three months
+  }
+  return 365; // a year
+}
 
 function isWeekSelected(selec: number) {
   return selec === 3;

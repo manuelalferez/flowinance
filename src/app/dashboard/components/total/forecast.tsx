@@ -2,13 +2,12 @@ import { EXPENSES_CATEGORIES, INCOMES_CATEGORIES } from "@/lib/categories";
 import { AppContext } from "@/lib/context";
 import {
     formatDateToChartDate,
-    getDatesAxisX,
     getFutureDatesAxisX,
     getRangeAxisX,
-    parseDate,
     parseDateToISO,
     roundToTwoDecimal,
     sortTransactions,
+    getDateRange, // Neue Funktion importiert
 } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -24,6 +23,7 @@ import {
 import { DashboardNoDataCard } from "../ui/dashboard-no-data-card";
 import { DashboardCard } from "../ui/dashboard-card";
 import { SummaryTooltip } from "../ui/graph-utils";
+import { getTotalExpenses, getTotalIncomes } from "@/lib/calculations";
 
 interface ChartData {
     name: string;
@@ -31,15 +31,12 @@ interface ChartData {
     income: number;
 }
 
-function calculateFutureTrend(lastValue: number, futureDays: number, growthFactor: number): number[] {
+function calculateFutureTrend(lastValue: number, futureDays: number, avg: number): number[] {
     const futureValues: number[] = [];
-
-    // Setze den ersten zukünftigen Wert als den letzten bekannten Wert
     futureValues.push(lastValue);
 
-    // Berechnung der zukünftigen Werte mit dem Wachstumsfaktor
     for (let i = 1; i < futureDays; i++) {
-        const nextValue = roundToTwoDecimal(futureValues[i - 1] + growthFactor);
+        const nextValue = roundToTwoDecimal(futureValues[i - 1] + avg);
         futureValues.push(nextValue);
     }
 
@@ -51,43 +48,42 @@ export default function SummaryChart() {
     const [data, setData] = useState<ChartData[]>([]);
 
     useEffect(() => {
+        console.log("Selected value updated:", selected); // Log the selected value
+
+
+        // Filter und Sortierung von Ausgaben und Einnahmen
         const expenses = filteredTransactions!.filter((transaction) =>
             EXPENSES_CATEGORIES.includes(transaction.category)
         );
-        const shortedExpenses = sortTransactions(expenses);
+        const sortedExpenses = sortTransactions(expenses);
 
         const incomes = filteredTransactions!.filter((transaction) =>
             INCOMES_CATEGORIES.includes(transaction.category)
         );
-        const shortedIncomes = sortTransactions(incomes);
+        const sortedIncomes = sortTransactions(incomes);
 
-        // Den Gesamtwert der Ausgaben und Einnahmen finden
-        const totalExpenseValue = shortedExpenses.length > 0
-            ? roundToTwoDecimal(shortedExpenses.reduce((sum, trans) => sum + trans.amount, 0))
+        // Gesamtbeträge berechnen
+        const totalExpenseValue = roundToTwoDecimal(getTotalExpenses(filteredTransactions!));
+        const totalIncomeValue = roundToTwoDecimal(getTotalIncomes(filteredTransactions!));
+
+        // Zeitraum der Transaktionen berechnen
+        const dateRangeInDays = getDateRange(selected!);
+
+        // Durchschnitt berechnen (Gesamtbetrag durch die Anzahl der Tage im Zeitraum)
+        const avgExpense = dateRangeInDays > 0
+            ? roundToTwoDecimal(totalExpenseValue / dateRangeInDays)
             : 0;
 
-        const totalIncomeValue = shortedIncomes.length > 0
-            ? roundToTwoDecimal(shortedIncomes.reduce((sum, trans) => sum + trans.amount, 0))
+        const avgIncome = dateRangeInDays > 0
+            ? roundToTwoDecimal(totalIncomeValue / dateRangeInDays)
             : 0;
 
-        // Durchschnitt berechnen
-        const averageExpense =
-            shortedExpenses.length > 0
-                ? roundToTwoDecimal(
-                    shortedExpenses.reduce((sum, trans) => sum + trans.amount, 0) /
-                    shortedExpenses.length
-                )
-                : 0;
+        // Logge die berechneten Durchschnittswerte aus
+        console.log("Avg Expense per day:", avgExpense);
+        console.log("Avg Income per day:", avgIncome);
+        console.log("selcted",selected)
 
-        const averageIncome =
-            shortedIncomes.length > 0
-                ? roundToTwoDecimal(
-                    shortedIncomes.reduce((sum, trans) => sum + trans.amount, 0) /
-                    shortedIncomes.length
-                )
-                : 0;
-
-        // zukünftige Tage berechnen basierend auf 'selected'
+        // Berechnung der zukünftigen Tage basierend auf 'selected'
         const datesAxisX = getFutureDatesAxisX(selected!);
 
         // Kombinierte Daten vorbereiten
@@ -97,19 +93,18 @@ export default function SummaryChart() {
             income: 0,
         }));
 
-        // Berechnung der zukünftigen Ausgaben und Einnahmen
-        const futureExpenses = calculateFutureTrend(totalExpenseValue, datesAxisX.length, averageExpense);
-        const futureIncomes = calculateFutureTrend(totalIncomeValue, datesAxisX.length, averageIncome);
+        // Zukünftige Trends berechnen
+        const futureExpenses = calculateFutureTrend(totalExpenseValue, datesAxisX.length, avgExpense);
+        const futureIncomes = calculateFutureTrend(totalIncomeValue, datesAxisX.length, avgIncome);
 
-        // Die berechneten zukünftigen Ausgaben und Einnahmen in die combinedData einfügen
+        // Berechnete Werte in die kombinierten Daten einfügen
         combinedData.forEach((item, index) => {
-            item.expense = futureExpenses[index] || 0; // Wenn der Index nicht existiert, 0 setzen
-            item.income = futureIncomes[index] || 0;   // Wenn der Index nicht existiert, 0 setzen
+            item.expense = futureExpenses[index] || 0;
+            item.income = futureIncomes[index] || 0;
         });
 
         setData(combinedData);
     }, [filteredTransactions, selected]);
-
 
     const range = getRangeAxisX(selected!);
 
@@ -118,7 +113,7 @@ export default function SummaryChart() {
             {data.length !== 0 ? (
                 <DashboardCard
                     title="Forecast"
-                    description="Visualize the forceast of your expenses and incomes"
+                    description="Visualize the forecast of your expenses and incomes"
                 >
                     <ResponsiveContainer width="100%" height={400}>
                         <LineChart
@@ -150,18 +145,26 @@ export default function SummaryChart() {
                             />
                             <Legend />
                             <Tooltip content={<SummaryTooltip currency={currency} />} />
+
+                            {/* Gestrichelte Linie für Ausgaben */}
                             <Line
                                 type="monotone"
                                 dataKey="expense"
+                                name="futureExpenses"
                                 strokeWidth={2}
                                 stroke="#3066BE"
+                                strokeDasharray="5 5"
                                 dot={false}
                             />
+
+                            {/* Gestrichelte Linie für Einnahmen */}
                             <Line
                                 type="monotone"
                                 dataKey="income"
+                                name="futureIncomes"
                                 strokeWidth={2}
                                 stroke="#047857"
+                                strokeDasharray="5 5"
                                 dot={false}
                             />
                         </LineChart>
