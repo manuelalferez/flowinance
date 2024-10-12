@@ -12,7 +12,7 @@ import { AccountButton } from "./account-button";
 import Image from "next/image";
 import logo from "@/images/logo.svg";
 
-export function Narbar({ session }: any) {
+export function navbar({ session }: any) {
   return (
     <NavigationMenu className="p-4 overflow-x-hidden">
       <NavigationMenuList className="flex justify-around items-center w-screen">
