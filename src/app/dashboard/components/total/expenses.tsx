@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 
-export function Expenses() {
+export function Expenses({ className }: { className?: string }) {
   const { filteredTransactions, currency } = useContext(AppContext);
 
   function getExpenses() {
@@ -21,7 +21,7 @@ export function Expenses() {
   const expenses = getExpenses();
 
   return (
-    <Card className="w-1/3">
+    <Card className={`lg:w-1/3 ${className}`}>
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg

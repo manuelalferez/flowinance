@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 
-export function Savings() {
+export function Savings({ className }: { className?: string }) {
   const { transactions, currency } = useContext(AppContext);
 
   function getSavingsRounded() {
@@ -21,7 +21,7 @@ export function Savings() {
   const savings = getSavingsRounded();
 
   return (
-    <Card className="w-1/3">
+    <Card className={`w-1/3 ${className}`}>
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg

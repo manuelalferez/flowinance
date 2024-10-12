@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 
-export function Incomes() {
+export function Incomes({ className }: { className?: string }) {
   const { filteredTransactions, currency } = useContext(AppContext);
 
   function getIncomes() {
@@ -18,7 +18,7 @@ export function Incomes() {
   }
   const incomes = getIncomes();
   return (
-    <Card className="w-1/3">
+    <Card className={`lg:w-1/3 ${className}`}>
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg
