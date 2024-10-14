@@ -13,7 +13,7 @@ export default async function SignIn() {
     }
   }
   return (
-    <div className="min-h-screen flex flex-col items-center mt-16 md:mt-24 p-2">
+    <div className="min-h-screen flex flex-col items-center mt-4 p-2">
       <h1 className="text-4xl font-semibold text-gray-800 mb-4 flex items-center gap-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -19,7 +19,7 @@ export default function AuthUI() {
   if (loading) return <Loading />;
 
   return (
-    <Card className="flex flex-col space-y-4 w-80 md:w-96 h-full p-8">
+    <Card className="flex flex-col space-y-2 w-80 md:w-96 h-full md:px-8 px-6 py-6">
       <Auth
         supabaseClient={supabase}
         providers={[]}
@@ -38,15 +38,6 @@ export default function AuthUI() {
         }}
         theme="light"
       />
-      <div className="text-sm flex flex-col text-muted-foreground">
-        Would you like to give it a try? Feel free to use our demo account 😉
-        <p>
-          email: <code className="text-sm ">tiffs_purview0r@icloud.com</code>
-        </p>
-        <p>
-          password: <code className="text-sm ">qwerty</code>
-        </p>
-      </div>
     </Card>
   );
 }

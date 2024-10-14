@@ -14,11 +14,12 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
+import { useMemo } from "react";
 
 export function Balance() {
   const { transactions, currency } = useContext(AppContext);
 
-  function getBalance() {
+  const balance = useMemo(() => {
     const expenses = getTotalExpenses(transactions);
     const incomes = getTotalIncomes(transactions);
     const special = getInvested(transactions) + getSavings(transactions);
@@ -26,10 +27,10 @@ export function Balance() {
     const balance = incomes - expenses - special + uncategorized;
 
     return roundToTwoDecimal(balance);
-  }
+  }, [transactions]);
 
   return (
-    <Card className="pr-14 w-full md:w-1/2">
+    <Card className="w-full md:w-1/3">
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg
@@ -45,22 +46,28 @@ export function Balance() {
           Current balance
         </CardDescription>
         <CardTitle className="font-mono tabular-nums text-2xl md:text-3xl">
-          {formatNumberWithTwoDecimals(getBalance())}
-          {currency}
+          {balance < 0 ? (
+            <>
+              <span className="text-red-500">
+                -{currency}
+                {formatNumberWithTwoDecimals(Math.abs(balance))}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="text-green-500">
+                +{currency}
+                {formatNumberWithTwoDecimals(balance)}
+              </span>
+            </>
+          )}
         </CardTitle>
         <div className="flex flex-col w-fit bg-gray-50 p-2 rounded-md">
           <CardDescription className="flex gap-1">
-            Savings:
-            <span className="font-mono tabular-nums text-sm flex gap-1">
-              {formatNumberWithTwoDecimals(getSavings(transactions))}
-              {currency}
-            </span>
-          </CardDescription>
-          <CardDescription className="flex gap-1">
             Invested:
             <span className="font-mono tabular-nums text-sm flex gap-1">
-              {formatNumberWithTwoDecimals(getInvested(transactions))}
               {currency}
+              {formatNumberWithTwoDecimals(getInvested(transactions))}
             </span>
           </CardDescription>
         </div>

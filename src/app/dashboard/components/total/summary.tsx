@@ -146,7 +146,7 @@ export default function SummaryChart() {
                 }}
               />
               <YAxis
-                tickFormatter={(number) => `${number}${currency}`}
+                tickFormatter={(number) => `${currency}${number}`}
                 tickCount={6}
               />
               <Legend />

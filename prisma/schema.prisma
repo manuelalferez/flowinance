@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model transactions {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz
+  date       String
+  concept    String
+  amount     String
+  category   String
+  user_id    String
+}
+
+model settings {
+  id        BigInt @id @default(autoincrement())
+  user_id   String
+  currency  String
+  delimiter String
+}
+
+model deleted_users {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now())
+  user_id    String
+  email      String
+}
+
+model bugs {
+  id          BigInt   @id @default(autoincrement())
+  created_at  DateTime @default(now())
+  description String
+}
