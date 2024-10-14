@@ -1,6 +1,6 @@
 # Contributing to Flowinance
 
-We’re so glad you’re interested in contributing to our **open-source project**! Before getting started, please take a moment to read our guidelines to ensure a smooth and efficient contribution process.
+We are glad that you are interested in contributing to our open source project!
 
 ## 📝 Contribution Guidelines
 1. Discuss Changes Before Starting
