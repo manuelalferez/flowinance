@@ -1,11 +1,5 @@
+"use client";
 import React from "react";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../../../components/ui/card";
-import { DashboardCard } from "../ui/dashboard-card";
 
 export function DashboardSkeleton() {
   return (
@@ -30,54 +24,58 @@ export function DashboardSkeleton() {
 
 function CardSkeleton() {
   return (
-    <Card className="w-1/3">
-      <CardHeader>
-        <CardDescription className="flex items-center gap-1">
-          <div className="bg-gray-200 p-1 rounded-md h-3 w-3 md:w-7 md:h-7 animate-pulse"></div>
+    <div className="w-1/3 rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div className="flex flex-col space-y-1.5 p-6">
+        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          <div className="bg-gray-200 p-1 rounded-md h-4 w-4 md:w-7 md:h-7 animate-pulse"></div>
           <div className="bg-gray-200 w-16 h-4 md:h-7 md:w-24 rounded-md animate-pulse"></div>
-        </CardDescription>
+        </div>
 
         <div className="bg-gray-200 w-16 h-4 md:h-7 md:w-24 rounded-md animate-pulse"></div>
-      </CardHeader>
-    </Card>
+      </div>
+    </div>
   );
 }
 
 export function BalanceSkeleton() {
   return (
-    <Card className="w-full md:w-1/3">
-      <CardHeader>
-        <CardDescription className="flex items-center gap-1">
+    <div className="w-full md:w-1/3 rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div className="flex flex-col space-y-1.5 p-6">
+        <div className="flex items-center gap-1 text-sm text-muted-foreground">
           <div className="bg-gray-200 p-1 rounded-md w-7 h-7 animate-pulse"></div>
-          <div className="bg-gray-200 h-4 w-24 rounded-md animate-pulse"></div>
-        </CardDescription>
+          <div className="bg-gray-200 h-7 w-24 rounded-md animate-pulse"></div>
+        </div>
 
-        <CardTitle className="font-mono tabular-nums text-2xl md:text-3xl">
-          <div className="bg-gray-200 h-8 w-32 rounded-md animate-pulse"></div>
-        </CardTitle>
+        <div className="font-mono tabular-nums md:text-3xl text-2xl font-semibold leading-none tracking-tight">
+          <div className="bg-gray-200 h-7 w-32 rounded-md animate-pulse"></div>
+        </div>
 
         <div className="flex flex-col w-fit bg-gray-50 p-2 rounded-md">
-          <CardDescription className="flex gap-1">
+          <div className="flex gap-1 text-sm text-muted-foreground">
             <div className="bg-gray-200 h-4 w-16 rounded-md animate-pulse"></div>
-          </CardDescription>
+          </div>
         </div>
-      </CardHeader>
-    </Card>
+      </div>
+    </div>
   );
 }
 
 function SummaryChartSkeleton() {
   return (
-    <div className="w-full">
-      <DashboardCard>
-        <div className="animate-pulse w-full h-[400px] flex flex-col items-center justify-center">
-          <div className="flex w-full h-full">
-            <div className="flex-1 flex flex-col justify-center items-center">
-              <div className="w-full h-[320px] bg-gray-200 rounded-md"></div>
-            </div>
+    <div className="w-full rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+      <div className="flex items-center justify-center">
+        <div className="text-lg font-semibold leading-none tracking-tight">
+          <div className="bg-gray-200 h-7 w-32 rounded-md animate-pulse"></div>
+        </div>
+      </div>
+
+      <div className="animate-pulse w-full h-[400px] flex flex-col items-center justify-center">
+        <div className="flex w-full h-full">
+          <div className="flex-1 flex flex-col justify-center items-center">
+            <div className="w-full h-[320px] bg-gray-200 rounded-md"></div>
           </div>
         </div>
-      </DashboardCard>
+      </div>
     </div>
   );
 }

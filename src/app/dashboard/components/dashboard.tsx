@@ -10,7 +10,7 @@ import {
   getTransactions,
   getUserId,
 } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { Balance } from "./total/balance";
 import { Expenses } from "./total/expenses";
 import { Incomes } from "./total/incomes";
@@ -31,6 +31,7 @@ import NoTransactions from "./ui/no-transactions";
 import SummaryChart from "./total/summary";
 import { currencies } from "@/lib/constants";
 import { DashboardSkeleton } from "./ui/dashboard-loading";
+import Loading from "@/app/loading";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -122,51 +123,53 @@ export default function Dashboard() {
             Dashboard
           </h1>
         </div>
-        {loading ? (
-           <DashboardSkeleton/>
-        ) : transactions.length !== 0 ? (
-          <>
-            <Filter />
-            <DashboardRow className="justify-between flex-wrap md:flex-nowrap mt-4">
-              <Balance />
-              <div className="flex gap-0 sm:gap-1  w-full md:w-2/3">
-                <Expenses />
-                <Incomes />
-                <Savings />
-              </div>
-            </DashboardRow>
+        <Suspense fallback={<DashboardSkeleton />}>
+          {loading ? (
+            <DashboardSkeleton />
+          ) : transactions.length !== 0 ? (
+            <>
+              <Filter />
+              <DashboardRow className="justify-between flex-wrap md:flex-nowrap mt-4">
+                <Balance />
+                <div className="flex gap-0 sm:gap-1  w-full md:w-2/3">
+                  <Expenses />
+                  <Incomes />
+                  <Savings />
+                </div>
+              </DashboardRow>
 
-            <DashboardRow className="justify-center flex-wrap">
-              <SummaryChart />
-            </DashboardRow>
+              <DashboardRow className="justify-center flex-wrap">
+                <SummaryChart />
+              </DashboardRow>
 
-            <DashboardRow className="justify-center flex-wrap">
-              <ExpensesTable />
-              <IncomesTable />
-            </DashboardRow>
+              <DashboardRow className="justify-center flex-wrap">
+                <ExpensesTable />
+                <IncomesTable />
+              </DashboardRow>
 
-            <DashboardRow className="justify-between flex-wrap md:flex-nowrap">
-              <ExpensesPieChart />
-              <IncomesPieChart />
-            </DashboardRow>
+              <DashboardRow className="justify-between flex-wrap md:flex-nowrap">
+                <ExpensesPieChart />
+                <IncomesPieChart />
+              </DashboardRow>
 
-            <DashboardRow className="justify-between flex-wrap lg:flex-nowrap">
-              <ExpensesChart />
-              <IncomesChart />
-            </DashboardRow>
+              <DashboardRow className="justify-between flex-wrap lg:flex-nowrap">
+                <ExpensesChart />
+                <IncomesChart />
+              </DashboardRow>
 
-            <DashboardRow className="justify-between flex-wrap lg:flex-nowrap">
-              <ExpensesEvolutionChart />
-              <IncomesEvolutionChart />
-            </DashboardRow>
+              <DashboardRow className="justify-between flex-wrap lg:flex-nowrap">
+                <ExpensesEvolutionChart />
+                <IncomesEvolutionChart />
+              </DashboardRow>
 
-            <DashboardRow className="justify-center">
-              <LastTransactions />
-            </DashboardRow>
-          </>
-         ) : (
-          <NoTransactions />
-        )} 
+              <DashboardRow className="justify-center">
+                <LastTransactions />
+              </DashboardRow>
+            </>
+          ) : (
+            <NoTransactions />
+          )}
+        </Suspense>
       </AppContext.Provider>
     </div>
   );
