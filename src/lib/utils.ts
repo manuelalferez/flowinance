@@ -820,24 +820,24 @@ export function getDatesAxisX(selec: number) {
 
 export function getFutureDatesAxisX(selec: number) {
   if (isWeekSelected(selec)) {
-    return getFutureDates(7); // Zukünftige Daten für eine Woche
+    return getFutureDates(7);
   } else if (isMonthSelected(selec)) {
-    return getFutureDates(30); // Zukünftige Daten für einen Monat
+    return getFutureDates(30);
   } else if (isLastThreeMonthsSelected(selec)) {
-    return getFutureDates(90); // Zukünftige Daten für drei Monate
+    return getFutureDates(90);
   }
-  return getFutureDates(365); // Zukünftige Daten für ein Jahr
+  return getFutureDates(365);
 }
 
 export function getDateRange(selec: number) {
   if (isWeekSelected(selec)) {
-    return 7; // one week
+    return 7;
   } else if (isMonthSelected(selec)) {
-    return 30; // one month
+    return 30;
   } else if (isLastThreeMonthsSelected(selec)) {
-    return 90; // three months
+    return 90;
   }
-  return 365; // a year
+  return 365;
 }
 
 function isWeekSelected(selec: number) {

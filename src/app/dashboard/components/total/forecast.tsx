@@ -7,7 +7,7 @@ import {
     parseDateToISO,
     roundToTwoDecimal,
     sortTransactions,
-    getDateRange, // Neue Funktion importiert
+    getDateRange,
 } from "@/lib/utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -48,10 +48,9 @@ export default function SummaryChart() {
     const [data, setData] = useState<ChartData[]>([]);
 
     useEffect(() => {
-        console.log("Selected value updated:", selected); // Log the selected value
+        console.log("Selected value updated:", selected);
 
 
-        // Filter und Sortierung von Ausgaben und Einnahmen
         const expenses = filteredTransactions!.filter((transaction) =>
             EXPENSES_CATEGORIES.includes(transaction.category)
         );
@@ -62,14 +61,11 @@ export default function SummaryChart() {
         );
         const sortedIncomes = sortTransactions(incomes);
 
-        // Gesamtbeträge berechnen
         const totalExpenseValue = roundToTwoDecimal(getTotalExpenses(filteredTransactions!));
         const totalIncomeValue = roundToTwoDecimal(getTotalIncomes(filteredTransactions!));
 
-        // Zeitraum der Transaktionen berechnen
         const dateRangeInDays = getDateRange(selected!);
 
-        // Durchschnitt berechnen (Gesamtbetrag durch die Anzahl der Tage im Zeitraum)
         const avgExpense = dateRangeInDays > 0
             ? roundToTwoDecimal(totalExpenseValue / dateRangeInDays)
             : 0;
@@ -78,26 +74,17 @@ export default function SummaryChart() {
             ? roundToTwoDecimal(totalIncomeValue / dateRangeInDays)
             : 0;
 
-        // Logge die berechneten Durchschnittswerte aus
-        console.log("Avg Expense per day:", avgExpense);
-        console.log("Avg Income per day:", avgIncome);
-        console.log("selcted",selected)
-
-        // Berechnung der zukünftigen Tage basierend auf 'selected'
         const datesAxisX = getFutureDatesAxisX(selected!);
 
-        // Kombinierte Daten vorbereiten
         const combinedData: ChartData[] = datesAxisX.map((date) => ({
             name: date,
             expense: 0,
             income: 0,
         }));
 
-        // Zukünftige Trends berechnen
         const futureExpenses = calculateFutureTrend(totalExpenseValue, datesAxisX.length, avgExpense);
         const futureIncomes = calculateFutureTrend(totalIncomeValue, datesAxisX.length, avgIncome);
 
-        // Berechnete Werte in die kombinierten Daten einfügen
         combinedData.forEach((item, index) => {
             item.expense = futureExpenses[index] || 0;
             item.income = futureIncomes[index] || 0;
@@ -146,7 +133,6 @@ export default function SummaryChart() {
                             <Legend />
                             <Tooltip content={<SummaryTooltip currency={currency} />} />
 
-                            {/* Gestrichelte Linie für Ausgaben */}
                             <Line
                                 type="monotone"
                                 dataKey="expense"
@@ -157,7 +143,6 @@ export default function SummaryChart() {
                                 dot={false}
                             />
 
-                            {/* Gestrichelte Linie für Einnahmen */}
                             <Line
                                 type="monotone"
                                 dataKey="income"
