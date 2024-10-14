@@ -14,7 +14,6 @@ import {
   Shield,
 } from "lucide-react";
 
-
 export default async function Home() {
   const featureCardDetails = [
     {
