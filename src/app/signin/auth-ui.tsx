@@ -19,7 +19,7 @@ export default function AuthUI() {
   if (loading) return <Loading />;
 
   return (
-    <Card className="flex flex-col space-y-4 w-80 md:w-96 h-full p-8">
+    <Card className="flex flex-col space-y-2 w-80 md:w-96 h-full md:px-8 px-6 py-6">
       <Auth
         supabaseClient={supabase}
         providers={[]}
