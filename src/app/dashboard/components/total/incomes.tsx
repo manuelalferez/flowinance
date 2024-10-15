@@ -18,7 +18,7 @@ export function Incomes() {
   }
   const incomes = getIncomes();
   return (
-    <Card className="pr-6 w-1/2">
+    <Card className="w-1/3">
       <CardHeader>
         <CardDescription className="flex items-center gap-1">
           <svg
@@ -35,8 +35,8 @@ export function Incomes() {
         </CardDescription>
         <CardTitle className="text-green-500 text-lg md:text-xl font-mono tabular-nums">
           {incomes !== 0 && "+"}
-          {formatNumberWithTwoDecimals(incomes)}
           {currency}
+          {formatNumberWithTwoDecimals(incomes)}
         </CardTitle>
       </CardHeader>
     </Card>
