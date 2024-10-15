@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "../supabase-server";
 import AuthUI from "./auth-ui";
+import React from "react";
 
 export const dynamic = "force-dynamic";
 

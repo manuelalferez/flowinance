@@ -1,13 +1,13 @@
 "use client";
 
-import { getURL } from "@/lib/utils";
+import { getURL } from "../../lib/utils";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useEffect, useState } from "react";
 import Loading from "../loading";
 import { useSupabase } from "../supabase-provider";
 import { Card } from "../components/ui/card";
-import { seePassword } from "./SeePassword";
+import React from "react";
 
 export default function AuthUI() {
   const { supabase } = useSupabase();
@@ -16,6 +16,23 @@ export default function AuthUI() {
   useEffect(() => {
     setLoading(false);
   }, []);
+
+
+  const seePassword = () => {
+    const ele = document.querySelector(
+      'input[type="password"]'
+    ) as HTMLInputElement;
+    if (ele) {
+      ele.type = "text";
+    } else {
+      const ele = document.querySelector(
+        'input[type="text"]'
+      ) as HTMLInputElement;
+      if (ele) {
+        ele.type = "password";
+      }
+    }
+  };
 
   if (loading) return <Loading />;
 
