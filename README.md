@@ -5,17 +5,17 @@ Visualize your budget quickly and easily with Flowinance.
 ## Features
 
    <div align="center">
-      <h3>All-in-One Finance Management</h3> 
+      <h3>Dashboard</h3> 
+      <p>Get everything you need to manage your finances in one place</p>
       <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%207_QWIwA4HdR.png?updatedAt=1699611329205" alt="Dashboard Overview" width="500"/>
-      <p>Get everything you need to manage your finances in one place.</p>
    </div>
 
 ---
 
    <div align="center">
       <h3>AI-Powered Transaction Upload and Categorization</h3> 
+      <p>Upload your transactions and let AI handle the categorization</p>
       <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%208_Xna5E6_TA.png?updatedAt=1699611329296" alt="Transaction Categorization" width="500"/>
-      <p>Upload your transactions and let AI handle the categorization with just a few clicks!</p>
    </div>
 
 ---
@@ -23,7 +23,6 @@ Visualize your budget quickly and easily with Flowinance.
    <div align="center">
       <h3>Visualize your transactions in an organized way</h3> 
       <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%2010_Vk1VcIZ_A.png?updatedAt=1699611329310" alt="Transaction Visualization" width="500"/>
-      <p>Monitor all your transactions at a glance, edit and delete any of them.</p>
    </div>
 
 ---
@@ -31,15 +30,14 @@ Visualize your budget quickly and easily with Flowinance.
    <div align="center">
       <h3>Multi-Currency</h3> 
       <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%209_-UJANJ6Ik.png?updatedAt=1699611329268" alt="Multi-Currency Support" width="500"/>
-      <p>Work seamlessly with various global currencies.</p>
    </div>
 
 ---
 
    <div align="center">
       <h3>Export all your categorized transactions</h3> 
-      <img src="https://ik.imagekit.io/manuelalferez/flowinance/image%203_8y5QA0tnrv.png" alt="Export transactions" width="500"/>
       <p>Flowinance allows you to download all your transactions in csv format, so you can use them as you wish.</p>
+      <img src="https://ik.imagekit.io/manuelalferez/flowinance/image%203_8y5QA0tnrv.png" alt="Export transactions" width="500"/>
    </div>
 
 ## Getting Started
