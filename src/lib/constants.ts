@@ -16,3 +16,4 @@ export const currencies = [
   { name: "Ruble", symbol: "₽" },
   { name: "Rupee", symbol: "₹" },
 ];
+export const INTEGRATIONS = ["Telegram"]
