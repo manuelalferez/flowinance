@@ -2,6 +2,9 @@
   "name": "flowinance",
   "version": "0.1.0",
   "private": true,
+  "browser": {
+    "child_process": false
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -33,6 +36,7 @@
     "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.9",
+    "dotenv": "^16.4.5",
     "encoding": "^0.1.13",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
@@ -40,6 +44,7 @@
     "lucide-react": "^0.263.1",
     "moment": "^2.29.4",
     "next": "^13.4.19",
+    "node-cron": "^3.0.3",
     "openai": "^4.7.0",
     "postcss": "8.4.27",
     "react": "18.2.0",
@@ -53,6 +58,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@types/node-cron": "^3.0.11",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
     "prisma": "^5.20.0"

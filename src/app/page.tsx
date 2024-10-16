@@ -13,8 +13,14 @@ import {
   UserCircle2,
   Shield,
 } from "lucide-react";
+import { startAllCronJobs } from "@/lib/cronjobs";
+import { createClient } from "@supabase/supabase-js";
 
 export default async function Home() {
+  var url = process.env.NEXT_PUBLIC_SUPABASE_URL??"";
+  var anon = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_KEY??"";
+  const supabase =  await createClient(url,anon);
+  await startAllCronJobs(supabase)
   const featureCardDetails = [
     {
       icon: BarChart3,

@@ -3,6 +3,7 @@ import { UserInfo } from "./user-info";
 import { Card } from "@/app/components/ui/card";
 import SettingsConfig from "./config";
 import { DeleteAccount } from "./delete-account";
+import {Integration} from "./integration";
 import { getSession } from "@/app/supabase-server";
 import { redirect } from "next/navigation";
 import {ExportTransactions} from "./export-transactions"  
@@ -22,6 +23,8 @@ export default async function Settings() {
           <UserInfo />
           <Separator />
           <SettingsConfig />
+          <Separator />
+          <Integration/>
           {user.email !== process.env.NEXT_PUBLIC_DEMO_EMAIL && (
             <>
               <Separator />
