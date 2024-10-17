@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
           await createJob(supabase,chatId,text);
           }
           else{
-            await sendTelegramMessage(chatId, `No Account is registered with email ${text}\n If you Don't have account visit Flowinance and create one`);
+            await sendTelegramMessage(chatId, `No account registered with email ${text}\n If you don't have Flowinance account you can create an account at the following link: https://flowinance.com/signin`);
             delete userStates[chatId];
           }
         } else {
