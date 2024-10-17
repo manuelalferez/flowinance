@@ -18,7 +18,6 @@ export function Integration() {
       for (const [key, value] of Object.entries(integration[0])) {
         filteredData.push({name:key,value:value})
       }
-      console.log(filteredData)
       setData(filteredData);
     }
     fetchData();
