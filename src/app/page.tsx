@@ -69,6 +69,7 @@ export default async function Home() {
               >
                 Track your finances, focus on what is important
               </motion.h1>
+
               <motion.p
                 whileInView={{ y: 0, opacity: 1 }}
                 initial={{ y: -20, opacity: 0 }}
@@ -84,7 +85,7 @@ export default async function Home() {
                 initial={{ y: -20, opacity: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, ease: "easeOut", delay: 0.8 }}
-                className="space-x-4 flex items-center"
+                className="space-x-4"
               >
                 <Link
                   href="/signin"
@@ -99,12 +100,17 @@ export default async function Home() {
               </motion.div>
             </div>
           </section>
-
           <section className="container space-y-6 pb-8 pt-12 md:pb-12 md:pt-10 lg:py-32 flex flex-col gap-12 md:gap-48">
             <div className="animated-text flex flex-col gap-4 md:flex-row-reverse items-center justify-around">
-              <h1 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center">
+              <motion.h1
+                whileInView={{ x: 0, opacity: 1 }}
+                initial={{ opacity: 0, x: 30 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center"
+              >
                 Everything you need to manage your finances
-              </h1>
+              </motion.h1>
               <motion.img
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: -30 }}
@@ -116,10 +122,16 @@ export default async function Home() {
               />
             </div>
             <div className="animated-text flex flex-col gap-4 md:flex-row items-center justify-around">
-              <h1 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold  text-center">
+              <motion.h1
+                whileInView={{ x: 0, opacity: 1 }}
+                initial={{ opacity: 0, x: -30 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center"
+              >
                 Upload and categorize your transactions in a few clicks using AI
                 ✨
-              </h1>
+              </motion.h1>
               <motion.img
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: 30 }}
@@ -131,9 +143,15 @@ export default async function Home() {
               />
             </div>
             <div className="animated-text flex flex-col gap-4 md:flex-row-reverse items-center justify-around">
-              <h1 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold  text-center">
+              <motion.h1
+                whileInView={{ x: 0, opacity: 1 }}
+                initial={{ opacity: 0, x: 30 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center"
+              >
                 Visualize all your transactions in one place
-              </h1>
+              </motion.h1>
               <motion.img
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: -30 }}
@@ -145,10 +163,17 @@ export default async function Home() {
               />
             </div>
             <div className="animated-text flex flex-col gap-4 md:flex-row items-center justify-around">
-              <h1 className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold  text-center">
+              <motion.h1
+                whileInView={{ x: 0, opacity: 1 }}
+                initial={{ opacity: 0, x: -30 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="font-heading text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center"
+              >
                 Multi-currency support facilitates working with various global
                 currencies
-              </h1>
+              </motion.h1>
+
               <motion.img
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: 30 }}
@@ -196,7 +221,7 @@ export default async function Home() {
                 return (
                   <div
                     key={index}
-                    className="relative bg-emerald-50 overflow-hidden rounded-lg border p-2 hover:-translate-y-2 duration-500 hover:ease-out hover:bg-[#c3f1e5] group"
+                    className="relative bg-emerald-50 overflow-hidden rounded-lg border p-2 hover:-translate-y-2 duration-500 hover:ease-out hover:bg-emerald-100 group"
                   >
                     <div
                       className="absolute right-0 bottom-0 h-20 w-20 bg-gradient-to-tl from-emerald-300 to-teal-300 rounded-tl-full scale-0 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300"
