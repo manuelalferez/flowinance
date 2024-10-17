@@ -23,13 +23,17 @@ export function CategorizeTransactions() {
   );
   const [transactionsCopy, setTransactionsCopy] = useState<string[][]>([]);
   const [categoriesSelected, setCategoriesSelected] = useState<string[]>([]);
-  const [numTransactionsDeleted, setNumTransactionsDeleted] =
-    useState<number>(0);
+  const [numTransactionsDeleted, setNumTransactionsDeleted] = useState<number>(0);
+  const [uncategarisedIndex,setUncategarisedIndex] =useState<number[]>([]);
   const { toast } = useToast();
   const { supabase } = useSupabase();
+  const [categoryIndex,setCategoryIndex] = useState<Number>(-1);
+
+  const [transactionsToBeCategorized,setTransactionsToBeCategorized] = useState(0);
 
   async function fillCategoriesWithSuggestions() {
     const numRows = getNumRows(transactions) - 1 - numTransactionsDeleted;
+    const indx = transactions[0].findIndex((x)=>x==="Category");
     const categoriesSuggested = new Array(numRows).fill("");
     const data = await getTransactions(supabase);
     const userId = await getUserId(supabase);
@@ -44,8 +48,13 @@ export function CategorizeTransactions() {
         row.concept.includes(concept)
       );
       const category = categoryObj ? categoryObj.category : null;
-
-      if (category) categoriesSuggested[rowIndex] = category;
+      if(ALL_CATEGORIES.includes(row[indx]))
+      {
+       categoriesSuggested[rowIndex] = row[indx];
+      }
+      else{
+        setUncategarisedIndex((prevIndexes)=>[...prevIndexes,rowIndex]);
+      }
     });
     return categoriesSuggested;
   }
@@ -58,6 +67,11 @@ export function CategorizeTransactions() {
     };
     getCategorySuggestions();
   }, [transactions]);
+
+  useEffect(()=>{
+    setTransactionsToBeCategorized(uncategarisedIndex.length);
+  },[uncategarisedIndex])
+
 
   function targetTransactionToDelete(index: number) {
     const copy = [...transactionsCopy];
@@ -99,10 +113,14 @@ export function CategorizeTransactions() {
     const firstRow = 0;
     return (
       <>
-        <TableHead key="extra-header"></TableHead>
-        {transactionsCopy[firstRow].map((col, colIndex) => (
+        {transactionsCopy[firstRow].map((col, colIndex) =>{
+          if(categoryIndex ==-1 && col.toLowerCase() === 'category')
+          {
+            setCategoryIndex(colIndex);
+          }
+          return (
           <TableHead key={colIndex}>{col}</TableHead>
-        ))}
+        )})}
         <TableHead className="p-2 w-2 pr-8" key={`options-header`}></TableHead>
       </>
     );
@@ -114,35 +132,55 @@ export function CategorizeTransactions() {
     setCategoriesSelected(updatedCategories);
   }
 
+  const handleClick = (event:any) => {
+    const row:number = event.target.dataset.row;
+    var uncatIndex:number = uncategarisedIndex.findIndex(x=>x===row-1);
+    if(uncatIndex > -1)
+    {
+      setUncategarisedIndex((prevState)=>[...prevState.slice(0, uncatIndex),
+        ...prevState.slice(uncatIndex + 1)]) 
+    }
+    setCategoriesSelected((prev)=>{ prev[row-1]=event.target.value; return [...prev];})
+  };
+
   function getTableContents() {
     if (transactionsCopy.length === 0) return [];
+
     return transactionsCopy
       .map((row, rowIndex) => (
         <TableRow
           key={rowIndex}
           className={`${
             categoriesSelected[rowIndex - 1] !== "" ? "bg-gray-50" : ""
-          }`}
+          } ${uncategarisedIndex.includes(rowIndex-1)?"bg-red-400 hover:bg-red-200":""}`}
         >
-          <TableCell key={rowIndex}>
-            <select
-              onChange={(e) => handleSelectChange(e.target.value, rowIndex - 1)}
-              value={categoriesSelected[rowIndex - 1]}
-              className="w-auto p-2 border rounded"
-            >
-              <option value="" disabled selected>
-                Select category
-              </option>
-              {ALL_CATEGORIES.map((item, index) => (
-                <option value={item} key={index}>
-                  {item}
+
+          {row.map((col, colIndex) =>{ 
+            if(colIndex===categoryIndex){
+              return(<TableCell key={colIndex}>{
+                <select
+                className="cursor-pointer p-0 "
+                data-row={rowIndex}
+                onChange={(e)=>{handleClick(e)}}
+              >
+                <option value="-1" disabled selected>
+                  Select category
                 </option>
-              ))}
-            </select>
-          </TableCell>
-          {row.map((col, colIndex) => (
+                {ALL_CATEGORIES.map((item, index) => 
+                { var selected;
+                  if(col.toLowerCase() == item.toLowerCase()){
+                    selected = true;
+                  }
+                  return(
+                  <option value={item} key={index} selected={selected}>
+                    {item}
+                  </option>
+                )})}
+              </select>}</TableCell>)
+            } 
+            return(
             <TableCell key={colIndex}>{col}</TableCell>
-          ))}
+          )})}
           <TableCell
             className="cursor-pointer p-0 "
             key={`${rowIndex}-options`}
@@ -171,18 +209,24 @@ export function CategorizeTransactions() {
   }
 
   function handleNextStep() {
-    const colWithCategories = ["category", ...categoriesSelected];
-    const transactionsCategorized = addColumnToMatrix(
-      transactionsCopy,
-      colWithCategories
-    );
-    setTransactions(transactionsCategorized);
+
+    var CategoryColIndex = 0;
+    transactionsCopy.forEach((row,rowIndex)=>{
+      if(rowIndex==0)
+      {
+        CategoryColIndex = row.findIndex((x)=>x.toLowerCase()==="category");
+      }
+      else{
+        row[CategoryColIndex] = categoriesSelected[rowIndex-1];
+      }
+    });
+    setTransactions(transactionsCopy);
     nextStep();
   }
 
   const contents = getTableContents();
   const headers = getTableHeaders();
-  const transactionsToBeCategorized = getNumTransactionsToBeCategorized();
+  
   return (
     <div className="w-full md:5/6 lg:w-4/6">
       <div>
