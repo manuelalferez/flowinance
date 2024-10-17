@@ -52,7 +52,7 @@ export default async function RootLayout({
             <meta
               name="description"
               content="Managing your money is now easier than ever. Visualize your
-    budget in a quick and easy way."
+              budget in a quick and easy way."
             />
 
             <meta property="og:title" content="Flowinance" />
