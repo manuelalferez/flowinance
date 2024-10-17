@@ -33,7 +33,7 @@ export function CleanColumns() {
   function deleteColumn(col: number) {
     if (hasDeletedMaxColumns()) {
       toast({
-        description: "⛔️ You cannot delete more than 3 columns",
+        description: "⛔️ Atleast 4 columns required",
       });
       return;
     }
@@ -43,7 +43,8 @@ export function CleanColumns() {
 
   function hasDeletedMaxColumns() {
     if (transactionsCopy.length === 0) return false;
-    const MAX_COLUMNS = 3;
+    const MAX_COLUMNS = 4;
+    console.log(transactionsCopy[0]);
     return transactionsCopy[0].length <= MAX_COLUMNS;
   }
 
