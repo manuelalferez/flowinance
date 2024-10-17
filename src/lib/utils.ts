@@ -7,7 +7,8 @@ import dayjs from "dayjs";
 import { format, parseISO } from "date-fns";
 import moment from "moment";
 import { EXPENSES_CATEGORIES } from "./categories";
-import { currencies } from "./constants";
+import { currencies,INTEGRATIONS } from "./constants";
+import { getInvested, getSavings, getSpecialCategories, getTotalExpenses, getTotalIncomes } from "./calculations";
 
 const DEFAULT_DELIMITER = ";";
 const DEFAULT_CURRENCY = currencies.at(0)!.name;
@@ -40,7 +41,6 @@ export function getNumColumns(matrix: string[][]) {
   if (matrix.length === 0) {
     return 0;
   }
-
   return matrix[0].length;
 }
 
@@ -665,6 +665,25 @@ export async function getCurrency(
   return currency;
 }
 
+async function getCurrencyFromUserId(
+  supabase: SupabaseClient<any, "public", any>,
+  userId:string
+) 
+{
+  const { data, error } = await supabase
+    .from(SETTINGS_TABLE)
+    .select("currency")
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error getting currency for the user ${userId}: `, error);
+    return;
+  }
+  if (!data || data.length === 0) {
+    return;
+  }
+  return data[0].currency;
+}
+
 async function getCurrencyFromSupabase(
   supabase: SupabaseClient<any, "public", any>
 ) {
@@ -704,6 +723,44 @@ function revalidateSettings() {
   localStorage.setItem(LocalStorage.settingsUpdated, "true");
 }
 
+export async function getWeeklyStatOfUser(
+  supabase: SupabaseClient<any, "public", any>,
+  email:string
+)
+{
+  var userId:string="";
+  const users = (await supabase.auth.admin.listUsers()).data.users;
+  users.forEach((x)=>{if(x.email===email){userId=x.id;}});
+  if (!userId) {
+    return null;
+  }
+
+  const { data,error } = await supabase
+    .from(TRANSACTIONS_TABLE)
+    .select("*")
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error setting currency for the user ${userId}: `, error);
+    return;
+  }
+  var decryptedData:Transaction[] = []
+  decryptedData = decryptTransactions(data as TransactionSupabase[],userId);
+  const currency = await getCurrencyFromUserId(supabase,userId);
+  const currencySymbol = currencies.find(x=>x.name===currency)?.symbol;
+  const expenses = getTotalExpenses(decryptedData);
+  const incomes = getTotalIncomes(decryptedData);
+  const savings = getSavings(decryptedData);
+  const special = getInvested(decryptedData) + savings;
+  const uncategorized = getSpecialCategories(decryptedData) - special;
+  const balance = incomes - expenses - special + uncategorized;
+
+  var weekTransactions :{amount:string,concept:string,category:string}[] = []
+  decryptedData.forEach((transaction)=>{
+    weekTransactions.push({amount:`${currencySymbol}${transaction.amount}`,concept:transaction.concept,category:transaction.category})
+  })
+  return {transactions:weekTransactions,balance:`${currencySymbol}`+balance.toFixed(2),expenses:`${currencySymbol}`+expenses.toFixed(2),incomes:`${currencySymbol}`+incomes.toFixed(2),savings:`${currencySymbol}`+savings.toFixed(2)}
+}
+
 export async function updateCurrencyInSupabase(
   supabase: SupabaseClient<any, "public", any>,
   currency: string
@@ -721,6 +778,97 @@ export async function updateCurrencyInSupabase(
     return;
   }
   revalidateSettings();
+}
+
+export async function getAllIntegrationsFromSupabase(
+  supabase: SupabaseClient<any, "public", any>
+) {
+  const userId = await getUserId(supabase);
+  if (!userId) {
+    return;
+  }
+  const { data,error } = await supabase
+    .from(SETTINGS_TABLE)
+    .select(INTEGRATIONS.join(","))
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error setting delimiter for the user ${userId}: `, error);
+    return;
+  }
+  return data;
+}
+
+export async function saveTelegramIntegration(supabase: SupabaseClient<any, "public", any>,
+  userId:string,
+  key: string
+){
+
+  if (!userId) {
+    return;
+  }
+  const { error } = await supabase
+    .from(SETTINGS_TABLE)
+    .update({ Telegram: key })
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error setting Telegram Api key for the user ${userId}: `, error);
+    return;
+  }
+
+  if (typeof window !== 'undefined') {
+    const webhookUrl = process.env.NEXT_PUBLIC_APPLICATION_URL+"/api/telegram";
+
+    try {
+      const response = await fetch(`https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_API}/setWebhook?url=${webhookUrl}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: webhookUrl,
+          secret_token:key.replace(":","__colon__")
+        }),
+      });
+  
+      const result = await response.json();
+      if (!result.ok) {
+        console.log({ message: 'Failed to set webhook' });
+      }
+    } catch (error) {
+      console.error('Error setting webhook:', error);
+    }
+  }
+}
+
+export async function getTelegramIntegrationFromUserId(supabase: SupabaseClient<any, "public", any>,
+  userId:string
+): Promise<string | null>
+{
+  const { data,error } = await supabase
+    .from(SETTINGS_TABLE)
+    .select("Telegram")
+    .eq("user_id", userId)
+    .single();
+  if (error) {
+    console.log(`Error fetching Api for user ${userId}: `, error);
+    return null;
+  }
+  return data? data.Telegram:null;
+}
+
+export async function sendTelegramMessage(chatId: number, text: string) {
+  const telegramApiUrl = `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_TELEGRAM_BOT_API}/sendMessage`;
+
+  await fetch(telegramApiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: text,
+    }),
+  });
 }
 
 export async function updateDelimiterInSupabase(
