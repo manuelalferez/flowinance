@@ -1,48 +1,12 @@
-# Flowinance: Control your finances, focus on what matters
+# Flowinance
 
-Visualize your budget quickly and easily with Flowinance.
+A financial management app that uses AI for transaction categorization, helping users easily control and visualize their expenses, income, savings, and investments.
 
-## Features
-
-   <div align="center">
-      <h3>Dashboard</h3> 
-      <p>Get everything you need to manage your finances in one place</p>
-      <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%207_QWIwA4HdR.png?updatedAt=1699611329205" alt="Dashboard Overview" width="500"/>
-   </div>
-
----
-
-   <div align="center">
-      <h3>AI-Powered Transaction Upload and Categorization</h3> 
-      <p>Upload your transactions and let AI handle the categorization</p>
-      <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%208_Xna5E6_TA.png?updatedAt=1699611329296" alt="Transaction Categorization" width="500"/>
-   </div>
-
----
-
-   <div align="center">
-      <h3>Visualize your transactions in an organized way</h3> 
-      <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%2010_Vk1VcIZ_A.png?updatedAt=1699611329310" alt="Transaction Visualization" width="500"/>
-   </div>
-
----
-
-   <div align="center">
-      <h3>Multi-Currency</h3> 
-      <img src="https://ik.imagekit.io/manuelalferez/flowinance/Group%209_-UJANJ6Ik.png?updatedAt=1699611329268" alt="Multi-Currency Support" width="500"/>
-   </div>
-
----
-
-   <div align="center">
-      <h3>Export all your categorized transactions</h3> 
-      <p>Flowinance allows you to download all your transactions in csv format, so you can use them as you wish.</p>
-      <img src="https://ik.imagekit.io/manuelalferez/flowinance/image%203_8y5QA0tnrv.png" alt="Export transactions" width="500"/>
-   </div>
+<img width="1200" alt="image" src="https://github.com/user-attachments/assets/c2d40717-78e8-43e2-94d3-42b56fee8012">
 
 ## Getting Started
 
-Flowinance is running its database on Supabase. Supabase allows you to run a local instance, so you don’t have to worry about breaking the production database. First, we are going to configure Supabase locally, following the [documentation](https://supabase.com/docs/guides/local-development/cli/getting-started) that Supabase provides. In this example, we will do it using a Mac, but check their documentation for adapting it to your operating system.
+Flowinance runs its database on Supabase. Supabase allows you to run a local instance, so you don’t have to worry about breaking the production database. First, we are going to configure Supabase locally, following the [documentation](https://supabase.com/docs/guides/local-development/cli/getting-started) that Supabase provides. In this example, **we will do it using a Mac**, but check their documentation for adapting it to your operating system.
 
 1. Install the Supabase CLI:
    ```bash
@@ -95,15 +59,24 @@ Flowinance is running its database on Supabase. Supabase allows you to run a loc
    npm run dev
    ```
 
+## Features
+- ✅ Display an overview of finances through a Dashboard
+- ✅ Artificial intelligence transaction categorization
+- ✅ Organized display of all transactions
+- ✅ End-to-end encryption
+- ✅ Multi-currency
+- ✅ Export all categorized transactions
+- Import all categorized transactions
+
 ## Contributing
 
 We would be really happy if you decide to contribute. Please read our [`CONTRIBUTING.md`](https://github.com/manuelalferez/flowinance/blob/main/CONTRIBUTING.md) guide before 😊
 
-## 💬 Have feedback or questions? Join the conversation!
+## Join our community
 
-We encourage you to visit our [Flowinance Discussions](https://github.com/manuelalferez/flowinance/discussions) for general questions, feature suggestions, or to engage with the community. It's the best place to share ideas and collaborate!
+Feel free to join us: [Flowinance Discussions](https://github.com/manuelalferez/flowinance/discussions) for general questions, feature suggestions, or to engage with our community. 
 
-## Ask me 🤙
+## Ask me 
 
 You can always contact me via [Telegram](https://t.me/manuelalferez) if you want to talk more about the project 😊
 
@@ -111,7 +84,7 @@ You can always contact me via [Telegram](https://t.me/manuelalferez) if you want
 
 [GNU General Public License v3.0](https://github.com/manuelalferez/flowinance/blob/master/LICENSE.md)
 
-## Our Contributors ❤️
+## Our Contributors
 
 <a href="https://github.com/manuelalferez/flowinance/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=manuelalferez/flowinance" />
