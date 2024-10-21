@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import Link from "next/link";
 import { buttonVariants } from "./components/ui/button";
 import { cn } from "@/lib/utils";
@@ -13,8 +12,12 @@ import {
   UserCircle2,
   Shield,
 } from "lucide-react";
+import { startAllCronJobs } from "@/lib/cronjobs";
+import { createClient } from "@supabase/supabase-js";
 
-export default async function Home() {
+
+export default function Home() {
+  
   const featureCardDetails = [
     {
       icon: BarChart3,
