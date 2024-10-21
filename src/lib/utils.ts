@@ -9,6 +9,8 @@ import moment from "moment";
 import { EXPENSES_CATEGORIES } from "./categories";
 import { currencies,INTEGRATIONS } from "./constants";
 import { getInvested, getSavings, getSpecialCategories, getTotalExpenses, getTotalIncomes } from "./calculations";
+import { currencies,INTEGRATIONS } from "./constants";
+import { getInvested, getSavings, getSpecialCategories, getTotalExpenses, getTotalIncomes } from "./calculations";
 
 const DEFAULT_DELIMITER = ";";
 const DEFAULT_CURRENCY = currencies.at(0)!.name;
@@ -684,6 +686,25 @@ async function getCurrencyFromUserId(
   return data[0].currency;
 }
 
+async function getCurrencyFromUserId(
+  supabase: SupabaseClient<any, "public", any>,
+  userId:string
+) 
+{
+  const { data, error } = await supabase
+    .from(SETTINGS_TABLE)
+    .select("currency")
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error getting currency for the user ${userId}: `, error);
+    return;
+  }
+  if (!data || data.length === 0) {
+    return;
+  }
+  return data[0].currency;
+}
+
 async function getCurrencyFromSupabase(
   supabase: SupabaseClient<any, "public", any>
 ) {
@@ -721,6 +742,44 @@ function getCurrencyFromLocalStorage() {
 
 function revalidateSettings() {
   localStorage.setItem(LocalStorage.settingsUpdated, "true");
+}
+
+export async function getWeeklyStatOfUser(
+  supabase: SupabaseClient<any, "public", any>,
+  email:string
+)
+{
+  var userId:string="";
+  const users = (await supabase.auth.admin.listUsers()).data.users;
+  users.forEach((x)=>{if(x.email===email){userId=x.id;}});
+  if (!userId) {
+    return null;
+  }
+
+  const { data,error } = await supabase
+    .from(TRANSACTIONS_TABLE)
+    .select("*")
+    .eq("user_id", userId);
+  if (error) {
+    console.log(`Error setting currency for the user ${userId}: `, error);
+    return;
+  }
+  var decryptedData:Transaction[] = []
+  decryptedData = decryptTransactions(data as TransactionSupabase[],userId);
+  const currency = await getCurrencyFromUserId(supabase,userId);
+  const currencySymbol = currencies.find(x=>x.name===currency)?.symbol;
+  const expenses = getTotalExpenses(decryptedData);
+  const incomes = getTotalIncomes(decryptedData);
+  const savings = getSavings(decryptedData);
+  const special = getInvested(decryptedData) + savings;
+  const uncategorized = getSpecialCategories(decryptedData) - special;
+  const balance = incomes - expenses - special + uncategorized;
+
+  var weekTransactions :{amount:string,concept:string,category:string}[] = []
+  decryptedData.forEach((transaction)=>{
+    weekTransactions.push({amount:`${currencySymbol}${transaction.amount}`,concept:transaction.concept,category:transaction.category})
+  })
+  return {transactions:weekTransactions,balance:`${currencySymbol}`+balance.toFixed(2),expenses:`${currencySymbol}`+expenses.toFixed(2),incomes:`${currencySymbol}`+incomes.toFixed(2),savings:`${currencySymbol}`+savings.toFixed(2)}
 }
 
 export async function getWeeklyStatOfUser(
