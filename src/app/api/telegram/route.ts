@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
             delete userStates[chatId];
           }
         } else {
-          await sendTelegramMessage(chatId, `Please provide a valid email address.`);
+          await sendTelegramMessage(chatId, `Please provide a valid email address. Example: example@email.com`);
         }
       }
       catch(e)
