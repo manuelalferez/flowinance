@@ -18,20 +18,20 @@ export function Incomes() {
   }
   const incomes = getIncomes();
   return (
-    <Card className="w-1/3">
+    <Card className="w-full">
       <CardHeader>
-        <CardDescription className="flex items-center gap-1">
+        <CardDescription className="flex items-center flex-wrap gap-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 256 256"
-            className="bg-emerald-100 p-1 rounded-md w-6 h-6"
+            viewBox="0 0 24 24"
+            className="bg-emerald-50 p-1 rounded-md w-7 h-7"
           >
             <path
               fill="currentColor"
-              d="M236 208a12 12 0 0 1-12 12H32a12 12 0 0 1-12-12V48a12 12 0 0 1 24 0v99l43.51-43.52a12 12 0 0 1 17 0L128 127l43-43h-11a12 12 0 0 1 0-24h40a12 12 0 0 1 12 12v40a12 12 0 0 1-24 0v-11l-51.51 51.52a12 12 0 0 1-17 0L96 129l-52 52v15h180a12 12 0 0 1 12 12Z"
+              d="M2.7 17.625q-.3-.3-.288-.712t.288-.688l5.275-5.35Q8.55 10.3 9.4 10.3t1.425.575l2.575 2.6l5.2-5.15H17q-.425 0-.712-.288T16 7.326t.288-.712t.712-.288h4q.425 0 .713.288t.287.712v4q0 .425-.288.713t-.712.287t-.712-.287t-.288-.713v-1.6L14.825 14.9q-.575.575-1.425.575t-1.425-.575L9.4 12.325l-5.3 5.3q-.275.275-.7.275t-.7-.275"
             />
-          </svg>{" "}
-          Incomes
+          </svg>
+          <span>Incomes</span>
         </CardDescription>
         <CardTitle className="text-green-500 text-lg md:text-xl font-mono tabular-nums">
           {incomes !== 0 && "+"}

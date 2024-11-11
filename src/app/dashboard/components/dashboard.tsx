@@ -31,7 +31,6 @@ import NoTransactions from "./ui/no-transactions";
 import SummaryChart from "./total/summary";
 import { currencies } from "@/lib/constants";
 import { DashboardSkeleton } from "./ui/dashboard-loading";
-import Loading from "@/app/loading";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -129,11 +128,13 @@ export default function Dashboard() {
           ) : transactions.length !== 0 ? (
             <>
               <Filter />
-              <DashboardRow className="justify-between flex-wrap md:flex-nowrap mt-4">
+              <DashboardRow className="flex flex-col gap-2 mt-4">
                 <Balance />
-                <div className="flex gap-0 sm:gap-1  w-full md:w-2/3">
-                  <Expenses />
-                  <Incomes />
+                <div className="flex flex-col md:flex-row gap-2">
+                  <div className="flex gap-2 md:w-2/3">
+                    <Expenses />
+                    <Incomes />
+                  </div>
                   <Savings />
                 </div>
               </DashboardRow>
