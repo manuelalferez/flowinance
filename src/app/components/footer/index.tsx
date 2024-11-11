@@ -1,7 +1,5 @@
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { Button } from "../ui/button";
-import Link from "next/link";
 
 export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
   const year = new Date().getFullYear();
