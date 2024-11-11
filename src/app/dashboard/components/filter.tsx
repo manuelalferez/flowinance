@@ -7,7 +7,7 @@ export function Filter() {
   const { selected, setSelected } = useContext(AppContext);
 
   return (
-    <div className="flex justify-center gap-2">
+    <div className="flex flex-wrap w-2/3 mx-auto md:w-full justify-center gap-2">
       {options.map((option, index) => (
         <Toggle
           key={index}

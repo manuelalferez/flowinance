@@ -26,7 +26,7 @@ export function AccountButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="gap-1 md:gap-0">
           <svg
             width="15"
             height="15"
@@ -42,7 +42,7 @@ export function AccountButton() {
               clipRule="evenodd"
             ></path>
           </svg>
-          <span className="hidden md:block">Account</span>
+          <span>Account</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

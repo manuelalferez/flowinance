@@ -66,6 +66,10 @@ export default async function RootLayout({
             />
             <meta name="msapplication-TileColor" content="#da532c" />
             <meta name="theme-color" content="#ffffff"></meta>
+            <link
+              href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
+              rel="stylesheet"
+            />
           </head>
 
           <SupabaseProvider>
@@ -95,6 +99,7 @@ export default async function RootLayout({
           </div>
           <Footer className="w-screen border-t-2" />
           <Analytics />
+          <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         </body>
       </SupabaseProvider>
     </html>
