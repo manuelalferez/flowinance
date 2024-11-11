@@ -22,15 +22,8 @@ export function Navbar({ session }: any) {
               <NavigationMenuLink
                 className={`text-emerald-700  hover:text-emerald-600 text-xl flex items-center gap-1 ${navigationMenuTriggerStyle()}`}
               >
-                <Image
-                  src={logo}
-                  alt="logo"
-                  className={session ? "hidden md:block w-8" : "w-8"}
-                />
-                <span
-                  className={session ? "hidden md:block" : "hidden md:block"}
-                >
-                  Flowinance
+                <span className="font-logo italic font-extrabold">
+                  flowinance
                 </span>
               </NavigationMenuLink>
             </Link>
