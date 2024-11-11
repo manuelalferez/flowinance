@@ -1,22 +1,50 @@
 "use client";
 
 import { UploadTransactionsContext } from "@/lib/context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DragAndDrop } from "../upload/steps/drag-and-drop";
 import { FinalStep } from "../upload/steps/final-step";
-import Loading from "@/app/loading";
 import { CardTitle } from "@/app/components/ui/card";
-import Countdown from "react-countdown";
+import { AnimationUploadingWithAI } from "./animation-uploading-with-ai";
 
 interface UploadAiProps {
   extractFieldsUsingOpenAi: (lines: string[]) => Promise<string | undefined>;
 }
 
+const progressMessages: { [key: number]: string } = {
+  0: "Uploading file...",
+  10: "Starting categorization...",
+  30: "Categorizing transactions...",
+  80: "Almost done...",
+  100: "Ready for review!",
+};
+
 export default function UploadAi({ extractFieldsUsingOpenAi }: UploadAiProps) {
   const [transactions, setTransactions] = useState<string[][]>([]);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);
-  const [countDown, setCountDown] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  const getProgressMessage = () => {
+    const progressKeys = Object.keys(progressMessages).map(Number);
+    const currentKey = progressKeys.reverse().find((key) => progress >= key);
+    return progressMessages[currentKey || 0];
+  };
+
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setProgress((prevProgress) => {
+          if (prevProgress >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prevProgress + 1;
+        });
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [loading]);
 
   function nextStep() {
     setStep(step + 1);
@@ -35,12 +63,20 @@ export default function UploadAi({ extractFieldsUsingOpenAi }: UploadAiProps) {
   return loading ? (
     <div>
       <CardTitle className="flex flex-col items-center gap-2">
-        We&apos;re doing all the magic 🪄
-        {countDown != 0 && (
-          <Countdown date={Date.now() + countDown} renderer={renderer} />
-        )}
+        {getProgressMessage()}
       </CardTitle>
-      <Loading />
+
+      <div className="mt-4 w-full">
+        <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+          <div
+            className="bg-emerald-700 text-xs font-medium text-emerald-100 text-center p-0.5 leading-none rounded-full"
+            style={{ width: `${progress}%` }}
+          >
+            {progress}%
+          </div>
+        </div>
+      </div>
+      <AnimationUploadingWithAI />
     </div>
   ) : (
     <UploadTransactionsContext.Provider
@@ -51,7 +87,7 @@ export default function UploadAi({ extractFieldsUsingOpenAi }: UploadAiProps) {
         uploadTransactions,
         setLoading,
         extractFieldsUsingOpenAi,
-        setCountDown,
+        setCountDown: () => {},
         setError,
       }}
     >
@@ -68,22 +104,3 @@ function isFirstStep(step: number) {
 function isFinalStep(step: number) {
   return step === 1;
 }
-
-const renderer = ({ hours, minutes, seconds, completed }: any) => {
-  if (completed) {
-    return <Completionist />;
-  } else {
-    return (
-      <span className="text-xl bg-emerald-50 p-2 rounded-md w-fit">
-        Time left: {String(minutes % 60).padStart(2, "0")}m{" "}
-        {String(seconds % 60).padStart(2, "0")}s
-      </span>
-    );
-  }
-};
-
-const Completionist = () => (
-  <span className="text-xl bg-emerald-50 p-2 rounded-md w-fit">
-    Ready to roll!
-  </span>
-);

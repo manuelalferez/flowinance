@@ -13,7 +13,7 @@ import {
 import { SphereTech } from "./components/home/sphere-tech";
 import ShimmerButton from "@/components/ui/shimmer-button";
 import WordPullUp from "@/components/ui/word-pull-up";
-import { ImageBeam } from "./components/home/image-beam";
+import { FancyBorder } from "./components/home/fancy-border";
 import DemoButton from "./signin/demo";
 
 export default async function Home() {
@@ -115,9 +115,9 @@ export default async function Home() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 className="md:w-2/3"
               >
-                <ImageBeam>
+                <FancyBorder>
                   <img src="https://ik.imagekit.io/manuelalferez/flowinance/dashboard_I8oBJOKP6.png" />
-                </ImageBeam>
+                </FancyBorder>
               </motion.div>
             </div>
             <div className="animated-text flex flex-col gap-4 md:flex-row items-center justify-around">
@@ -138,9 +138,9 @@ export default async function Home() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 className="md:w-1/2"
               >
-                <ImageBeam>
+                <FancyBorder>
                   <img src="https://ik.imagekit.io/manuelalferez/flowinance/ai_Qv2XljS7p.png" />
-                </ImageBeam>
+                </FancyBorder>
               </motion.div>
             </div>
             <div className="animated-text flex flex-col gap-4 md:flex-row-reverse items-center justify-around">
@@ -160,9 +160,9 @@ export default async function Home() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 className="md:w-2/3"
               >
-                <ImageBeam>
+                <FancyBorder>
                   <img src="https://ik.imagekit.io/manuelalferez/flowinance/transactions_S5FXYkL1G.png?updatedAt=1731334626895" />
-                </ImageBeam>
+                </FancyBorder>
               </motion.div>
             </div>
             <div className="animated-text flex flex-col gap-4 md:flex-row items-center justify-around">
@@ -184,9 +184,9 @@ export default async function Home() {
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 className="md:w-1/2"
               >
-                <ImageBeam>
+                <FancyBorder>
                   <img src="https://ik.imagekit.io/manuelalferez/flowinance/currencies_HbRYegIN1.png?updatedAt=1731334626766" />
-                </ImageBeam>
+                </FancyBorder>
               </motion.div>
             </div>
           </section>
