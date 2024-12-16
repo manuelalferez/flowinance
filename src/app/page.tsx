@@ -71,7 +71,7 @@ export default async function Home() {
                 whileInView={{ y: 0, opacity: 1 }}
                 initial={{ y: -20, opacity: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
                 className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8 pt-2 pb-4"
               >
                 Managing your money is now easier than ever. Visualize your
@@ -81,7 +81,7 @@ export default async function Home() {
                 whileInView={{ y: 0, opacity: 1 }}
                 initial={{ y: -20, opacity: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.8 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: 0.2 }}
                 className="space-x-4 flex"
               >
                 <ShimmerButton
@@ -103,7 +103,7 @@ export default async function Home() {
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: 30 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="font-heading w-full md:w-1/2 text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center"
               >
                 Everything you need to manage your finances
@@ -112,7 +112,7 @@ export default async function Home() {
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: -30 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="md:w-2/3"
               >
                 <FancyBorder>
@@ -125,7 +125,7 @@ export default async function Home() {
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: -30 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="font-heading w-full md:w-1/2 text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center"
               >
                 Upload and categorize your transactions in a few clicks using AI
@@ -135,7 +135,7 @@ export default async function Home() {
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: 30 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="md:w-1/2"
               >
                 <FancyBorder>
@@ -148,7 +148,7 @@ export default async function Home() {
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: 30 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="font-heading w-full md:w-1/2 text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center"
               >
                 Visualize all your transactions in one place
@@ -157,7 +157,7 @@ export default async function Home() {
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: -30 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="md:w-2/3"
               >
                 <FancyBorder>
@@ -170,7 +170,7 @@ export default async function Home() {
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: -30 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="font-heading w-full md:w-1/2 text-xl sm:text-3xl md:text-4xl lg:text-5xl text-emerald-900 font-bold text-center"
               >
                 Multi-currency support facilitates working with various global
@@ -181,7 +181,7 @@ export default async function Home() {
                 whileInView={{ x: 0, opacity: 1 }}
                 initial={{ opacity: 0, x: 30 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="md:w-1/2"
               >
                 <FancyBorder>
@@ -199,7 +199,7 @@ export default async function Home() {
                 whileInView={{ y: 0, opacity: 1 }}
                 initial={{ y: -20, opacity: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
                 className="animated-text font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl"
               >
                 Powered by
@@ -208,7 +208,7 @@ export default async function Home() {
                 whileInView={{ y: 0, opacity: 1 }}
                 initial={{ y: -20, opacity: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.7 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: 0.2 }}
                 className="max-w-[85%] leading-normal flex flex-col md:flex-row items-center text-muted-foreground sm:text-lg sm:leading-7"
               >
                 <div>
